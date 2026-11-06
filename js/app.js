@@ -58,7 +58,7 @@ function footer(){return `</div></main></div><input type="file" id="backup-file"
 function modal(html){const d=$('#modal');$('#modal-body').innerHTML=html;d.showModal();}
 function closeModal(){const d=$('#modal');if(d.open)d.close();}
 function renderEntry(){const topics=IMPLEMENTED_TOPICS.map(x=>x.id).join(', ').replace(/, ([^,]+)$/, ' and $1');const lessons=IMPLEMENTED_TOPICS.reduce((n,t)=>n+t.lessons.length,0);
- $('#app').innerHTML=`<div class="entry panel"><div class="brand-mark" aria-label="FB">FB</div><p class="eyebrow">2025 AP COMPUTER SCIENCE A · UNIT 3</p><h1>Class Creation Lab</h1>
+ $('#app').innerHTML=`<div class="entry panel"><div class="brand-mark" aria-label="FB">FB</div><p class="eyebrow">2026 AP COMPUTER SCIENCE A · UNIT 3</p><h1>Class Creation Lab</h1>
  <p class="lead">Learn how programmers model real-world objects, organize information, and build reusable behaviors. Work through interactive lessons at your own pace.</p>
  <div class="callout maroon"><strong>Topics ${topics} are available.</strong> ${lessons} interactive lesson pages, ${IMPLEMENTED_TOPICS.length} separate graded checks, and local progress reports. Later topics remain locked until released.</div>
  <form id="identity-form" autocomplete="off" style="margin-top:24px"><div class="entry-fields"><div class="field"><label for="first-name">First name</label><input id="first-name" class="input" maxlength="30" required placeholder="Alex" autocomplete="given-name"></div>

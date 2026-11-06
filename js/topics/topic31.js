@@ -62,7 +62,7 @@ const hotspots={
 };
 function pageOne(){const d=pData(1),explored=d.explored||[],item=hotspots[hot]||hotspots.player;
  return `<section class="panel"><div class="panel-top"><div><p class="kicker">Explore the example</p><h2>An arcade full of objects</h2></div><span class="step-badge">${explored.length}/4 explored</span></div>
- <p>Programs model the world by representing <strong>types of things</strong> as classes. Each class brings together related information (attributes) and actions (behaviors). Explore at least three parts of the arcade.</p>
+ <p>Programs model the world by representing types of things as <strong>classes</strong>. Each class brings together related information (<strong>attributes</strong>) and actions/behaviors (<strong>methods</strong>). Explore at least three parts of the arcade.</p>
  <div class="scene">${arcScene}
  <button class="scene-target ${explored.includes('cabinet')?'visited':''}" data-action="explore" data-id="cabinet" style="left:24%;top:64%">Arcade machine</button>
  <button class="scene-target ${explored.includes('player')?'visited':''}" data-action="explore" data-id="player" style="left:65%;top:78%">Player</button>

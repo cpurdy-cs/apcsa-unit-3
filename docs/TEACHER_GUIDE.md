@@ -1,0 +1,67 @@
+# Teacher Guide | Class Creation Lab v1.6
+
+## Release 1.6 note
+
+Topic 3.3 now uses a correctly indented clickable code explorer, simpler practice wording, and side-by-side Class Builder controls and live source preview. Scores, progress, and graded questions are unchanged.
+
+## Release 1.5 note
+
+The modular framework now includes Topic 3.3. Topic 3.1 and 3.2 lesson content and graded questions remain unchanged; only the outdated 3.2 post-check release-status message was updated. Student progress and previous submissions remain compatible. See `docs/ARCHITECTURE.md` for how to add Topic 3.4 without editing completed lessons.
+
+## Source and scope
+
+Based only on the user-provided **2025 AP Computer Science A Course and Exam Description**, Unit 3. This release implements 3.1 Abstraction and Program Design, 3.2 Impact of Program Design and 3.3 Anatomy of a Class. Topics 3.4–3.9 remain planned.
+
+Plan approximately **two 45–50-minute class periods** for Topic 3.1 **one 45–50-minute period** for Topic 3.2 and **two 45–50-minute periods** for Topic 3.3. The minute labels in the lessons are suggested planning times, not limits. Students work at their own pace.
+
+## Topic 3.1 mastery gates
+
+- **3.1.1**: Explore three arcade items; sort all six elements; solve three transfer challenges; answer the concept question.
+- **3.1.2**: Change the shared bonus and award points using that bonus; sort six variables/methods; solve three transfer challenges; answer the concept question.
+- **3.1.3**: Write `addScore` from an initially blank body and pass three restricted-Java tests; solve three transfer challenges; answer both concept checkpoints.
+- **3.1.4**: Select the required three fields and three methods from shuffled choices; explain the design in at least 30 characters; solve three transfer challenges; answer the concept question.
+- **Check**: ten questions, ten points each, **80/100** to unlock Topic 3.2.
+
+## Topic 3.2 mastery gates
+
+- **3.2.1, The Leaderboard Decision**: Compare all three leaderboard policies; correctly solve both transfer scenarios; enter a reflection of at least 40 characters explaining benefits, harms and mitigation.
+- **3.2.2, Reliability Test Bench**: Run **all six** test cases with the flawed code; select the repair checking positive cost, positive stock and sufficient tickets; rerun all six with the repair; correctly classify three highlighted tests. The initial code intentionally fails for zero stock and zero/negative costs. Results are deterministic.
+- **3.2.3, Who Owns This Code?**: Correctly identify responsible reuse choices for four assets; solve two transfer scenarios; write at least 40 characters explaining how to obtain permission for unlicensed code.
+- **Check**: eight questions, 12.5 points each, **at least 7/8 correct (87.5%)** required to pass the 80% threshold. One submitted attempt unless reset by the teacher.
+
+The Topic 3.2 learning objectives are:
+
+- **EK 3.2.A.1:** Reliable systems operate as expected under stated conditions; programs should be tested under varied conditions.
+- **EK 3.2.A.2:** Programs can benefit or harm society, culture and the economy, including through unintended effects.
+- **EK 3.2.A.3:** Legal and intellectual property concerns arise when incorporating someone else's code; non-open-source code requires appropriate permission and often payment.
+
+## Report review
+
+**Reports & backups** provides separate Topic 3.1, 3.2 and 3.3 PDFs and a cumulative Unit 3 report. Topic 3.2 reports include comparisons made in the leaderboard lab, written reflections, test outcomes before/after repairs, software reuse classifications, full graded answers and attempt history. Student reports do not reveal answer keys; teacher preview does.
+
+## Preview and resetting attempts
+
+Teacher access: **Ctrl+Alt+Shift+T** or click the build label five times; enter the configured phrase. Default is `HornetLab31`. Teacher preview unlocks the lessons without altering student practice. To reset a submitted check, open **Teacher tools**, select the appropriate **Reset 3.1 / 3.2 / 3.3 check**, and confirm. The prior attempt remains in the student's PDF and saved progress. Always exit teacher preview after using a student device.
+
+## Update from v1.1
+
+No fresh start is required. Progress backups from earlier versions use the same schema, and the v1.5 application can restore previously completed Topic 3.1 and 3.2 pages, evidence and scores. Current progress on a particular computer is retained as long as it is served from the **same site origin/path and browser profile** (and storage has not been cleared). Download a JSON backup before making deployment changes, and test restoring it on another browser profile.
+
+## Classroom reliability and integrity
+
+The site is dependency-free and runs on GitHub Pages. Student data and scores are stored in the student's browser; neither the single-attempt policy nor teacher preview is secure against deliberate source or browser-storage manipulation. Treat results as instructional evidence and review selected written explanations for depth. Always verify PDF and JSON downloads on the actual Chromebooks and browser profiles your students use.
+
+### Topic 3.2 reliability lab (v1.3)
+Students load one test case at a time into the Java code and press Run code. All six original tests must be run before the repair choices appear. Selecting a repair changes the displayed condition without stating whether it is correct; students must run the six cases again. A failed repair can be changed and retested, with new repair results recorded separately from the original-code results. Test categories give immediate feedback. Section-check Q2 includes 9, 10 and 11 tickets around a threshold of 10.
+
+
+## Topic 3.3: Anatomy of a Class (v1.5)
+
+This section uses the 2025 College Board AP CSA CED, LO 3.3.A, EK 3.3.A.1–6 (attached PDF page 11). Its four pages build on 3.1 and 3.2:
+
+1. Inspect a public class, private field, public constructor and public method; classify six declarations, then answer a checkpoint.
+2. Change the calling context and target member to explore `public`/`private`; run four required access-rule comparisons and solve four practice scenarios.
+3. Create two Player objects, modify each through a public method and observe separate private scores; solve three practice scenarios.
+4. Assemble PrizeCard from seven shuffled declarations; validate the design, verify client access expectations, solve two questions and save a written explanation.
+
+The 3.3 class builder is a constrained **declaration and access-rule validator**, not a complete Java compiler. It displays assembled Java source but does not execute student-written arbitrary Java. All graded questions are automatically scored (10 points each); eight correct are needed to pass. Submitted answers appear in the separate 3.3 PDF, and the assembled source and written explanation are included as selected practice evidence. Teacher mode provides an independent 3.3 reset and sample PDF.

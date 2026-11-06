@@ -1,0 +1,24 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {blankState} from '../js/storage.js';
+import {QUESTIONS32,PAGE32,POLICIES,RELIABILITY_TESTS,CODE_ASSETS} from '../js/content32.js';
+import {prizeResult} from '../js/topic32.js';
+import {createReport} from '../js/pdf.js';
+test('offline Topic 3.2 PDF includes full answers, reflections, test evidence, and valid PDF offsets',async()=>{
+ const s=blankState();s.identity={first:'Casey',last:'M'};
+ for(let i=1;i<=3;i++)s.pages[`3.2.${i}`]={completed:true,completedAt:'2026-11-05T12:00:00.000Z',data:{}};
+ s.pages['3.2.1'].data={visited:POLICIES.map(x=>x.id),policy:'alias',reflection:'I choose opt-in aliases so players can compete without necessarily revealing their real names.'};
+ s.pages['3.2.2'].data={before:Object.fromEntries(RELIABILITY_TESTS.map(x=>[x.id,prizeResult(x,false)])),after:Object.fromEntries(RELIABILITY_TESTS.map(x=>[x.id,prizeResult(x,true)])),fixChoice:'b'};
+ s.pages['3.2.3'].data={assetAnswers:Object.fromEntries(CODE_ASSETS.map(x=>[x.id,x.answer])),reflection:'Permission should be confirmed before copying code that is not clearly licensed.'};
+ const answers=Object.fromEntries(QUESTIONS32.map(q=>[q.id,q.kind==='choice'?q.answer:Object.fromEntries(q.items.map(([,v],i)=>[i,v]))]));
+ const points=Object.fromEntries(QUESTIONS32.map((q,i)=>[q.id,i<7?12.5:0]));
+ s.assessments['3.2'].attempts=[{at:'2026-11-05T12:00:00.000Z',score:87.5,answers,points,questions:QUESTIONS32.map(q=>({...q}))}];
+ let captured;
+ global.document={body:{appendChild(){}},createElement:()=>({click(){},remove(){}})};
+ URL.createObjectURL=blob=>{captured=blob;return 'blob:mock'};URL.revokeObjectURL=()=>{};
+ const topic=createReport(s,{topic:'3.2'});
+ assert.match(topic.filename,/Topic3-2_Casey_M/);assert.ok(topic.pages>=2);
+ let data=await captured.text();assert.match(data,/Topic 3.2/);assert.match(data,/Permission should be confirmed/);assert.match(data,/Section check 3.2/);assert.match(data,/Q8/);assert.match(data,/Student response/);assert.match(data,/87.5\/100/);
+ let x=/startxref\n(\d+)\n%%EOF$/.exec(data);assert.ok(x);assert.equal(data.slice(Number(x[1]),Number(x[1])+4),'xref');
+ const cumulative=createReport(s,{cumulative:true});assert.match(cumulative.filename,/Unit3_Cumulative/);data=await captured.text();assert.match(data,/Topic 3.1/);assert.match(data,/Topic 3.2/);assert.match(data,/Topics 3.4-3.9 remain in development/);
+});

@@ -1,0 +1,88 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {QUESTIONS,CLASSIFY_SCENE,CLASSIFY_DATA,DESIGN,CHALLENGES} from '../js/content.js';
+
+function harness(){
+ const listeners={},mem=new Map(),sess=new Map(),pieces={};
+ const app={innerHTML:''},zone={append(){}},modal={open:false,showModal(){this.open=true},close(){this.open=false}},body={innerHTML:''};
+ pieces['#first-name']={value:'Alex'};pieces['#last-initial']={value:'R'};
+ pieces['#teacher-code']={value:'HornetLab31',focus(){}};pieces['#java-body']={value:'score += points;'};
+ pieces['#reflection-count']={textContent:''};pieces['#modal']=modal;pieces['#modal-body']=body;
+ global.localStorage={getItem:k=>mem.get(k)||null,setItem:(k,v)=>mem.set(k,v),removeItem:k=>mem.delete(k)};
+ global.sessionStorage={getItem:k=>sess.get(k)||null,setItem:(k,v)=>sess.set(k,v),removeItem:k=>sess.delete(k)};
+ global.document={title:'',querySelector:s=>s==='#app'?app:s==='#toast-region'?zone:pieces[s]||null,
+  createElement:()=>({className:'',textContent:'',remove(){},click(){}}),addEventListener:(event,fn)=>listeners[event]=fn};
+ global.window={scrollTo(){},addEventListener:(event,fn)=>listeners[event]=fn,confirm:()=>true};
+ global.location={hash:'#/home'};
+ const element=(action,dataset={})=>({disabled:false,dataset:{action,...dataset}});
+ const click=(action,dataset={})=>{const el=element(action,dataset);listeners.click({target:{closest(sel){return sel==='[data-action]'?el:null;}}});};
+ const change=(action,dataset,value)=>{listeners.change({target:{dataset:{action,...dataset},value,checked:!!value,id:''}});};
+ const at=hash=>{location.hash=hash;listeners.hashchange();return app.innerHTML;};
+ return {app,mem,sess,pieces,listeners,click,change,at,modal};
+}
+const KEY='flourbluff-apcsa-u3-v1';
+const solveChallenges=(h,page)=>CHALLENGES[page].forEach((q,index)=>h.change('challenge',{page:String(page),index:String(index)},String(q.answer)));
+test('student can complete gated pages and submit exactly once, then teacher can reset',async()=>{
+ const h=harness();await import('../js/app.js?workflow='+Date.now());
+ assert.match(h.app.innerHTML,/Start learning/);
+ h.listeners.submit({target:{id:'identity-form'},preventDefault(){}});
+ assert.match(h.app.innerHTML,/Welcome back, Alex/);
+ assert.match(h.at('#/topic/3.1/page/4'),/Page locked/);
+ h.at('#/topic/3.1/page/1');
+ for(const id of ['cabinet','player','board'])h.click('explore',{id});
+ for(const q of CLASSIFY_SCENE)h.change('classify-select',{page:'1',key:'classify',id:q.id},q.answer);
+ h.click('classify-check',{page:'1',key:'classify'});
+ h.change('concept',{page:'1',key:'concept',answer:'1'},'1');solveChallenges(h,1);
+ assert.equal(JSON.parse(h.mem.get(KEY)).pages[1].completed,true);
+ h.at('#/topic/3.1/page/2');
+ h.click('sim',{target:'bonus'});
+ let sim=JSON.parse(h.mem.get(KEY)).pages[2].data;
+ assert.equal(sim.bonus,2);
+ assert.equal(sim.a,10);
+ assert.equal(sim.b,25);
+ h.click('sim',{target:'a'});
+ sim=JSON.parse(h.mem.get(KEY)).pages[2].data;
+ assert.equal(sim.a,30,'shared ×2 bonus should add 20 to Alex');
+ assert.equal(sim.b,25,'Ben must remain unchanged by Alex scoring');
+ h.click('sim',{target:'b'});
+ sim=JSON.parse(h.mem.get(KEY)).pages[2].data;
+ assert.equal(sim.b,45,'same shared ×2 bonus should add 20 to Ben');
+ assert.equal(sim.bonusUsed,true);
+ for(const q of CLASSIFY_DATA)h.change('classify-select',{page:'2',key:'classify',id:q.id},q.answer);
+ h.click('classify-check',{page:'2',key:'classify'});h.change('concept',{page:'2',key:'concept',answer:'2'},'2');solveChallenges(h,2);
+ assert.equal(JSON.parse(h.mem.get(KEY)).pages[2].completed,true);
+ h.at('#/topic/3.1/page/3');
+ assert.match(h.app.innerHTML, /<textarea id="java-body"[^>]*><\/textarea>/, 'the editor should start blank');
+ assert.doesNotMatch(h.app.innerHTML, /Implementation A/, 'answer examples should be hidden before a passing test');
+ assert.doesNotMatch(h.app.innerHTML, /Try compact version/, 'starter must not include a solution button');
+ h.click('test-code');
+ assert.match(h.app.innerHTML, /Implementation A/);
+ h.change('concept',{page:'3',key:'decomp',answer:'2'},'2');h.change('concept',{page:'3',key:'invariance',answer:'1'},'1');solveChallenges(h,3);
+ assert.equal(JSON.parse(h.mem.get(KEY)).pages[3].completed,true);
+ h.at('#/topic/3.1/page/4');
+ for(const item of DESIGN.fields.filter(x=>x.ok))h.change('design-select',{kind:'fields'},item.id);
+ for(const item of DESIGN.methods.filter(x=>x.ok))h.change('design-select',{kind:'methods'},item.id);
+ h.click('check-design');
+ h.listeners.input({target:{id:'design-reflection',value:'Score belongs with the Player because it represents the player and the addScore action changes that data.'}});
+ h.change('concept',{page:'4',key:'rationale',answer:'1'},'1');solveChallenges(h,4);
+ assert.equal(JSON.parse(h.mem.get(KEY)).pages[4].completed,true);
+ assert.match(h.at('#/topic/3.1/check'),/Demonstrate your understanding/);
+ for(const q of QUESTIONS){if(q.kind==='choice')h.change('check-answer',{q:q.id},String(q.answer));
+  else q.items.forEach(([,answer],index)=>h.change('check-category',{q:q.id,index:String(index)},answer));}
+ h.click('review-submit');assert.equal(h.modal.open,true);
+ h.click('submit-check');h.at('#/topic/3.1/results');
+ assert.match(h.app.innerHTML,/Topic mastery achieved/);
+ assert.equal(JSON.parse(h.mem.get(KEY)).assessments['3.1'].attempts[0].score,100);
+ assert.match(h.at('#/topic/3.1/check'),/Topic mastery achieved/);
+ // Activate teacher access via the documented keyboard shortcut.
+ h.listeners.keydown({ctrlKey:true,altKey:true,shiftKey:true,key:'t',preventDefault(){}});
+ h.listeners.submit({target:{id:'teacher-form'},preventDefault(){}});
+ await new Promise(resolve=>setTimeout(resolve,10));
+ assert.equal(h.sess.get('flourbluff-apcsa-teacher'),'yes');
+ assert.match(h.app.innerHTML,/TEACHER CONSOLE/);
+ h.click('reset-check');h.click('confirm-reset');
+ assert.equal(JSON.parse(h.mem.get(KEY)).assessments['3.1'].attempts.length,1);
+ assert.equal(JSON.parse(h.mem.get(KEY)).assessments['3.1'].locked,false);
+ h.click('teacher-exit');
+ assert.match(h.at('#/topic/3.1/check'),/Demonstrate your understanding/);
+});

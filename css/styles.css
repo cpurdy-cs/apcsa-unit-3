@@ -73,3 +73,84 @@ dialog{border:1px solid #d8dce1;border-radius:15px;padding:0;width:min(520px,cal
 .build-preview >.fineprint {display:block;margin:6px 2px;}
 @media (max-width:1100px) {.build-workbench {grid-template-columns:minmax(0,1fr);} .build-preview {position:static;} .build-workbench .build-grid {grid-template-columns:repeat(2,minmax(0,1fr));}}
 @media (max-width:650px) {.build-workbench .build-grid {grid-template-columns:minmax(0,1fr);} .code-inspect-java .inspect-line {padding-left:10px;padding-right:10px;gap:5px;}}
+
+/* Topic 3.4: constructor laboratories (isolated styles; earlier lessons unchanged). */
+.memory-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin-top:10px}
+.object-bench{border:1px solid var(--line);border-radius:10px;margin-top:16px;padding:14px;background:#f9f9fb}
+.object-bench-title{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px}
+.memory-object{background:#fff;border:1px solid #cdd1d9;border-radius:9px;padding:12px;display:flex;flex-direction:column;gap:6px;font-size:12px;color:#343b48;min-width:0}
+.memory-object .object-ref{font-weight:750;color:#500000;font-size:12px}
+.memory-object.pending{border:2px dashed #9e6f7d;background:#fffafa}
+.memory-object.clone{border-color:#8e9bb1;background:#f5f7fa}
+.empty-note{color:var(--muted);font-size:13px;padding:18px 6px}
+.ctor-editor{width:100%;min-height:135px;font-family:Consolas,"Cascadia Code",monospace;white-space:pre;tab-size:4}
+.copy-map{border:1px solid #d4d8df;border-radius:10px;padding:12px;background:#fbfbfd;display:grid;gap:9px;margin-top:12px}
+.copy-ref{font-size:12px;border:1px dashed #d7bec3;border-radius:7px;background:white;padding:8px 10px}
+.copy-ref strong{color:#500000}
+.copy-memory{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.mini-progress{border:1px solid #d4d8df;border-radius:8px;padding:10px;background:#f6f7fa;font-size:12px;font-weight:700;margin:10px 0}
+@media(max-width:750px){.memory-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.object-bench-title{flex-wrap:wrap}.copy-memory{grid-template-columns:1fr}}
+
+
+/* Topic 3.4 v1.8: progressive complete-constructor labs and compact comparison. */
+.ctor-challenge-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px}
+.ctor-challenge-tab{background:#f5f6f8;border:1px solid #ced1d8;padding:10px 13px;border-radius:9px;font-weight:750;color:#3d4450;font-size:12px;cursor:pointer}
+.ctor-challenge-tab.selected{background:#f7edef;border:2px solid #500000;padding:9px 12px;color:#500000}
+.ctor-challenge-tab.passed{border-color:#9ccbb4}
+.ctor-challenge-tab:focus-visible{outline:3px solid #c68c97;outline-offset:2px}
+.ctor-test-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:13px}
+.ctor-test-grid .test-item{grid-template-columns:18px minmax(0,1fr) auto;overflow-wrap:anywhere}
+.ctor-editor{min-height:205px;resize:vertical}
+.copy-workbench{display:grid;grid-template-columns:minmax(0,.98fr) minmax(0,1.02fr);gap:12px;margin:15px 0 13px;align-items:start}
+.copy-workbench>.copy-controls,.copy-workbench>.copy-visual{min-width:0;background:#fbfbfd;border:1px solid #dfe2e7;border-radius:11px;padding:13px}
+.copy-controls .code-main{white-space:pre;overflow-x:auto;font-size:10px;line-height:1.6;padding:12px}
+.copy-controls .code-bar{font-size:10px;padding:8px 11px}
+.copy-controls>.btn{margin-top:12px;width:100%;font-size:12px}
+.copy-actions{margin-top:11px;display:grid;grid-template-columns:1fr;gap:7px}
+.copy-actions strong{font-size:12px}
+.copy-actions .btn{font-size:11px;text-align:left;white-space:normal;min-height:38px}
+.copy-memory-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:10px;align-items:stretch}
+.copy-pointer{padding:9px;border:1px solid #d7cbd0;background:#fff;border-radius:8px;display:flex;flex-direction:column;gap:7px;font-size:11px;min-width:0}
+.copy-pointer span{overflow-wrap:anywhere}.copy-pointer code{font-size:10px}
+.copy-pointer.shares{border-color:#ca7888;background:#fff6f7}
+.copy-memory-object,.copy-shared-object{background:#500000;color:#fff;border-radius:8px;padding:11px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;font-size:11px;min-height:58px}
+.copy-memory-object strong{font:800 20px/1.2 Consolas,monospace;color:#fff}
+.copy-memory-object.independent{background:#667686}
+.copy-memory-object[data-changed="true"]{box-shadow:0 0 0 3px #d8a951}
+.copy-shared-object{background:#f9e6e9;color:#702532;border:2px dashed #c47585;font-weight:750}
+.copy-impact{margin-top:11px;padding:11px 12px;border-radius:9px;border:1px solid #d6dbe3;font-size:11px;line-height:1.5;background:#fff}
+.copy-impact p{margin:5px 0 0;font-size:11px}
+.copy-impact.danger{border:2px solid #b34b60;background:#fff0f1;color:#842638}
+.copy-impact.safe{border:2px solid #4a9678;background:#edfaf3;color:#19533b}
+.copy-comparison-progress{border:1px solid #d9dce3;border-radius:10px;padding:13px;background:#fafbfc;font-size:12px}
+.copy-comparison-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:9px}
+.copy-comparison-card{border:1px solid #dfe1e5;border-radius:8px;padding:9px;background:#fff;display:flex;flex-direction:column;gap:7px;font-size:11px;min-width:0}
+.copy-comparison-card.finished{border-color:#93c7a9}.copy-comparison-card>div{display:flex;gap:4px;flex-wrap:wrap}
+.copy-comparison-card .pill{font-size:10px;padding:3px 6px}.copy-comparison-card small{color:#68717c}
+.q-option code,.challenge-card h3 code,.assessment-row h3 code,.answer-review code,.teacher-answer code{font:inherit;font-family:Consolas,"Cascadia Code",monospace;background:#f0edf0;padding:1px 4px;border-radius:4px;overflow-wrap:anywhere}
+@media(max-width:950px){.copy-workbench{grid-template-columns:1fr}.ctor-test-grid{grid-template-columns:1fr}}
+@media(max-width:690px){.copy-comparison-cards{grid-template-columns:1fr}.copy-memory-layout{grid-template-columns:1fr 1fr}}
+
+/* Topic 3.4 v1.9: full-width code editor and comfortable keyboard indentation. */
+.ctor-workbench{grid-template-columns:minmax(0,1fr);gap:14px}
+.ctor-workbench>.build-controls,.ctor-workbench>.build-preview{min-width:0}
+.ctor-workbench .ctor-editor{display:block;width:100%;max-width:100%;box-sizing:border-box;min-height:235px;white-space:pre;overflow-x:auto;overflow-wrap:normal;word-break:normal;tab-size:4;font-size:13px;line-height:1.65}
+.ctor-workbench .build-preview{position:static}
+.ctor-workbench .build-preview .code-main{font-size:12px;line-height:1.65;white-space:pre;overflow-x:auto}
+.ctor-preview-title{font-size:13px;margin:0 0 8px;color:#515d68}
+#34-editor-help{margin:5px 0 10px;line-height:1.45}
+
+/* On mid-size laptops, move the topic navigator below only the coding workshop
+   so constructor headers remain readable instead of being cramped in two columns. */
+@media (min-width:901px) and (max-width:1399px){
+ .lesson-layout.ctor-lesson-layout{grid-template-columns:minmax(0,1fr)}
+ .lesson-layout.ctor-lesson-layout>.lesson-aside{position:static;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+}
+
+/* Topic 3.4 v1.10: one complete Java class editor, no separate preview. */
+.ctor-workbench{display:block;min-width:0}
+.ctor-workbench>.build-controls{min-width:0}
+.ctor-workbench .ctor-editor{min-height:350px;line-height:1.65;font-size:13px}
+.ctor-workbench .btn-row{align-items:center;flex-wrap:wrap;gap:12px;margin-top:9px}
+.ctor-workbench .btn-row .fineprint{flex:1;min-width:190px}
+@media(max-width:700px){.ctor-workbench .ctor-editor{min-height:320px;font-size:12px}}

@@ -1,4 +1,4 @@
-# 2025 College Board AP CSA Unit 3 | Release 1.5 alignment
+# 2025 College Board AP CSA Unit 3 | Release 1.8 alignment
 
 **Source used:** user-supplied *AP Computer Science A Course and Exam Description*, Course Framework V.1, © 2025 College Board, Unit 3 *Class Creation*. The attached PDF is the sole curricular source. All lesson scenarios and scored questions are original to this project.
 
@@ -57,3 +57,17 @@ CED p. 83 (attached PDF p. 11), LO **3.3.A**: designate access and visibility co
 | 3.9 this Keyword | 3 | 1 |
 
 The College Board topic allocations total 18 periods. The broader 21-period plan includes three integrated application/review periods after the planned units. **These additional activities are not yet part of the release.**
+
+## Topic 3.4: Constructors
+
+CED p. 84, LO 3.4.A, EK 3.4.A.1–5. The CED recommends two periods and assesses design/implementation of data abstractions and tracing initialized object state.
+
+| EK | Interactive lesson and assessment coverage |
+|---|---|
+| 3.4.A.1 | 3.4.1 state during allocation/initialization; 3.4.3 separate Player objects; graded Q1 and Q7 |
+| 3.4.A.2 | 3.4.1 stepped constructor, 3.4.3 guided parameterized initialization, 3.4.4 write/test three complete constructors; graded Q2, Q6, Q8 |
+| 3.4.A.3 | 3.4.5 shared-reference vs. defensive-copy experiment with mutable TicketBalance; graded Q9–Q10 |
+| 3.4.A.4 | 3.4.2 default vs. programmer-written no-arg vs. parameterized constructor; graded Q3 and Q5 |
+| 3.4.A.5 | 3.4.2 explicit default-value predictions for int/double/boolean/String; graded Q4 additionally includes ArcadeMachine (reference default null) |
+
+**Scoring:** 10 original questions, 10 points each; a score of at least 80 is required. Client-side Java exercises deliberately support only the constructs shown. They are not general Java compilers.

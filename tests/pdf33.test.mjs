@@ -14,5 +14,5 @@ test('Topic 3.3 PDF includes student-built class, practice explanation, and save
  const pdf=await blob.text();assert.match(pdf,/public class PrizeCard/);assert.match(pdf,/private int tickets/);assert.match(pdf,/The tickets field is private/);assert.match(pdf,/Q10/);assert.match(pdf,/90\/100/);
  const index=/startxref\n(\d+)\n%%EOF$/.exec(pdf);assert.ok(index);assert.equal(pdf.slice(Number(index[1]),Number(index[1])+4),'xref');
  const cumulative=createReport(st,{cumulative:true});assert.ok(cumulative.pages>=3);
- const all=await blob.text();assert.match(all,/Topic 3.1/);assert.match(all,/Topic 3.2/);assert.match(all,/Topic 3.3/);assert.match(all,/Topics 3.4-3.9 remain in development/);
+ const all=await blob.text();assert.match(all,/Topic 3.1/);assert.match(all,/Topic 3.2/);assert.match(all,/Topic 3.3/);assert.match(all,/Topics 3.5-3.9 remain in development/);
 });

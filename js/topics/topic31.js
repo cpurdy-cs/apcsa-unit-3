@@ -35,7 +35,7 @@ function challengeSet(page){const d=pData(page),cards=CHALLENGES[page],ans=d.cha
  ${ans[i]!==undefined?`<div class="feedback ${ans[i]===q.answer?'good':'bad'}">${ans[i]===q.answer?'✓ Correct. '+esc(q.hint):'Not yet. '+esc(q.hint)}</div>`:''}</div>`).join('')}
  <p class="helper">${done===cards.length?'✓ Transfer challenge completed.':'Solve all three to satisfy this page requirement.'}</p></section>`;
 }
-function lessonHead(n){const p=PAGE_META[n-1],st=view(),done=isPageCompleted(st,n);return `<div class="page-title"><p class="eyebrow">TOPIC 3.1 · LESSON ${n} OF 4</p><div class="spaced"><h1>${esc(p.title)}</h1><span class="step-badge ${done?'complete':''}">${done?'✓ Completed':'~'+p.minutes+' minutes'}</span></div><p class="lead">${esc(p.subtitle)}</p><p class="fineprint">Essential knowledge: ${esc(p.ek)}</p></div>`;}
+function lessonHead(n){const p=PAGE_META[n-1],st=view(),done=isPageCompleted(st,n);return `<div class="page-title"><p class="eyebrow">TOPIC 3.1 · LESSON ${n} OF 4</p><div class="spaced"><h1>${esc(p.title)}</h1><span class="step-badge ${done?'complete':''}">${done?'✓ Completed':'In progress'}</span></div><p class="lead">${esc(p.subtitle)}</p><p class="fineprint">Essential knowledge: ${esc(p.ek)}</p></div>`;}
 function lessonFoot(n){const st=view(),done=isPageCompleted(st,n),t=teacherOn(),canNext=done||t;return `<div class="lesson-footer">${n>1?link(`#/topic/3.1/page/${n-1}`,'← Previous lesson','secondary'):link('#/home','← Dashboard','secondary')}
   <div style="display:grid;justify-items:end;gap:4px">${n<4?(canNext?link(`#/topic/3.1/page/${n+1}`,'Next lesson →'):'<button class="btn secondary" disabled>🔒 Next lesson</button>'):(hasLessonMastery(st)||t?link('#/topic/3.1/check','Go to graded check →'):'<button class="btn secondary" disabled>🔒 Graded check</button>')}
   ${!canNext&&n<4?'<span class="fineprint">Complete the required activities to unlock.</span>':''}${n===4&&!hasLessonMastery(st)&&!t?'<span class="fineprint">Complete all four pages first.</span>':''}</div></div>`;}
@@ -62,7 +62,7 @@ const hotspots={
 };
 function pageOne(){const d=pData(1),explored=d.explored||[],item=hotspots[hot]||hotspots.player;
  return `<section class="panel"><div class="panel-top"><div><p class="kicker">Explore the example</p><h2>An arcade full of objects</h2></div><span class="step-badge">${explored.length}/4 explored</span></div>
- <p>Programs model the world by representing types of things as <strong>classes</strong>. Each class brings together related information (<strong>attributes</strong>) and actions/behaviors (<strong>methods</strong>). Explore at least three parts of the arcade.</p>
+ <p>Programs model the world by representing <strong>types of things</strong> as classes. Each class brings together related information (attributes) and actions (behaviors). Explore at least three parts of the arcade.</p>
  <div class="scene">${arcScene}
  <button class="scene-target ${explored.includes('cabinet')?'visited':''}" data-action="explore" data-id="cabinet" style="left:24%;top:64%">Arcade machine</button>
  <button class="scene-target ${explored.includes('player')?'visited':''}" data-action="explore" data-id="player" style="left:65%;top:78%">Player</button>

@@ -28,11 +28,12 @@ test('future topic can be plugged into generic progression without changing old 
  assert.equal(topicCompleted(st,'3.1',mockRegistry),false);
 });
 
-test('current registry correctly scopes 3.1 through 3.3, and unpublished topics',()=>{
- assert.deepEqual(IMPLEMENTED_TOPICS.map(t=>t.id),['3.1','3.2','3.3']);
+test('current registry includes 3.1 through 3.4, and leaves later topics unpublished',()=>{
+ assert.deepEqual(IMPLEMENTED_TOPICS.map(t=>t.id),['3.1','3.2','3.3','3.4']);
  assert.ok(getImplementedTopic('3.3'));
- assert.equal(getImplementedTopic('3.4'),null);
- assert.deepEqual(TOPICS.slice(3).map(t=>t.implemented),Array(6).fill(false));
+ assert.ok(getImplementedTopic('3.4'));
+ assert.equal(getImplementedTopic('3.5'),null);
+ assert.deepEqual(TOPICS.slice(4).map(t=>t.implemented),Array(5).fill(false));
  const st=blankState();
  assert.equal(topicUnlocked(st,'3.1'),true);
  assert.equal(topicUnlocked(st,'3.2'),false);

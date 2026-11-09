@@ -69,7 +69,7 @@ export function createReport(st,{cumulative=false,sample=false,topic='3.1'}={}){
  report.heading(cumulative?'UNIT 3 | Cumulative progress report':`TOPIC ${topic} | Student report`,17);
  report.line(`Student: ${display(st)}`);report.line(`Generated: ${new Date().toLocaleString('en-US')}`);
  report.line('Curriculum: 2025 AP Computer Science A, Unit 3 Class Creation');
- report.line('Report format: Class Creation Lab v1.6');report.blank(8);
+ report.line('Report format: Class Creation Lab v1.8');report.blank(8);
  if(sample)report.line('TEACHER SAMPLE - NOT A STUDENT SUBMISSION',{bold:true,color:'0.6 0.1 0.1'});
  if(cumulative){
   report.heading('Nine-topic unit dashboard',14);

@@ -1,19 +1,23 @@
 import {UNIT,PAGE_META} from './content.js';
 import {PAGE32} from './content32.js';
 import {PAGE33} from './content33.js';
+import {PAGE34} from './content34.js';
 import {createTopic31} from './topics/topic31.js';
 import {createTopic32} from './topics/topic32-controller.js';
 import {createTopic33} from './topics/topic33-controller.js';
+import {createTopic34} from './topics/topic34-controller.js';
 import {write31} from './topics/report31.js';
 import {write32} from './topics/report32.js';
 import {write33} from './topics/report33.js';
+import {write34} from './topics/report34.js';
 
 // Single extension point for future topics. Older topic modules never need editing.
 // Each plugin supplies its page metadata, page-key convention, controller and PDF writer.
 const plugins={
  '3.1':{lessons:PAGE_META,pageId:n=>n,create:createTopic31,writeReport:write31},
  '3.2':{lessons:PAGE32,pageId:n=>`3.2.${n}`,create:createTopic32,writeReport:write32},
- '3.3':{lessons:PAGE33,pageId:n=>`3.3.${n}`,create:createTopic33,writeReport:write33}
+ '3.3':{lessons:PAGE33,pageId:n=>`3.3.${n}`,create:createTopic33,writeReport:write33},
+ '3.4':{lessons:PAGE34,pageId:n=>`3.4.${n}`,create:createTopic34,writeReport:write34}
 };
 export function createTopicRegistry(unit,definitions){return Object.freeze(unit.map((row,index)=>Object.freeze({
  ...row,implemented:!!definitions[row.id],prerequisite:index?unit[index-1].id:null,

@@ -1,4 +1,4 @@
-# Teacher Guide | Class Creation Lab v1.6
+# Teacher Guide | Class Creation Lab v1.8
 
 ## Release 1.6 note
 
@@ -10,9 +10,9 @@ The modular framework now includes Topic 3.3. Topic 3.1 and 3.2 lesson content a
 
 ## Source and scope
 
-Based only on the user-provided **2025 AP Computer Science A Course and Exam Description**, Unit 3. This release implements 3.1 Abstraction and Program Design, 3.2 Impact of Program Design and 3.3 Anatomy of a Class. Topics 3.4–3.9 remain planned.
+Based only on the user-provided **2025 AP Computer Science A Course and Exam Description**, Unit 3. This release implements 3.1 Abstraction and Program Design, 3.2 Impact of Program Design, 3.3 Anatomy of a Class and 3.4 Constructors. Topics 3.5–3.9 remain planned.
 
-Plan approximately **two 45–50-minute class periods** for Topic 3.1 **one 45–50-minute period** for Topic 3.2 and **two 45–50-minute periods** for Topic 3.3. The minute labels in the lessons are suggested planning times, not limits. Students work at their own pace.
+Plan approximately **two 45–50-minute class periods** for Topic 3.1 **one 45–50-minute period** for Topic 3.2 and **two 45–50-minute periods** for Topic 3.3. These estimates are for teacher planning only; the student-facing site shows no expected completion times. Students work at their own pace.
 
 ## Topic 3.1 mastery gates
 
@@ -41,7 +41,7 @@ The Topic 3.2 learning objectives are:
 
 ## Preview and resetting attempts
 
-Teacher access: **Ctrl+Alt+Shift+T** or click the build label five times; enter the configured phrase. Default is `HornetLab31`. Teacher preview unlocks the lessons without altering student practice. To reset a submitted check, open **Teacher tools**, select the appropriate **Reset 3.1 / 3.2 / 3.3 check**, and confirm. The prior attempt remains in the student's PDF and saved progress. Always exit teacher preview after using a student device.
+Teacher access: **Ctrl+Alt+Shift+T** or click the build label five times; enter the configured phrase. Default is `HornetLab31`. Teacher preview unlocks the lessons without altering student practice. To reset a submitted check, open **Teacher tools**, select the appropriate **Reset 3.1 / 3.2 / 3.3 / 3.4 check**, and confirm. The prior attempt remains in the student's PDF and saved progress. Always exit teacher preview after using a student device.
 
 ## Update from v1.1
 
@@ -65,3 +65,27 @@ This section uses the 2025 College Board AP CSA CED, LO 3.3.A, EK 3.3.A.1–6 (a
 4. Assemble PrizeCard from seven shuffled declarations; validate the design, verify client access expectations, solve two questions and save a written explanation.
 
 The 3.3 class builder is a constrained **declaration and access-rule validator**, not a complete Java compiler. It displays assembled Java source but does not execute student-written arbitrary Java. All graded questions are automatically scored (10 points each); eight correct are needed to pass. Submitted answers appear in the separate 3.3 PDF, and the assembled source and written explanation are included as selected practice evidence. Teacher mode provides an independent 3.3 reset and sample PDF.
+
+## Topic 3.4: Constructors (v1.8)
+
+Five interactive pages align with LO 3.4.A and EK 3.4.A.1–5 (2025 CED PDF page 12 / printed p. 84). Suggested activity timings are 13, 15, 16, 27, and 20 minutes, excluding transitions and optional review. Complete constructor writing is intentionally more demanding than guided dropdown work.
+
+- **3.4.1 Object Factory:** Three steps reveal field defaults, constructor initialization and returned reference. Two objects and three correct transfer answers required.
+- **3.4.2 Default Constructor Mystery:** Four field defaults and three constructor-availability tests, each with a prediction first.
+- **3.4.3 Multiple Objects:** Students select assignments beside the class code, create three separate objects and diagnose erroneous starting state. Three transfer questions required.
+- **3.4.4 Constructor Workshop:** Students work in one editable Java class per challenge. Class declarations and private instance fields are provided; they write **three full constructors** inside those classes, including headers, parameter lists, braces and field assignments, for PrizeCard, ArcadeMachine and Player. Four varied tests per constructor must all pass. The evaluator supports direct assignments to typed instance fields using matching parameters and literals, not arbitrary Java; it accurately reports name shadowing. It accepts valid parameter names that differ from the examples. Source for all three constructors appears in reports. Two transfer questions required.
+- **3.4.5 Defensive Copy Experiment:** Three code options must each be constructed and tested in both directions: outside original and inside card mutations (six demonstrations). The simulation explains unsafe shared references and a separately allocated defensive copy, with high-contrast state changes in the same visual area as the controls. Three transfer answers and a written explanation (50+ characters) required.
+
+**Progress migration:** v1.7 page 3/4 activity data is swapped to match the revised lesson order; old typed assignments are retained in the first full-constructor editor as a draft. Existing topic assessments are preserved. Former 3.4 completion status may be reopened because the revised labs require three complete constructors and all three defensive-copy implementations; existing 3.1–3.3 records are unchanged.
+**Section check 3.4:** 10 questions worth 10 points each, including two all-or-nothing category questions. A score of 80+ is required. The check allows one final submission until you reset it from Teacher Tools; previous scores remain in the report. The student PDF contains question/answer evidence plus all three full constructor declarations and mutable-reference experiment. The new topic is automatically included in cumulative PDFs and in JSON progress backups.
+
+**Teacher preview:** Use the same activation code as earlier versions. Preview mode unlocks Topic 3.4 and can generate a sample Topic 3.4 report. Existing student records remain schema 1, and prior submissions remain readable.
+
+
+### Version 1.9: Constructor Workshop typing
+
+Topic 3.4.4 uses a full-width Java textarea. Tab inserts four spaces, Shift+Tab removes indentation, and Enter copies the previous line indentation (adding four spaces after `{`). Press Escape then Tab to move to the next control. Input from the indentation shortcuts is autosaved and immediately reflected in the live class preview.
+
+### Version 1.10: Single-file Java editor
+
+Topic 3.4.4 now has one code editor and no separate live preview. For each class, students see the given public class header and private fields and insert a complete constructor in the indicated location. The validator checks that the class structure is retained before testing constructor behavior. Existing v1.9 constructor-only saved drafts are shown inside the full class when reopened; all prior scores remain intact.

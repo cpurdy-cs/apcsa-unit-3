@@ -2,7 +2,7 @@ import {IMPLEMENTED_TOPICS,topicCompleted,topicPassed,pageUnlocked} from './regi
 const KEY='flourbluff-apcsa-u3-v1';
 const SESSION_KEY='flourbluff-apcsa-teacher';
 import {stableHash} from './order.js';
-export function blankState(){return {schema:1,orderSeed:Math.floor(Math.random()*4294967296),identity:null,joinedAt:null,updatedAt:null,pages:{},currentPage:1,assessments:Object.fromEntries(IMPLEMENTED_TOPICS.map(t=>[t.id,{draft:{},attempts:[],locked:false}])),events:[]};}
+export function blankState(){return {schema:1,topic34Revision:2,orderSeed:Math.floor(Math.random()*4294967296),identity:null,joinedAt:null,updatedAt:null,pages:{},currentPage:1,assessments:Object.fromEntries(IMPLEMENTED_TOPICS.map(t=>[t.id,{draft:{},attempts:[],locked:false}])),events:[]};}
 function dataObject(x){return x && typeof x==='object' && !Array.isArray(x);}
 export function normalizeState(raw){
  const st=blankState(); if(!dataObject(raw))return st;
@@ -22,6 +22,25 @@ export function normalizeState(raw){
     data:dataObject(x.data)&&JSON.stringify(x.data).length<limit?JSON.parse(JSON.stringify(x.data)):{}};
   }
  }
+ // Upgrade only Topic 3.4 learning evidence from the v1.7 page order.
+ // Move the former dropdown lab (3.4.4) to 3.4.3; retain the old typed
+ // assignment work as the first, now full, constructor challenge on 3.4.4.
+ if(raw.topic34Revision!==2){
+  const previousWorkshop=st.pages['3.4.3'];
+  const previousDropdown=st.pages['3.4.4'];
+  if(previousWorkshop || previousDropdown){
+   if(previousDropdown)st.pages['3.4.3']=previousDropdown;
+   else delete st.pages['3.4.3'];
+   if(previousWorkshop){
+    const old=previousWorkshop.data||{},body=String(old.body||'').trim();
+    const restored=body?`public PrizeCard(String newOwner, int initialTickets) {\n${body.split('\n').map(line=>'    '+line).join('\n')}\n}`:'';
+    st.pages['3.4.4']={completed:false,completedAt:null,data:{workshopSelected:'prize',workshop:{prize:{code:restored,result:null}},workshopPasses:{prize:false,machine:false,player:false},answers:old.answers||{},legacyV17:old}};
+   }else delete st.pages['3.4.4'];
+  }
+  // All three variants must now be tested. Preserve prior experimentation.
+  const copy=st.pages['3.4.5'];if(copy)copy.completed=false;
+ }
+ st.topic34Revision=2;
  if(dataObject(raw.assessments)) for(const topic of IMPLEMENTED_TOPICS){
   const a=raw.assessments[topic.id];if(!dataObject(a))continue;
   st.assessments[topic.id].draft=dataObject(a.draft)?JSON.parse(JSON.stringify(a.draft)):{};

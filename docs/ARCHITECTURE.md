@@ -1,10 +1,10 @@
-# Modular architecture | v1.6
+# Modular architecture | v1.11
 
-Version 1.4 established the architecture. Version 1.5 proves the extension point by adding Topic 3.3 as an independent module. Topics 3.4–3.9 remain unimplemented.
+Version 1.4 established the architecture. Versions 1.5 and 1.7 prove the extension point by adding Topics 3.3 and 3.4 as independent modules. Topics 3.5–3.9 remain unimplemented.
 
 ## Goal
 
-You can stop after Topic 3.3 and later add Topic 3.4 **without editing Topic 3.1, 3.2, or 3.3 implementation files**. The core systems discover registered topics instead of having special cases for specific topic IDs.
+You can stop after Topic 3.4 and later add Topic 3.5 **without editing Topic 3.1, 3.2, 3.3 or 3.4 implementation files**. The core systems discover registered topics instead of having special cases for specific topic IDs.
 
 ## Where things live
 
@@ -15,6 +15,8 @@ You can stop after Topic 3.3 and later add Topic 3.4 **without editing Topic 3.1
 | `js/storage.js` | Existing schema-1 localStorage data and JSON backup compatibility; normalizes registered lesson keys and registered topic assessments automatically. |
 | `js/pdf.js` | Shared PDF document creation, cumulative index and exports. Iterates over registered per-topic writers. |
 | `js/topics/topic33-controller.js` | Topic 3.3 independent lesson UI, simulations, practice, and graded check. |
+| `js/content34.js`, `js/topic34.js`, `js/topics/topic34-controller.js` | Topic 3.4 separate original curriculum, constrained constructor simulations, interactive pages and check. |
+| `js/topics/report34.js` | Topic 3.4 practice/graded evidence for individual and cumulative PDFs. |
 | `js/content33.js`, `js/topic33.js` | Topic 3.3 questions and pure logic; original 3.1/3.2 lesson files remain untouched. |
 | `js/topics/report33.js` | Topic 3.3 report section for the cumulative and individual PDFs. |
 | `js/topics/topic31.js` | Topic 3.1 lesson HTML, practice activities, question handling, grading and sample evidence. |
@@ -34,7 +36,7 @@ They were deliberately **not migrated**:
 - Question IDs, snapshots, attempt history and the localStorage key `flourbluff-apcsa-u3-v1` remain intact.
 - JSON backup `schema: 1` remains supported.
 
-Topic 3.3 uses dotted IDs `3.3.1` through `3.3.4`. Future topic keys should likewise use `3.4.1`, etc.
+Topics 3.3 and 3.4 use dotted IDs `3.3.1`–`3.3.4` and `3.4.1`–`3.4.5`. Future topic keys should use `3.5.1`, etc.
 
 ## Registry plugin contract
 
@@ -68,28 +70,30 @@ All controller methods share the same context, including `view()`, `pData(key)`,
 
 Use each topic's own `data-action` prefix (e.g. `33-`) to prevent event collisions. Topic 3.1 predates this convention and is intentionally retained under its original action names.
 
-## Add Topic 3.4 later
+## Add Topic 3.5 later
 
-1. Create `js/content34.js` with original curriculum-aligned lessons and questions.
-2. Create `js/topics/topic34-controller.js` exporting `createTopic34(ctx)` and implementing the contract above. Use `pageUnlocked(st, '3.4', n, teacher)` to enforce sequential lessons; use `topicCompleted(st, '3.4')` for check access.
-3. Create `js/topics/report34.js` exporting `write34(report, state)` for practice and graded evidence.
-4. Add **only** the new imports and one entry to the `plugins` object in `js/registry.js`:
+1. Create `js/content35.js` for the CED-aligned lessons, interactions and independent graded questions.
+2. Create `js/topic35.js` for pure learning/simulation/assessment logic. Keep the supported Java execution subset explicit rather than claiming a full compiler.
+3. Create `js/topics/topic35-controller.js` implementing the plugin interface above and `js/topics/report35.js` with practice/assessment evidence.
+4. Register the new imports and one plugin object in `js/registry.js`:
 
 ```js
-'3.4': {
-  lessons: PAGE34,
-  pageId: n => `3.4.${n}`,
-  create: createTopic34,
-  writeReport: write34
+'3.5': {
+  lessons: PAGE35,
+  pageId: n => `3.5.${n}`,
+  create: createTopic35,
+  writeReport: write35
 }
 ```
 
-The ordered `UNIT` roadmap already contains Topic 3.4. The registry automatically makes it available after the student passes Topic 3.3. The dashboard, navigation, teacher preview, backups, cumulative PDF, topic PDFs, and saved progress normalization use the same registration automatically.
+5. Preserve the schema-1 storage key and all existing lesson IDs, question IDs, and graded snapshots. Create focused tests, run the full test suite, check PDF exports, and inspect the new pages.
 
-5. Add focused Topic 3.4 interaction and scoring tests. Run **all** tests before publishing. Make a backup and verify with a copy of a real v1.3/v1.4/v1.5 progress file.
-
-**No existing completed topic files need modification** for step 4. Shared framework changes should be reserved for an intentional new feature, not routine topic development.
+The shared app shell, dashboard, progress normalizer, teacher tools, and cumulative PDF already discover a registered topic. **Do not edit approved topic modules** to implement a new topic. The only intentional modification to an earlier topic in v1.7 was its post-check availability message, which now says 3.4 is released.
 
 ## Browser limitations
 
 GitHub Pages is still a static site. Student progress, one-attempt restrictions, and teacher access controls are not server-secured. A student must use JSON backup/import to move progress between devices. Browser support must be checked on school Chromebooks before deployment.
+
+## v1.8 compatibility note
+
+The Topic 3.4 activity order was intentionally revised (guided object-state exercise now 3.4.3, independent full-constructor writing now 3.4.4). The existing storage schema and key remain unchanged. `normalizeState()` recognizes a v1.7 backup without `topic34Revision: 2`, swaps activity data to the new pages, retains the previous typed assignment as a draft of the PrizeCard full-constructor exercise, and preserves submitted assessment history. Completion is recalculated for the more demanding new requirements. Future topics continue using the same registry plugin pattern.

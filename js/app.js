@@ -50,7 +50,7 @@ function header(){const st=view(),t=teacherOn();return `<div class="layout">
  <div class="sidebar-bottom"><div class="student-pill"><span class="student-dot"></span>${esc(studentName(st))}</div><div class="mini-muted">${t?'Preview changes are not saved to the student record':'Saved locally on this device'}</div>
  <button class="side-link" data-nav="#/reports">Reports &amp; backups</button><br><button class="side-link" data-action="switch-student">Switch student</button>
  ${t?'<br><button class="side-link" data-nav="#/teacher">Teacher tools</button>':''}
- <br><button class="teacher-footer" id="teacher-trigger" title="Build information" aria-label="Build information">Build 1.6 · 2025 CED</button></div>
+ <br><button class="teacher-footer" id="teacher-trigger" title="Build information" aria-label="Build information">Build 1.12 · 2025 CED</button></div>
  </aside><main class="app-main" id="main-content"><div class="topbar"><div class="crumbs">AP COMPUTER SCIENCE A <span aria-hidden="true">/</span> UNIT 3 ${t?'/ TEACHER PREVIEW':''}</div>
  <div class="top-actions">${t?'<span class="teacher-banner">TEACHER PREVIEW</span>':''}<button class="btn secondary small" data-action="backup-json">↓ Backup</button><button class="btn secondary small" data-nav="#/reports">Reports</button>${t?'<button class="btn small" data-action="teacher-exit">Exit preview</button>':''}</div></div><div class="content">`;
 }
@@ -65,7 +65,7 @@ function renderEntry(){const topics=IMPLEMENTED_TOPICS.map(x=>x.id).join(', ').r
  <div class="field"><label for="last-initial">Last initial</label><input id="last-initial" class="input" maxlength="1" required pattern="[A-Za-z]" placeholder="R"></div></div>
  <p class="fineprint">Only your first name and last initial are saved. Progress stays in this browser unless you export it.</p><button class="btn block" type="submit">Start learning →</button></form>
  <div class="separator"></div><button class="btn secondary block" data-action="import-backup">Restore progress from JSON backup</button>
- <div style="text-align:center;margin-top:16px"><button class="teacher-footer" id="teacher-trigger" aria-label="Build information">Build 1.6 · 2025 CED</button></div></div>
+ <div style="text-align:center;margin-top:16px"><button class="teacher-footer" id="teacher-trigger" aria-label="Build information">Build 1.12 · 2025 CED</button></div></div>
  <input type="file" id="backup-file" accept=".json,application/json" hidden><dialog id="modal"><div class="dialog-body" id="modal-body"></div></dialog>`;
 }
 function home(){const st=view(),t=teacherOn();const first=IMPLEMENTED_TOPICS[0],firstDone=topicProgress(st,first.id),next=firstDone===first.lessons.length?IMPLEMENTED_TOPICS[1]:null;
@@ -75,7 +75,7 @@ function home(){const st=view(),t=teacherOn();const first=IMPLEMENTED_TOPICS[0],
  <div class="panel" style="margin-top:18px"><div class="spaced"><div><span class="kicker">YOUR PROGRESS</span><h3 style="margin:2px 0">${firstDone} of ${first.lessons.length} pages completed</h3></div><span class="step-badge ${latest?.score>=80?'complete':''}">${latest?(latest.score>=80?'Mastered · '+latest.score+'%':'Section check · '+latest.score+'%'):'Check not submitted'}</span></div><div class="page-progress" role="progressbar" aria-valuemin="0" aria-valuemax="${first.lessons.length}" aria-valuenow="${firstDone}" aria-label="Topic ${first.id} lesson progress"><span style="width:${firstDone/first.lessons.length*100}%"></span></div></div>
  <div class="page-title" style="padding-bottom:10px"><h2>Course roadmap</h2><p class="helper">${IMPLEMENTED_TOPICS.map(x=>x.id).join(' and ')} are available. Pass each section check to unlock the next topic.</p></div>
  <section class="topic-list-dashboard" aria-label="Unit roadmap">${TOPICS.map(u=>{const ok=topicUnlocked(st,u.id,t),result=passed(st,u.id),label=!u.implemented?'Planned':result?'Mastered':ok?'Available':'Locked';
- return `<div class="topic-dashboard-card ${u.implemented?'active':''}"><div style="display:flex;gap:13px;align-items:center"><div class="num">${u.id}</div><div><h3>${esc(u.title)}</h3><p>${u.periods} suggested instructional period${u.periods===1?'':'s'} · ${u.pages} instructional pages${u.implemented?' · implemented':''}</p></div></div><span class="pill ${ok?'maroon':''}">${label}</span>${ok?link(`#/topic/${u.id}/page/1`,'Open →','secondary small'):''}</div>`;}).join('')}</section>
+ return `<div class="topic-dashboard-card ${u.implemented?'active':''}"><div style="display:flex;gap:13px;align-items:center"><div class="num">${u.id}</div><div><h3>${esc(u.title)}</h3><p>${u.pages} instructional pages${u.implemented?' · implemented':''}</p></div></div><span class="pill ${ok?'maroon':''}">${label}</span>${ok?link(`#/topic/${u.id}/page/1`,'Open →','secondary small'):''}</div>`;}).join('')}</section>
  <div class="panel soft" style="margin-top:18px"><h3>How this works</h3><div class="two-cols"><p class="helper"><strong>1. Learn and practice.</strong> Explore each concept, make predictions, and retry activities until correct.</p><p class="helper"><strong>2. Demonstrate mastery.</strong> The section check has one graded submission. A teacher reset is required after an unsuccessful attempt.</p></div><p class="fineprint">Progress is automatically saved on this device. Download JSON backups if you change computers. Browser-side progress and graded checks are not tamper-proof.</p></div>`;
 }
 function renderReports(){const st=view();return `<div class="page-title"><p class="eyebrow">PROGRESS, BACKUPS & REPORTS</p><h1>Your learning record</h1><p class="lead">Save your work between sessions. Export JSON backups and detailed PDFs for available topics or the full unit.</p></div>${renderFlash()}
@@ -161,6 +161,8 @@ document.addEventListener('click',handleClick);
 document.addEventListener('change',handleChange);
 document.addEventListener('input',handleInput);
 document.addEventListener('submit',handleSubmit);
-document.addEventListener('keydown',ev=>{if(ev.ctrlKey&&ev.altKey&&ev.shiftKey&&ev.key.toLowerCase()==='t'){ev.preventDefault();activateTeacher();}if(ev.key==='Escape'&&$('#modal')?.open)closeModal();});
+document.addEventListener('keydown',ev=>{if(ev.ctrlKey&&ev.altKey&&ev.shiftKey&&ev.key.toLowerCase()==='t'){ev.preventDefault();activateTeacher();}if(ev.key==='Escape'&&$('#modal')?.open)closeModal();
+ for(const topic of IMPLEMENTED_TOPICS){const c=controllers.get(topic.id);if(c?.handlesKeydown?.(ev.target)){c.keydown(ev);return;}}
+});
 window.addEventListener('hashchange',render);
 render();

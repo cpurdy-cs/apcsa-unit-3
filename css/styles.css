@@ -154,3 +154,43 @@ dialog{border:1px solid #d8dce1;border-radius:15px;padding:0;width:min(520px,cal
 .ctor-workbench .btn-row{align-items:center;flex-wrap:wrap;gap:12px;margin-top:9px}
 .ctor-workbench .btn-row .fineprint{flex:1;min-width:190px}
 @media(max-width:700px){.ctor-workbench .ctor-editor{min-height:320px;font-size:12px}}
+
+/* Topic 3.5 and shared missed-question review */
+.method35-parts { display:flex;flex-wrap:wrap;gap:8px;margin:14px 0; }
+.method35-builder { display:grid;grid-template-columns:minmax(240px,0.82fr) minmax(320px,1.18fr);gap:16px;align-items:start;margin:14px 0; }
+.method35-builder > .code-stage { min-width:0; }
+.method35-controls { display:grid;gap:10px;min-width:0; }
+.method35-controls select { width:100%;max-width:100%; }
+.trace35 { background:var(--soft-bg, #f6f6f7);padding:15px;border-radius:10px;margin-top:14px; }
+.trace35 p {padding:7px 0;border-bottom:1px solid #e2e1e3;}
+.review35-question { border:1px solid #ded9db; border-radius:10px; padding:17px; margin:14px 0; }
+.review35-prompt {font-size:15px;line-height:1.6;font-weight:600;}
+.review35-options {display:grid;gap:6px;margin:12px 0;}
+.review35-option {display:flex;align-items:flex-start;gap:12px;padding:10px;border-radius:7px;border:1px solid #ded9db;line-height:1.5;}
+.review35-option.selected {background:#f6eded;border-color:#95616a;}
+.review35-option>span:nth-child(2){flex:1;}
+.review35-option strong{white-space:nowrap;color:#6e303d;}
+.review35-categories {display:grid;gap:7px;margin:12px 0;}
+.review35-question .feedback{margin-top:10px;}
+@media(max-width:960px){.method35-builder{grid-template-columns:1fr;}}
+@media(max-width:610px){.review35-option{flex-wrap:wrap;}.review35-option strong{white-space:normal;}}
+/* v1.14: consistent method-lesson form rhythm; leaves older topics untouched. */
+.topic35-page .method35-controls {gap:14px;}
+.topic35-page .method35-controls .field {gap:7px;margin:0;}
+.topic35-page .method35-controls .btn {justify-self:start;max-width:100%;}
+.topic35-page .method35-controls .helper {margin:0;}
+.topic35-page > .panel > .field,.topic35-page .panel > .field {margin:14px 0;}
+.topic35-page .panel > .btn-row {margin:14px 0;row-gap:10px;}
+.topic35-page .method35-builder {gap:20px;margin:16px 0;}
+.topic35-page .method35-builder .code-stage {min-width:0;}
+.topic35-page .method35-code-stack {display:grid;gap:16px;min-width:0;}
+.method35-final .method35-spec {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0;}
+.method35-final .method35-spec-group {border:1px solid var(--line);border-radius:10px;padding:14px;background:#fafbfc;min-width:0;}
+.method35-final .method35-spec-group h3 {font-size:14px;margin:0 0 8px;color:var(--maroon);}
+.method35-final .method35-spec-group ul {margin:0;padding-left:19px;display:grid;gap:7px;font-size:12px;line-height:1.5;}
+.method35-final .method35-spec-group code {white-space:normal;overflow-wrap:anywhere;}
+.method35-final .method35-full-editor {width:100%;min-height:460px;font:13px/1.55 Consolas,'Courier New',monospace;white-space:pre;overflow:auto;tab-size:4;resize:vertical;}
+.method35-final .method35-actions {display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:16px 0;}
+.method35-final .method35-actions .fineprint {margin-left:auto;}
+.method35-final .test-results {display:grid;gap:8px;margin-top:15px;}
+@media(max-width:880px){.method35-final .method35-spec {grid-template-columns:1fr;}.method35-final .method35-actions .fineprint {margin-left:0;}}

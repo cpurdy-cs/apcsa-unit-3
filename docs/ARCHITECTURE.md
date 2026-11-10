@@ -1,6 +1,6 @@
 # Modular architecture | v1.11
 
-Version 1.4 established the architecture. Versions 1.5 and 1.7 prove the extension point by adding Topics 3.3 and 3.4 as independent modules. Topics 3.5–3.9 remain unimplemented.
+Version 1.4 established the architecture. Versions 1.5 and 1.7 prove the extension point by adding Topics 3.3 and 3.4 as independent modules. Topic 3.5 uses the same extension point. Topics 3.6–3.9 remain unimplemented.
 
 ## Goal
 
@@ -36,13 +36,13 @@ They were deliberately **not migrated**:
 - Question IDs, snapshots, attempt history and the localStorage key `flourbluff-apcsa-u3-v1` remain intact.
 - JSON backup `schema: 1` remains supported.
 
-Topics 3.3 and 3.4 use dotted IDs `3.3.1`–`3.3.4` and `3.4.1`–`3.4.5`. Future topic keys should use `3.5.1`, etc.
+Topics 3.3 and 3.4 use dotted IDs `3.3.1`–`3.3.4` and `3.4.1`–`3.4.5`. Future topic keys should use `3.5.1`–`3.5.8`; future Topic 3.6 should use `3.6.1`, etc.
 
 ## Registry plugin contract
 
 A topic is implemented by registering an object with:
 
-- `lessons`: page metadata array containing `title`, `subtitle`, `minutes`, and `ek`.
+- `lessons`: page metadata array containing `title`, `subtitle`, and `ek` (teacher-only pacing metadata is optional).
 - `pageId(n)`: returns the saved-data key for lesson `n`.
 - `create(ctx)`: returns an instance of the topic's student/controller behavior.
 - `writeReport(report, state)`: appends this topic's lesson evidence and section-check history to the shared PDF writer.
@@ -70,19 +70,19 @@ All controller methods share the same context, including `view()`, `pData(key)`,
 
 Use each topic's own `data-action` prefix (e.g. `33-`) to prevent event collisions. Topic 3.1 predates this convention and is intentionally retained under its original action names.
 
-## Add Topic 3.5 later
+## Add Topic 3.6 later
 
-1. Create `js/content35.js` for the CED-aligned lessons, interactions and independent graded questions.
-2. Create `js/topic35.js` for pure learning/simulation/assessment logic. Keep the supported Java execution subset explicit rather than claiming a full compiler.
-3. Create `js/topics/topic35-controller.js` implementing the plugin interface above and `js/topics/report35.js` with practice/assessment evidence.
+1. Create `js/content36.js` for the CED-aligned lessons, interactions and independent graded questions.
+2. Create `js/topic36.js` for pure learning/simulation/assessment logic. Keep the supported Java execution subset explicit rather than claiming a full compiler.
+3. Create `js/topics/topic36-controller.js` implementing the plugin interface above and `js/topics/report36.js` with practice/assessment evidence.
 4. Register the new imports and one plugin object in `js/registry.js`:
 
 ```js
-'3.5': {
-  lessons: PAGE35,
-  pageId: n => `3.5.${n}`,
-  create: createTopic35,
-  writeReport: write35
+'3.6': {
+  lessons: PAGE36,
+  pageId: n => `3.6.${n}`,
+  create: createTopic36,
+  writeReport: write36
 }
 ```
 

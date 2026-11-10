@@ -1,12 +1,14 @@
+import {mockTeacherCrypto} from './helpers/teacher-mock.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {QUESTIONS,CLASSIFY_SCENE,CLASSIFY_DATA,DESIGN,CHALLENGES} from '../js/content.js';
 
 function harness(){
+ mockTeacherCrypto();
  const listeners={},mem=new Map(),sess=new Map(),pieces={};
  const app={innerHTML:''},zone={append(){}},modal={open:false,showModal(){this.open=true},close(){this.open=false}},body={innerHTML:''};
  pieces['#first-name']={value:'Alex'};pieces['#last-initial']={value:'R'};
- pieces['#teacher-code']={value:'HornetLab31',focus(){}};pieces['#java-body']={value:'score += points;'};
+ pieces['#teacher-code']={value:'TEST_ONLY_FAKE_CODE',focus(){}};pieces['#java-body']={value:'score += points;'};
  pieces['#reflection-count']={textContent:''};pieces['#modal']=modal;pieces['#modal-body']=body;
  global.localStorage={getItem:k=>mem.get(k)||null,setItem:(k,v)=>mem.set(k,v),removeItem:k=>mem.delete(k)};
  global.sessionStorage={getItem:k=>sess.get(k)||null,setItem:(k,v)=>sess.set(k,v),removeItem:k=>sess.delete(k)};
@@ -78,7 +80,7 @@ test('student can complete gated pages and submit exactly once, then teacher can
  h.listeners.keydown({ctrlKey:true,altKey:true,shiftKey:true,key:'t',preventDefault(){}});
  h.listeners.submit({target:{id:'teacher-form'},preventDefault(){}});
  await new Promise(resolve=>setTimeout(resolve,10));
- assert.equal(h.sess.get('flourbluff-apcsa-teacher'),'yes');
+ assert.equal(h.sess.get('flourbluff-apcsa-teacher-v114'),'yes');
  assert.match(h.app.innerHTML,/TEACHER CONSOLE/);
  h.click('reset-check');h.click('confirm-reset');
  assert.equal(JSON.parse(h.mem.get(KEY)).assessments['3.1'].attempts.length,1);

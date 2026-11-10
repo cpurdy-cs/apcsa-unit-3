@@ -1,3 +1,20 @@
+## Version 1.14 — Topic 3.5 completion and teacher access update
+
+1. Rotated the teacher access phrase to the instructor-requested memorable phrase; it is deliberately absent from distributed documents and source files (the browser stores only the SHA-256 comparison value). Also rotated the teacher session key to prevent an older preview session from remaining open.
+2. Balanced the correct positions across all three dropdowns in 3.5.5, per stable student seed.
+3. Replaced 3.5.8's four separate method tasks with a complete `PrizeCard` class-design activity. Students write the class declaration, private attributes, parameterized constructor, three getters, two setters, and three methods; twelve behavioral test cases verify initial values, boundaries, state changes and method interactions.
+4. Extended the limited, non-eval Java method parser to recognize common `this.field` forms and class-method invocations, and added specific feedback for structure and method behavior.
+5. Standardized Topic 3.5 button, select, label, specification, and result spacing. Earlier-topic lesson data and graded question banks were not changed.
+6. Preserved older method drafts and submitted assessments in student backups. Previously complete 3.5.8 work is reopened to meet the new full-class requirement; prior graded scores remain untouched.
+7. Updated Topic 3.5 standalone and cumulative PDF evidence to include the full class and its test results; expanded automated coverage to check legacy migration, stable dropdown answer distribution, and accepted valid Java idioms.
+
+## Version 1.13 — Topic 3.5 + shared review + teacher access rotation
+
+- Added Topic 3.5 with eight interactive lessons, a bounded Java-method evaluator, a graded section check and PDF reporting.
+- Added shared, filterable post-submission review (original questions/choices, student answers, concept guidance; teacher-only answer keys).
+- Rotated the teacher access phrase, removed plaintext credentials from distributed documentation, retained the existing preview shortcut.
+- Preserved existing topics and v1.12 student progress format.
+
 # Change log
 
 ## v1.12 | Remove student-facing lesson time estimates

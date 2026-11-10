@@ -1,12 +1,14 @@
+import {mockTeacherCrypto} from './helpers/teacher-mock.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {blankState,normalizeState} from '../js/storage.js';
 import {FACTORY_PRACTICE,DEFAULT_FIELDS,DEFAULT_SCENARIOS,DEFAULT_PRACTICE,WORKSHOP_PRACTICE,CONSTRUCTOR_CHALLENGES,MULTI_PRACTICE,COPY_IMPLEMENTATIONS,COPY_PRACTICE,QUESTIONS34} from '../js/content34.js';
 const KEY='flourbluff-apcsa-u3-v1';
 function harness(saved){
+ mockTeacherCrypto();
  const listeners={},mem=new Map([[KEY,JSON.stringify(saved)]]),sess=new Map(),pieces={};
  const app={innerHTML:''},zone={append(){}},modal={open:false,showModal(){this.open=true;},close(){this.open=false;}},body={innerHTML:''};
- pieces['#modal']=modal;pieces['#modal-body']=body;pieces['#34-copy-count']={textContent:''};pieces['#34-code-preview']={textContent:''};pieces['#34-workshop-results']={innerHTML:''};pieces['#34-workshop-save']={textContent:''};pieces['#teacher-code']={value:'HornetLab31',focus(){}};
+ pieces['#modal']=modal;pieces['#modal-body']=body;pieces['#34-copy-count']={textContent:''};pieces['#34-code-preview']={textContent:''};pieces['#34-workshop-results']={innerHTML:''};pieces['#34-workshop-save']={textContent:''};pieces['#teacher-code']={value:'TEST_ONLY_FAKE_CODE',focus(){}};
  global.localStorage={getItem:k=>mem.get(k)||null,setItem:(k,v)=>mem.set(k,v)};
  global.sessionStorage={getItem:k=>sess.get(k)||null,setItem:(k,v)=>sess.set(k,v),removeItem:k=>sess.delete(k)};
  global.document={title:'',querySelector:s=>s==='#app'?app:s==='#toast-region'?zone:pieces[s]||null,createElement:()=>({className:'',textContent:'',remove(){},click(){}}),addEventListener:(k,v)=>listeners[k]=v};
@@ -85,7 +87,7 @@ test('full Topic 3.4 student path: gates, corrections, 80%-pass, report-preservi
  h.click('34-review');assert.equal(h.snapshot().assessments['3.4'].attempts.length,1,'cannot resubmit locked check');
  h.listeners.keydown({ctrlKey:true,altKey:true,shiftKey:true,key:'t',preventDefault(){}});
  h.listeners.submit({target:{id:'teacher-form'},preventDefault(){}});await new Promise(r=>setTimeout(r,30));
- assert.equal(h.sess.get('flourbluff-apcsa-teacher'),'yes');h.click('reset-check',{topic:'3.4'});h.click('confirm-reset');
+ assert.equal(h.sess.get('flourbluff-apcsa-teacher-v114'),'yes');h.click('reset-check',{topic:'3.4'});h.click('confirm-reset');
  const after=h.snapshot();assert.equal(after.assessments['3.4'].locked,false);assert.equal(after.assessments['3.4'].attempts.length,1);
  for(const k of ['3.1','3.2','3.3'])assert.equal(after.assessments[k].locked,true);
  assert.equal(normalizeState(after).pages['3.4.4'].data.workshop.prize.code.startsWith('public class PrizeCard'),true);

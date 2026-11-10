@@ -1,8 +1,8 @@
 import {IMPLEMENTED_TOPICS,topicCompleted,topicPassed,pageUnlocked} from './registry.js';
 const KEY='flourbluff-apcsa-u3-v1';
-const SESSION_KEY='flourbluff-apcsa-teacher';
+const SESSION_KEY='flourbluff-apcsa-teacher-v114';
 import {stableHash} from './order.js';
-export function blankState(){return {schema:1,topic34Revision:2,orderSeed:Math.floor(Math.random()*4294967296),identity:null,joinedAt:null,updatedAt:null,pages:{},currentPage:1,assessments:Object.fromEntries(IMPLEMENTED_TOPICS.map(t=>[t.id,{draft:{},attempts:[],locked:false}])),events:[]};}
+export function blankState(){return {schema:1,topic34Revision:2,topic35Revision:2,orderSeed:Math.floor(Math.random()*4294967296),identity:null,joinedAt:null,updatedAt:null,pages:{},currentPage:1,assessments:Object.fromEntries(IMPLEMENTED_TOPICS.map(t=>[t.id,{draft:{},attempts:[],locked:false}])),events:[]};}
 function dataObject(x){return x && typeof x==='object' && !Array.isArray(x);}
 export function normalizeState(raw){
  const st=blankState(); if(!dataObject(raw))return st;
@@ -41,6 +41,14 @@ export function normalizeState(raw){
   const copy=st.pages['3.4.5'];if(copy)copy.completed=false;
  }
  st.topic34Revision=2;
+ // Topic 3.5.8 was replaced with a full-class design lab in v1.14.
+ // Keep older method drafts untouched in data.workshop, but require the new
+ // assignment for lesson completion. Previous graded submissions are retained.
+ if(raw.topic35Revision!==2){
+  const page=st.pages['3.5.8'];if(page){page.completed=false;page.completedAt=null;page.data.fullClass??={code:'// Write the entire PrizeCard class below.\n',passed:false,result:null};}
+ }
+ st.topic35Revision=2;
+
  if(dataObject(raw.assessments)) for(const topic of IMPLEMENTED_TOPICS){
   const a=raw.assessments[topic.id];if(!dataObject(a))continue;
   st.assessments[topic.id].draft=dataObject(a.draft)?JSON.parse(JSON.stringify(a.draft)):{};

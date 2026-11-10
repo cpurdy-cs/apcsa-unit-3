@@ -1,4 +1,4 @@
-# 2025 College Board AP CSA Unit 3 | Release 1.8 alignment
+# 2025 College Board AP CSA Unit 3 | Release 1.14 alignment
 
 **Source used:** user-supplied *AP Computer Science A Course and Exam Description*, Course Framework V.1, © 2025 College Board, Unit 3 *Class Creation*. The attached PDF is the sole curricular source. All lesson scenarios and scored questions are original to this project.
 
@@ -45,12 +45,10 @@ CED p. 83 (attached PDF p. 11), LO **3.3.A**: designate access and visibility co
 
 **Assessment:** 10 graded questions, 10 points each. Requires eight correct. Independent practice requires successful completion but permits unlimited retries. The builder and visibility checker only evaluate the specified rules; they are not presented as a full Java compiler.
 
-## Remaining roadmap (not implemented)
+## Remaining roadmap (3.4 and 3.5 are now implemented)
 
 | Topic | Planned pages | Suggested periods |
 |---|---:|---:|
-| 3.4 Constructors | 5 | 2 |
-| 3.5 Methods: How to Write Them | 8 | 4 |
 | 3.6 Methods: Passing and Returning References of an Object | 5 | 2 |
 | 3.7 Class Variables and Methods | 5 | 2 |
 | 3.8 Scope and Access | 4 | 2 |
@@ -71,3 +69,18 @@ CED p. 84, LO 3.4.A, EK 3.4.A.1–5. The CED recommends two periods and assesses
 | 3.4.A.5 | 3.4.2 explicit default-value predictions for int/double/boolean/String; graded Q4 additionally includes ArcadeMachine (reference default null) |
 
 **Scoring:** 10 original questions, 10 points each; a score of at least 80 is required. Client-side Java exercises deliberately support only the constructs shown. They are not general Java compilers.
+
+## Topic 3.5: Methods: How to Write Them
+
+CED pp. 85–86, LO 3.5.A, EK 3.5.A.1–8; skills 2.C, 3.C, 3.D, 4.B.
+
+| Knowledge / skill | Student practice | Check |
+|---|---|---|
+| 3.5.A.1–2: void/non-void declarations | 3.5.1 clickable headers, 3.5.2 void mutators | Q1, Q8 |
+| 3.5.A.3–4: return value/control flow | 3.5.3 returned vs printed, 3.5.6 stepped returns in branches/loops | Q2, Q3, Q7, Q9 |
+| 3.5.A.5–6: accessors/mutators | 3.5.5 class interface builder; 3.5.8 full-class methods | Q4, Q6 |
+| 3.5.A.7–8: parameters and primitive copies | 3.5.4 animated primitive copies; independent full-class tests | Q5, Q12 |
+| 3.D: debugging / correction | 3.5.7 original/repaired case test runner | Q10 |
+| 4.B: preconditions | 3.5.7 positive-cost contract and boundary cases | Q11 |
+
+**Assessment:** twelve original graded questions, 100 points total, ten correct needed for at least 80%.

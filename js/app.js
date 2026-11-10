@@ -2,16 +2,17 @@ import {TOPICS,IMPLEMENTED_TOPICS,getImplementedTopic,topicProgress,topicComplet
 import {blankState,load,save,exportJson,importJson,teacherOn,setTeacher,assessment,passed,recordEvent} from './storage.js';
 import {createReport} from './pdf.js';
 import {shuffledOptions as importOptionShuffle} from './order.js';
+import {renderSubmissionReview} from './review.js';
 
 // SHA-256 of the teacher preview phrase. Not secure authentication; client-side code can be bypassed.
-const TEACHER_CODE_SHA256='77a2fd4b9af9c4bdc84ebab31d230c646651d25b986d0a265cea1adf4d3cf612';
+const TEACHER_CODE_SHA256='1748cf4a9216d2bbfd99694bb9c93c51629c9fea0e0c381141adec82947d4759';
 async function validTeacherCode(input){
  const bytes=new TextEncoder().encode(input);
  const hash=await crypto.subtle.digest('SHA-256',bytes);
  return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('')===TEACHER_CODE_SHA256;
 }
 
-let state=load(),preview=null,flash=null,teacherClicks=0,lastRenderedHash=null,resetTopic='3.1';
+let state=load(),preview=null,flash=null,teacherClicks=0,lastRenderedHash=null,resetTopic='3.1',reviewFilter='missed';
 const controllers=new Map();
 const $=s=>document.querySelector(s);
 const esc=x=>String(x??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -50,7 +51,7 @@ function header(){const st=view(),t=teacherOn();return `<div class="layout">
  <div class="sidebar-bottom"><div class="student-pill"><span class="student-dot"></span>${esc(studentName(st))}</div><div class="mini-muted">${t?'Preview changes are not saved to the student record':'Saved locally on this device'}</div>
  <button class="side-link" data-nav="#/reports">Reports &amp; backups</button><br><button class="side-link" data-action="switch-student">Switch student</button>
  ${t?'<br><button class="side-link" data-nav="#/teacher">Teacher tools</button>':''}
- <br><button class="teacher-footer" id="teacher-trigger" title="Build information" aria-label="Build information">Build 1.12 · 2025 CED</button></div>
+ <br><button class="teacher-footer" id="teacher-trigger" title="Build information" aria-label="Build information">Build 1.14 · 2025 CED</button></div>
  </aside><main class="app-main" id="main-content"><div class="topbar"><div class="crumbs">AP COMPUTER SCIENCE A <span aria-hidden="true">/</span> UNIT 3 ${t?'/ TEACHER PREVIEW':''}</div>
  <div class="top-actions">${t?'<span class="teacher-banner">TEACHER PREVIEW</span>':''}<button class="btn secondary small" data-action="backup-json">↓ Backup</button><button class="btn secondary small" data-nav="#/reports">Reports</button>${t?'<button class="btn small" data-action="teacher-exit">Exit preview</button>':''}</div></div><div class="content">`;
 }
@@ -65,7 +66,7 @@ function renderEntry(){const topics=IMPLEMENTED_TOPICS.map(x=>x.id).join(', ').r
  <div class="field"><label for="last-initial">Last initial</label><input id="last-initial" class="input" maxlength="1" required pattern="[A-Za-z]" placeholder="R"></div></div>
  <p class="fineprint">Only your first name and last initial are saved. Progress stays in this browser unless you export it.</p><button class="btn block" type="submit">Start learning →</button></form>
  <div class="separator"></div><button class="btn secondary block" data-action="import-backup">Restore progress from JSON backup</button>
- <div style="text-align:center;margin-top:16px"><button class="teacher-footer" id="teacher-trigger" aria-label="Build information">Build 1.12 · 2025 CED</button></div></div>
+ <div style="text-align:center;margin-top:16px"><button class="teacher-footer" id="teacher-trigger" aria-label="Build information">Build 1.14 · 2025 CED</button></div></div>
  <input type="file" id="backup-file" accept=".json,application/json" hidden><dialog id="modal"><div class="dialog-body" id="modal-body"></div></dialog>`;
 }
 function home(){const st=view(),t=teacherOn();const first=IMPLEMENTED_TOPICS[0],firstDone=topicProgress(st,first.id),next=firstDone===first.lessons.length?IMPLEMENTED_TOPICS[1]:null;
@@ -104,7 +105,12 @@ function makeSample(){const x=blankState();x.identity={first:'Sample',last:'S'};
 function render(){const samePage=lastRenderedHash===location.hash,savedY=samePage?(window.scrollY||0):0;
  if(!state.identity&&!teacherOn()){renderEntry();lastRenderedHash=location.hash;return;}
  const r=route();let body;
- if(r.type==='topic'){const controller=controllers.get(r.id);body=controller[r.view](r.number);}
+ if(r.type==='topic'){
+  const controller=controllers.get(r.id),a=assessment(view(),r.id),registered=getImplementedTopic(r.id);
+  const isRecorded=(r.view==='results'||(r.view==='check'&&a.locked))&&a.attempts.length>0;
+  if(isRecorded&&topicUnlocked(view(),r.id,teacherOn()))body=renderSubmissionReview(r.id,a,controller.questionBank,teacherOn(),reviewFilter,registered.title);
+  else body=controller[r.view](r.number);
+ }
  else body=r.type==='reports'?renderReports():r.type==='teacher'?renderTeacher():home();
  $('#app').innerHTML=header()+body+footer();document.title=(r.type==='topic'&&r.view==='page'?`${r.id}.${r.number} · `:'')+'Class Creation Lab | AP CSA';
  lastRenderedHash=location.hash;if(samePage&&typeof requestAnimationFrame==='function')requestAnimationFrame(()=>window.scrollTo({top:savedY,behavior:'instant'}));
@@ -117,6 +123,7 @@ function handleClick(event){const trigger=event.target.closest('#teacher-trigger
  const nav=event.target.closest('[data-nav]');if(nav){if(!nav.disabled)go(nav.dataset.nav);return;}
  const el=event.target.closest('[data-action]');if(!el||el.disabled)return;const act=el.dataset.action;
  if(act==='modal-close'){closeModal();return;}
+ if(act==='review-filter'){if(['missed','all'].includes(el.dataset.value)){reviewFilter=el.dataset.value;render();}return;}
  if(act==='backup-json'){exportJson(state.identity?state:view());toast('Progress backup downloaded.',true);return;}
  if(act==='import-backup'){$('#backup-file')?.click();return;}
  if(act==='pdf-topic'||act==='pdf-cumulative'){const x=createReport(state.identity?state:view(),{cumulative:act==='pdf-cumulative',topic:el.dataset.topic||'3.1'});toast(`${x.filename} downloaded (${x.pages} pages).`,true);return;}

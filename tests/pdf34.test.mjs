@@ -17,5 +17,5 @@ test('Topic 3.4 individual and cumulative PDF include saved constructor code, ob
  let pdf=await blob.text();assert.match(pdf,/Topic 3.4/);assert.match(pdf,/public PrizeCard/);assert.match(pdf,/owner = newOwner/);assert.match(pdf,/tickets = initialTickets/);assert.match(pdf,/public ArcadeMachine/);assert.match(pdf,/The card gets its own/);assert.match(pdf,/Q10/);assert.match(pdf,/90\/100/);
  let match=/startxref\n(\d+)\n%%EOF$/.exec(pdf);assert.ok(match);assert.equal(pdf.slice(Number(match[1]),Number(match[1])+4),'xref');
  const cumulative=createReport(st,{cumulative:true});assert.ok(cumulative.pages>=5);
- pdf=await blob.text();assert.match(pdf,/Topic 3.1/);assert.match(pdf,/Topic 3.2/);assert.match(pdf,/Topic 3.3/);assert.match(pdf,/Topic 3.4/);assert.match(pdf,/Topics 3.5-3.9 remain in development/);
+ pdf=await blob.text();assert.match(pdf,/Topic 3.1/);assert.match(pdf,/Topic 3.2/);assert.match(pdf,/Topic 3.3/);assert.match(pdf,/Topic 3.4/);assert.match(pdf,/Topics 3.6-3.9 remain in development/);
 });

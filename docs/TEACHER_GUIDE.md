@@ -1,4 +1,4 @@
-# Teacher Guide | Class Creation Lab v1.8
+# Teacher Guide | Class Creation Lab v1.14
 
 ## Release 1.6 note
 
@@ -8,9 +8,15 @@ Topic 3.3 now uses a correctly indented clickable code explorer, simpler practic
 
 The modular framework now includes Topic 3.3. Topic 3.1 and 3.2 lesson content and graded questions remain unchanged; only the outdated 3.2 post-check release-status message was updated. Student progress and previous submissions remain compatible. See `docs/ARCHITECTURE.md` for how to add Topic 3.4 without editing completed lessons.
 
+## Topic 3.5 v1.14 review notes
+
+Topic 3.5.5 correctly distributes the three expected methods across the available dropdown positions. Topic 3.5.8 is now a **full-class design task**, not four small method exercises. The expected class has `String owner`, `int tickets`, and `boolean active` private instance variables; a three-parameter constructor; getters `getOwner`, `getTickets`, and `isActive`; setters `setOwner` and `setActive`; and the additional behaviors `addTickets`, `canRedeem`, and `redeemTickets`. All 12 tests must pass. Java `this.field` and calls such as `canRedeem(cost)` are recognized by the restricted evaluator. The exact expected Java answer is not included here.
+
+Student progress is compatible with the earlier releases. Previous Topic 3.5.8 method drafts remain in backups, but the revised full-class task must be completed. Graded assessment attempts remain unchanged. Teacher access uses the replacement phrase given **separately to the instructor**; no credentials are distributed with the website.
+
 ## Source and scope
 
-Based only on the user-provided **2025 AP Computer Science A Course and Exam Description**, Unit 3. This release implements 3.1 Abstraction and Program Design, 3.2 Impact of Program Design, 3.3 Anatomy of a Class and 3.4 Constructors. Topics 3.5–3.9 remain planned.
+Based only on the user-provided **2025 AP Computer Science A Course and Exam Description**, Unit 3. This release implements 3.1 Abstraction and Program Design, 3.2 Impact of Program Design, 3.3 Anatomy of a Class 3.4 Constructors, and 3.5 Methods: How to Write Them. Topics 3.6–3.9 remain planned.
 
 Plan approximately **two 45–50-minute class periods** for Topic 3.1 **one 45–50-minute period** for Topic 3.2 and **two 45–50-minute periods** for Topic 3.3. These estimates are for teacher planning only; the student-facing site shows no expected completion times. Students work at their own pace.
 
@@ -41,7 +47,7 @@ The Topic 3.2 learning objectives are:
 
 ## Preview and resetting attempts
 
-Teacher access: **Ctrl+Alt+Shift+T** or click the build label five times; enter the configured phrase. Default is `HornetLab31`. Teacher preview unlocks the lessons without altering student practice. To reset a submitted check, open **Teacher tools**, select the appropriate **Reset 3.1 / 3.2 / 3.3 / 3.4 check**, and confirm. The prior attempt remains in the student's PDF and saved progress. Always exit teacher preview after using a student device.
+Teacher access: **Ctrl+Alt+Shift+T** or click the build label five times; enter the configured phrase. The access phrase is supplied separately to the instructor and is not included in this package. Teacher preview unlocks the lessons without altering student practice. To reset a submitted check, open **Teacher tools**, select the appropriate **Reset 3.1 / 3.2 / 3.3 / 3.4 / 3.5 check**, and confirm. The prior attempt remains in the student's PDF and saved progress. Always exit teacher preview after using a student device.
 
 ## Update from v1.1
 
@@ -79,7 +85,7 @@ Five interactive pages align with LO 3.4.A and EK 3.4.A.1–5 (2025 CED PDF page
 **Progress migration:** v1.7 page 3/4 activity data is swapped to match the revised lesson order; old typed assignments are retained in the first full-constructor editor as a draft. Existing topic assessments are preserved. Former 3.4 completion status may be reopened because the revised labs require three complete constructors and all three defensive-copy implementations; existing 3.1–3.3 records are unchanged.
 **Section check 3.4:** 10 questions worth 10 points each, including two all-or-nothing category questions. A score of 80+ is required. The check allows one final submission until you reset it from Teacher Tools; previous scores remain in the report. The student PDF contains question/answer evidence plus all three full constructor declarations and mutable-reference experiment. The new topic is automatically included in cumulative PDFs and in JSON progress backups.
 
-**Teacher preview:** Use the same activation code as earlier versions. Preview mode unlocks Topic 3.4 and can generate a sample Topic 3.4 report. Existing student records remain schema 1, and prior submissions remain readable.
+**Teacher preview:** Use the replacement access phrase supplied privately for this release. Preview mode unlocks Topic 3.4 and can generate a sample Topic 3.4 report. Existing student records remain schema 1, and prior submissions remain readable.
 
 
 ### Version 1.9: Constructor Workshop typing

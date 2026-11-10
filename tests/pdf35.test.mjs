@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {blankState} from '../js/storage.js';import {createReport} from '../js/pdf.js';import {QUESTIONS35,PRACTICE35} from '../js/content35.js';import {readFileSync} from 'node:fs';import {evaluateFullClass35} from '../js/topics/class-engine35.js';
+const mockDownload=()=>{let blob;global.document={body:{appendChild(){}},createElement:()=>({click(){},remove(){}})};URL.createObjectURL=x=>(blob=x,'blob:test');URL.revokeObjectURL=()=>{};return ()=>blob;};
+test('Topic 3.5 PDF records the full class, original answers, and valid offsets',async()=>{
+ const getBlob=mockDownload(),st=blankState();st.identity={first:'Morgan',last:'S'};for(let n=1;n<=8;n++)st.pages[`3.5.${n}`]={completed:true,completedAt:'2026-11-09',data:{answers:Object.fromEntries(PRACTICE35[n].map(q=>[q.id,q.answer]))}};
+ const source=readFileSync(new URL('./fixtures/solution35.txt',import.meta.url),'utf8');st.pages['3.5.8'].data.fullClass={code:source,passed:true,result:evaluateFullClass35(source)};
+ st.assessments['3.5'].attempts=[{score:100,at:'2026-11-09',questions:QUESTIONS35,answers:Object.fromEntries(QUESTIONS35.map(q=>[q.id,q.kind==='choice'?q.answer:Object.fromEntries(q.items.map(([,ans],i)=>[i,ans]))])),points:Object.fromEntries(QUESTIONS35.map(q=>[q.id,100/12]))}];
+ const info=createReport(st,{topic:'3.5'}),blob=getBlob(),txt=await blob.text();assert.match(info.filename,/Topic3-5/);assert.ok(info.pages>=2);assert.match(txt,/Morgan S/);assert.match(txt,/PrizeCard/);assert.match(txt,/redeemTickets/);assert.match(txt,/canRedeem/);assert.match(txt,/Q12/);assert.match(txt,/Student response/);const match=/startxref\n(\d+)\n%%EOF$/.exec(txt);assert.ok(match);assert.equal(txt.slice(Number(match[1]),Number(match[1])+4),'xref');
+ const info2=createReport(st,{cumulative:true});assert.match(info2.filename,/Cumulative/);const all=await getBlob().text();assert.match(all,/Topic 3.5/);assert.match(all,/Topics 3.6-3.9 remain in development/);
+});

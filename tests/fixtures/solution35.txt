@@ -1,0 +1,29 @@
+public class PrizeCard {
+    private String owner;
+    private int tickets;
+    private boolean active;
+
+    public PrizeCard(String ownerName, int startingTickets, boolean startingActive) {
+        owner = ownerName;
+        tickets = startingTickets;
+        active = startingActive;
+    }
+    public String getOwner() { return owner; }
+    public int getTickets() { return tickets; }
+    public boolean isActive() { return active; }
+    public void setOwner(String newOwner) { owner = newOwner; }
+    public void setActive(boolean newStatus) { active = newStatus; }
+    public void addTickets(int amount) {
+        if (amount > 0) { this.tickets += amount; }
+    }
+    public boolean canRedeem(int cost) {
+        return active && cost > 0 && tickets >= cost;
+    }
+    public boolean redeemTickets(int cost) {
+        if (canRedeem(cost)) {
+            tickets -= cost;
+            return true;
+        }
+        return false;
+    }
+}

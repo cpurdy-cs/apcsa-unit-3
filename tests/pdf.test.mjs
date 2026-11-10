@@ -26,6 +26,6 @@ test('offline topic and cumulative PDFs contain full graded answers and valid cr
   assert.match(data,/Transfer challenges/);
   const m=/startxref\n(\d+)\n%%EOF$/.exec(data);
   assert.ok(m);assert.equal(data.slice(Number(m[1]),Number(m[1])+4),'xref');
-  if(cumulative)assert.match(data,/Topics 3.5-3.9 remain in development/i);
+  if(cumulative)assert.match(data,/Topics 3.6-3.9 remain in development/i);
  }
 });

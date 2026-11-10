@@ -1,12 +1,14 @@
+import {mockTeacherCrypto} from './helpers/teacher-mock.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {blankState} from '../js/storage.js';
 import {ANATOMY,CLASS_PARTS,ACCESS_TRANSFER,OBJECT_TRANSFER,BUILD_SLOTS,BUILD_TRANSFER,QUESTIONS33} from '../js/content33.js';
 const KEY='flourbluff-apcsa-u3-v1';
 function harness(saved){
+ mockTeacherCrypto();
  const listeners={},mem=new Map([[KEY,JSON.stringify(saved)]]),sess=new Map(),pieces={};
  const app={innerHTML:''},zone={append(){}},modal={open:false,showModal(){this.open=true},close(){this.open=false}},body={innerHTML:''};
- pieces['#modal']=modal;pieces['#modal-body']=body;pieces['#33-reflection-count']={textContent:''};pieces['#teacher-code']={value:'HornetLab31',focus(){}};
+ pieces['#modal']=modal;pieces['#modal-body']=body;pieces['#33-reflection-count']={textContent:''};pieces['#teacher-code']={value:'TEST_ONLY_FAKE_CODE',focus(){}};
  global.localStorage={getItem:k=>mem.get(k)||null,setItem:(k,v)=>mem.set(k,v)};
  global.sessionStorage={getItem:k=>sess.get(k)||null,setItem:(k,v)=>sess.set(k,v),removeItem:k=>sess.delete(k)};
  global.document={title:'',querySelector:s=>s==='#app'?app:s==='#toast-region'?zone:pieces[s]||null,
@@ -64,7 +66,7 @@ test('3.3 student progresses through 4 lessons, passes 80%, teacher resets witho
  assert.equal(h.snapshot().assessments['3.2'].locked,true);
  h.listeners.keydown({ctrlKey:true,altKey:true,shiftKey:true,key:'t',preventDefault(){}});
  h.listeners.submit({target:{id:'teacher-form'},preventDefault(){}});
- await new Promise(r=>setTimeout(r,25));assert.equal(h.sess.get('flourbluff-apcsa-teacher'),'yes');
+ await new Promise(r=>setTimeout(r,25));assert.equal(h.sess.get('flourbluff-apcsa-teacher-v114'),'yes');
  h.click('reset-check',{topic:'3.3'});h.click('confirm-reset');
  const after=h.snapshot();assert.equal(after.assessments['3.3'].locked,false);assert.equal(after.assessments['3.3'].attempts.length,1);
  assert.equal(after.assessments['3.2'].locked,true);assert.equal(after.assessments['3.1'].locked,true);

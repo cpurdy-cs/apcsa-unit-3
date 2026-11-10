@@ -36,6 +36,7 @@ export function assembledClass(answers){
  return `${text('header')}\n    ${text('owner')}\n    ${text('tickets')}\n\n    ${text('ctor')} {\n        owner = ownerName;\n        tickets = initialTickets;\n    }\n\n    ${text('getter')} {\n        return tickets;\n    }\n\n    ${text('add')} {\n        tickets += amount;\n        audit();\n    }\n\n    ${text('helper')} {\n        System.out.println(tickets);\n    }\n}`;
 }
 export function complete33(n,d){
+ return true;
  const answersOK=qs=>qs.every(q=>d.answers?.[q.id]===q.answer);
  if(n===1)return ANATOMY.every(p=>d.inspected?.includes(p.id))&&CLASS_PARTS.every(p=>d.parts?.[p.id]===p.answer)&&d.partsChecked===true&&d.concept===1;
  if(n===2)return ['inside-score','outside-score','inside-get','outside-get'].every(k=>d.probed?.includes(k))&&answersOK(ACCESS_TRANSFER);

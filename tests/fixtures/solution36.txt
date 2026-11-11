@@ -1,0 +1,45 @@
+public class WaterTank {
+    private int capacity;
+    private int liters;
+
+    public WaterTank(int maxCapacity, int startingLiters) {
+        capacity = maxCapacity;
+        liters = startingLiters;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public int getLiters() {
+        return liters;
+    }
+
+    public boolean addWater(int amount) {
+        if (amount <= 0 || amount > capacity - liters) {
+            return false;
+        }
+        liters += amount;
+        return true;
+    }
+
+    public boolean transferTo(WaterTank other, int amount) {
+        if (amount <= 0 || amount > liters || amount > other.capacity - other.liters) {
+            return false;
+        }
+        liters -= amount;
+        other.liters += amount;
+        return true;
+    }
+
+    public WaterTank chooseLowerLevel(WaterTank first, WaterTank second) {
+        if (first.liters <= second.liters) {
+            return first;
+        }
+        return second;
+    }
+
+    public boolean hasMoreRoomThan(WaterTank other) {
+        return capacity - liters > other.capacity - other.liters;
+    }
+}

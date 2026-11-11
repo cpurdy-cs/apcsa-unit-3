@@ -1,10 +1,10 @@
-# Modular architecture | v1.11
+# Modular architecture | v1.19
 
-Version 1.4 established the architecture. Versions 1.5 and 1.7 prove the extension point by adding Topics 3.3 and 3.4 as independent modules. Topic 3.5 uses the same extension point. Topics 3.6–3.9 remain unimplemented.
+Version 1.4 established the architecture. Versions 1.5 and 1.7 prove the extension point by adding Topics 3.3 and 3.4 as independent modules. Topics 3.5 and 3.6 use the same extension point. Topics 3.7–3.9 remain unimplemented.
 
 ## Goal
 
-You can stop after Topic 3.4 and later add Topic 3.5 **without editing Topic 3.1, 3.2, 3.3 or 3.4 implementation files**. The core systems discover registered topics instead of having special cases for specific topic IDs.
+You can stop after Topic 3.6 and later add Topic 3.7 **without editing the approved Topic 3.1–3.6 implementation files**. The core systems discover registered topics instead of having special cases for specific topic IDs.
 
 ## Where things live
 
@@ -36,7 +36,7 @@ They were deliberately **not migrated**:
 - Question IDs, snapshots, attempt history and the localStorage key `flourbluff-apcsa-u3-v1` remain intact.
 - JSON backup `schema: 1` remains supported.
 
-Topics 3.3 and 3.4 use dotted IDs `3.3.1`–`3.3.4` and `3.4.1`–`3.4.5`. Future topic keys should use `3.5.1`–`3.5.8`; future Topic 3.6 should use `3.6.1`, etc.
+Topics 3.2–3.6 use dotted IDs. Topic 3.6 uses `3.6.1`–`3.6.5`. Future topics should follow the same convention.
 
 ## Registry plugin contract
 
@@ -70,25 +70,20 @@ All controller methods share the same context, including `view()`, `pData(key)`,
 
 Use each topic's own `data-action` prefix (e.g. `33-`) to prevent event collisions. Topic 3.1 predates this convention and is intentionally retained under its original action names.
 
-## Add Topic 3.6 later
+## Add Topic 3.7 later
 
-1. Create `js/content36.js` for the CED-aligned lessons, interactions and independent graded questions.
-2. Create `js/topic36.js` for pure learning/simulation/assessment logic. Keep the supported Java execution subset explicit rather than claiming a full compiler.
-3. Create `js/topics/topic36-controller.js` implementing the plugin interface above and `js/topics/report36.js` with practice/assessment evidence.
-4. Register the new imports and one plugin object in `js/registry.js`:
+1. Add `js/content37.js`, `js/topic37.js`, and separate `js/topics/topic37-controller.js` and `js/topics/report37.js`. Keep the supported Java execution subset explicit.
+2. Register the topic's lesson metadata, page IDs, controller, and report writer in `js/registry.js`.
+3. Existing generic shell, normalization, and PDF code recognizes the registered topic. Preserve all existing page IDs, question IDs, graded snapshots, and schema-1 storage key.
+4. Include targeted tests for Java semantics, the student workflow, teacher reset, progress backup, and PDF evidence. Run the complete regression suite and inspect the student pages before release.
 
-```js
-'3.6': {
-  lessons: PAGE36,
-  pageId: n => `3.6.${n}`,
-  create: createTopic36,
-  writeReport: write36
-}
-```
+## Shared v1.15 progress and teacher tools
 
-5. Preserve the schema-1 storage key and all existing lesson IDs, question IDs, and graded snapshots. Create focused tests, run the full test suite, check PDF exports, and inspect the new pages.
-
-The shared app shell, dashboard, progress normalizer, teacher tools, and cumulative PDF already discover a registered topic. **Do not edit approved topic modules** to implement a new topic. The only intentional modification to an earlier topic in v1.7 was its post-check availability message, which now says 3.4 is released.
+- `js/app.js` owns the `commit()` callback. It now saves immediately and schedules a focus-preserving refresh of the lesson footer, progress navigation, and completion badges. It never replaces the active textarea while typing. Code-test results are invalidated when source changes.
+- `js/teacher-overrides.js` provides pure and tested grant/revoke logic. The teacher console operates on the student's **actual saved record**, not on a cloned preview. `overrides.lessons` records teacher-completed pages; `overrides.topics` permits a registered topic to be opened without a passing previous topic. Both retain reasons and time stamps, and support reversal.
+- `js/storage.js` retains `schema: 1` and all older attempts, including previous v1.14 backups, while normalizing registered Topic 3.6 lessons and any teacher overrides.
+- `js/pdf.js` lists teacher-authorized exceptions separately from section-check grades. No fictional scores are created.
+- `js/topics/reference-engine36.js` implements an intentionally restricted Java parser and object-identity runtime for the current `WaterTank` assignment. The runtime is not a general Java compiler.
 
 ## Browser limitations
 
@@ -97,3 +92,16 @@ GitHub Pages is still a static site. Student progress, one-attempt restrictions,
 ## v1.8 compatibility note
 
 The Topic 3.4 activity order was intentionally revised (guided object-state exercise now 3.4.3, independent full-constructor writing now 3.4.4). The existing storage schema and key remain unchanged. `normalizeState()` recognizes a v1.7 backup without `topic34Revision: 2`, swaps activity data to the new pages, retains the previous typed assignment as a draft of the PrizeCard full-constructor exercise, and preserves submitted assessment history. Completion is recalculated for the more demanding new requirements. Future topics continue using the same registry plugin pattern.
+
+## v1.16 Topic 3.6-only refinements
+
+The source-panel templates, reference workshop specification and diagnostics, and question rendering are isolated in `js/topic36.js`, `js/content36.js`, and `js/topics/reference-engine36.js`. The shared review renderer adds an optional `q.code` field to display captured graded question code in a separate block; old question snapshots without that field remain supported. No existing Topic 3.1–3.5 module code is changed.
+
+
+## v1.17 Topic 3.6.5 independent-workshop revision
+
+The self-contained `WeatherStation` workshop was introduced to replace writing `TicketWallet`, whose definition is visible in earlier Topic 3.6 lessons. The new class's source, tests, field names, and instructions live in `reference-engine36.js`, `topic36.js`, `content36.js`, and `report36.js`. The `topic36Revision:2` field in state normalization preserves old work as `legacyV116`, but clears the older page-5 completion and knowledge-check answers; submitted graded attempts and teacher overrides are preserved. Do not change the schema-1 storage key or old graded question IDs.
+
+## v1.18 Topic 3.6.5 change
+
+The standalone `WaterTank` replaces `WeatherStation` only in Topic 3.6.5. `js/topics/reference-engine36.js` now models two private integer fields, checks 18 independent state/identity outcomes, and accepts booleans, method calls, conditionals and primitive/referenced parameter values within its documented Java subset. `js/topic36.js` and the page-5 knowledge checks in `js/content36.js` supply new specifications and caller snippets. `js/topics/report36.js` includes the new full-class code and test count. The stored `topic36Revision:3` archives v1.17 work under `legacyV117` (and keeps any older `legacyV116`) while resetting only page 3.6.5 completion and the new practice questions. Do not change previous graded submissions, registered page IDs, the teacher override log, the schema-1 storage format, or approved earlier lessons.

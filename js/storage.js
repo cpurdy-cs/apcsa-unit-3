@@ -2,7 +2,7 @@ import {IMPLEMENTED_TOPICS,topicCompleted,topicPassed,pageUnlocked} from './regi
 const KEY='flourbluff-apcsa-u3-v1';
 const SESSION_KEY='flourbluff-apcsa-teacher-v114';
 import {stableHash} from './order.js';
-export function blankState(){return {schema:1,topic34Revision:2,topic35Revision:2,orderSeed:Math.floor(Math.random()*4294967296),identity:null,joinedAt:null,updatedAt:null,pages:{},currentPage:1,assessments:Object.fromEntries(IMPLEMENTED_TOPICS.map(t=>[t.id,{draft:{},attempts:[],locked:false}])),events:[]};}
+export function blankState(){return {schema:1,topic34Revision:2,topic35Revision:2,topic36Revision:3,orderSeed:Math.floor(Math.random()*4294967296),identity:null,joinedAt:null,updatedAt:null,pages:{},currentPage:1,assessments:Object.fromEntries(IMPLEMENTED_TOPICS.map(t=>[t.id,{draft:{},attempts:[],locked:false}])),events:[],overrides:{lessons:{},topics:{}}};}
 function dataObject(x){return x && typeof x==='object' && !Array.isArray(x);}
 export function normalizeState(raw){
  const st=blankState(); if(!dataObject(raw))return st;
@@ -48,12 +48,41 @@ export function normalizeState(raw){
   const page=st.pages['3.5.8'];if(page){page.completed=false;page.completedAt=null;page.data.fullClass??={code:'// Write the entire PrizeCard class below.\n',passed:false,result:null};}
  }
  st.topic35Revision=2;
+ // v1.18 replaces only the independent 3.6.5 class-writing problem with
+ // WaterTank. Keep older TicketWallet or WeatherStation sources under legacy
+ // keys in local progress, while requiring completion of the new lesson.
+ // Graded attempts and teacher-authorized exceptions are never fabricated or cleared.
+ if(raw.topic36Revision!==3){
+  const workshop=st.pages['3.6.5'];
+  if(workshop){
+   const old=workshop.data||{};
+   if(old.fullClass?.code){
+    const oldKey=raw.topic36Revision===2?'legacyV117':'legacyV116';
+    old[oldKey]={code:String(old.fullClass.code),passed:!!old.fullClass.passed};
+   }
+   delete old.fullClass;
+   old.answers={};
+   workshop.completed=false;
+   workshop.completedAt=null;
+  }
+ }
+ st.topic36Revision=3;
 
  if(dataObject(raw.assessments)) for(const topic of IMPLEMENTED_TOPICS){
   const a=raw.assessments[topic.id];if(!dataObject(a))continue;
   st.assessments[topic.id].draft=dataObject(a.draft)?JSON.parse(JSON.stringify(a.draft)):{};
   st.assessments[topic.id].attempts=Array.isArray(a.attempts)?a.attempts.filter(dataObject).slice(0,30):[];
   st.assessments[topic.id].locked=!!a.locked;
+ }
+ // Teacher exceptions are recorded separately from graded attempts; scores are never fabricated.
+ const oldOverrides=dataObject(raw.overrides)?raw.overrides:{};
+ for(const topic of IMPLEMENTED_TOPICS){
+  const ref=oldOverrides.topics?.[topic.id];
+  if(dataObject(ref)&&typeof ref.at==='string'&&topic.prerequisite)st.overrides.topics[topic.id]={at:ref.at,reason:String(ref.reason||'').slice(0,350)};
+  for(let i=1;i<=topic.lessons.length;i++){
+   const key=String(topic.pageId(i)),x=oldOverrides.lessons?.[key];
+   if(dataObject(x)&&typeof x.at==='string')st.overrides.lessons[key]={at:x.at,reason:String(x.reason||'').slice(0,350),priorCompleted:!!x.priorCompleted,priorAt:typeof x.priorAt==='string'?x.priorAt:null};
+  }
  }
  st.events=Array.isArray(raw.events)?raw.events.slice(-100):[];
  return st;

@@ -3,6 +3,7 @@ import {blankState,load,save,exportJson,importJson,teacherOn,setTeacher,assessme
 import {createReport} from './pdf.js';
 import {shuffledOptions as importOptionShuffle} from './order.js';
 import {renderSubmissionReview} from './review.js';
+import {applyProgressOverride} from './teacher-overrides.js';
 
 // SHA-256 of the teacher preview phrase. Not secure authentication; client-side code can be bypassed.
 const TEACHER_CODE_SHA256='1748cf4a9216d2bbfd99694bb9c93c51629c9fea0e0c381141adec82947d4759';
@@ -12,16 +13,50 @@ async function validTeacherCode(input){
  return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('')===TEACHER_CODE_SHA256;
 }
 
-let state=load(),preview=null,flash=null,teacherClicks=0,lastRenderedHash=null,resetTopic='3.1',reviewFilter='missed';
+let state=load(),preview=null,flash=null,teacherClicks=0,lastRenderedHash=null,resetTopic='3.1',reviewFilter='missed',pendingOverride=null;
 const controllers=new Map();
-const $=s=>document.querySelector(s);
+// Query simple IDs with getElementById rather than a CSS selector. Some lesson
+// IDs begin with digits (e.g. 33-reflection-count); #33-reflection-count is
+// not a valid unescaped CSS selector and used to throw on every keystroke.
+const $=s=>/^#[A-Za-z0-9_-]+$/.test(s)&&typeof document.getElementById==='function'
+ ?document.getElementById(s.slice(1))
+ :document.querySelector(s);
 const esc=x=>String(x??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 const view=()=>teacherOn()?(preview??=structuredClone(state)):state;
 const studentName=st=>st.identity?`${st.identity.first} ${st.identity.last}.`:'Teacher preview';
 const orderSeed=()=>view().orderSeed;
 const store=()=>{if(!teacherOn()&&!save(state))toast('Browser storage is unavailable. Download a backup regularly.');};
 const pData=key=>{const st=view();st.pages[key]??={completed:false,completedAt:null,data:{}};st.pages[key].data??={};return st.pages[key].data;};
-const commit=()=>{updateCompletion();store();};
+let uiSyncPending=false;
+// Save immediately. Refresh derived navigation/status in place rather than rebuilding a focused editor.
+function syncLiveProgress(){
+ uiSyncPending=false;
+ if(!state.identity&&!teacherOn())return;
+ const routeNow=route();if(routeNow.type!=='topic'||routeNow.view!=='page')return;
+ const controller=controllers.get(routeNow.id);if(!controller)return;
+ const template=document.createElement('template');template.innerHTML=controller.page(routeNow.number);
+ if(!template.content?.querySelector)return;
+ for(const selector of ['.lesson-aside','.lesson-footer','.page-title .step-badge','.lesson-content > .panel.soft']){
+  const existing=document.querySelector(selector),fresh=template.content.querySelector(selector);
+  if(existing&&fresh)existing.replaceWith(fresh);
+ }
+ // If a code editor is changed, old test results no longer describe the saved source.
+ const editor=document.activeElement;
+ if(editor?.id==='35-code-editor'){
+   document.querySelectorAll('.method35-final > .feedback, .method35-final > .test-results').forEach(node=>node.remove());
+   const badge=document.querySelector('.method35-final .method35-actions .pill');if(badge){badge.textContent='Not tested yet';badge.classList.remove('green');}
+ }
+ if(editor?.id==='36-code-editor'){
+   document.querySelectorAll('.topic36-page .test-results,.topic36-page section.panel > .feedback').forEach(node=>node.remove());
+   const badge=document.querySelector('.topic36-page .method35-actions .pill');if(badge){badge.textContent='Not tested yet';badge.classList.remove('green');}
+ }
+ if(editor?.id==='34-constructor-editor'){
+   document.querySelectorAll('.lesson-content .ctor-test-grid, .lesson-content > section.panel > .feedback').forEach(node=>node.remove());
+ }
+ // This code intentionally does not replace the active input or editor.
+}
+function scheduleLiveProgress(){if(uiSyncPending)return;uiSyncPending=true;if(typeof requestAnimationFrame==='function')requestAnimationFrame(syncLiveProgress);else Promise.resolve().then(syncLiveProgress);}
+const commit=()=>{updateCompletion();store();scheduleLiveProgress();};
 const onChangePage=i=>{view().currentPage=i;store();};
 function toast(message,good=false){const zone=$('#toast-region');const e=document.createElement('div');e.className='toast'+(good?' good':'');e.textContent=message;zone.append(e);setTimeout(()=>e.remove(),4200);}
 function showError(message){flash={message,kind:'bad'};render();}
@@ -51,7 +86,7 @@ function header(){const st=view(),t=teacherOn();return `<div class="layout">
  <div class="sidebar-bottom"><div class="student-pill"><span class="student-dot"></span>${esc(studentName(st))}</div><div class="mini-muted">${t?'Preview changes are not saved to the student record':'Saved locally on this device'}</div>
  <button class="side-link" data-nav="#/reports">Reports &amp; backups</button><br><button class="side-link" data-action="switch-student">Switch student</button>
  ${t?'<br><button class="side-link" data-nav="#/teacher">Teacher tools</button>':''}
- <br><button class="teacher-footer" id="teacher-trigger" title="Build information" aria-label="Build information">Build 1.14 · 2025 CED</button></div>
+ <br><button class="teacher-footer" id="teacher-trigger" title="Build information" aria-label="Build information">Build 1.19 · 2025 CED</button></div>
  </aside><main class="app-main" id="main-content"><div class="topbar"><div class="crumbs">AP COMPUTER SCIENCE A <span aria-hidden="true">/</span> UNIT 3 ${t?'/ TEACHER PREVIEW':''}</div>
  <div class="top-actions">${t?'<span class="teacher-banner">TEACHER PREVIEW</span>':''}<button class="btn secondary small" data-action="backup-json">↓ Backup</button><button class="btn secondary small" data-nav="#/reports">Reports</button>${t?'<button class="btn small" data-action="teacher-exit">Exit preview</button>':''}</div></div><div class="content">`;
 }
@@ -66,7 +101,7 @@ function renderEntry(){const topics=IMPLEMENTED_TOPICS.map(x=>x.id).join(', ').r
  <div class="field"><label for="last-initial">Last initial</label><input id="last-initial" class="input" maxlength="1" required pattern="[A-Za-z]" placeholder="R"></div></div>
  <p class="fineprint">Only your first name and last initial are saved. Progress stays in this browser unless you export it.</p><button class="btn block" type="submit">Start learning →</button></form>
  <div class="separator"></div><button class="btn secondary block" data-action="import-backup">Restore progress from JSON backup</button>
- <div style="text-align:center;margin-top:16px"><button class="teacher-footer" id="teacher-trigger" aria-label="Build information">Build 1.14 · 2025 CED</button></div></div>
+ <div style="text-align:center;margin-top:16px"><button class="teacher-footer" id="teacher-trigger" aria-label="Build information">Build 1.19 · 2025 CED</button></div></div>
  <input type="file" id="backup-file" accept=".json,application/json" hidden><dialog id="modal"><div class="dialog-body" id="modal-body"></div></dialog>`;
 }
 function home(){const st=view(),t=teacherOn();const first=IMPLEMENTED_TOPICS[0],firstDone=topicProgress(st,first.id),next=firstDone===first.lessons.length?IMPLEMENTED_TOPICS[1]:null;
@@ -90,6 +125,11 @@ function renderTeacher(){if(!teacherOn())return `<div class="panel"><h2>Teacher 
  <div class="callout warning" style="margin-bottom:18px">The teacher access code is a convenience, not secure authentication: GitHub Pages runs all code in the browser.</div>
  <div class="panel"><h2>Jump directly to content</h2>${IMPLEMENTED_TOPICS.map(u=>`<div class="btn-row" style="margin-top:11px">${u.lessons.map((p,i)=>link(`#/topic/${u.id}/page/${i+1}`,`${u.id}.${i+1} ${esc(p.title)}`,'secondary small')).join('')}${link(`#/topic/${u.id}/check`,`${u.id} check`,'secondary small')}${link(`#/topic/${u.id}/results`,`${u.id} results`,'secondary small')}</div>`).join('')}</div>
  <div class="two-cols" style="margin-top:18px">${IMPLEMENTED_TOPICS.map(u=>{const a=assessment(state,u.id);return `<div class="panel"><h3>Topic ${u.id} attempt</h3><p class="helper">Current student: <strong>${esc(studentName(state))}</strong>. Attempts: <strong>${a.attempts.length}</strong>. Latest: <strong>${a.attempts.at(-1)?.score??'Not attempted'}</strong>.</p><button class="btn" data-action="reset-check" data-topic="${u.id}" ${!state.identity||!a.attempts.length?'disabled':''}>Reset ${u.id} check</button><p class="fineprint">Prior submissions remain in the record.</p></div>`;}).join('')}</div>
+ <div class="panel" style="margin-top:18px"><h2>Student Progress Override</h2><p class="helper">These controls change the saved student's record on this device, not the temporary preview. Every exception is logged; assessment scores remain untouched. Confirm each change.</p>
+ <div class="two-cols"><div class="field"><label for="teacher-override-lesson">Lesson to mark completed</label><select id="teacher-override-lesson"><option value="">Choose a lesson…</option>${IMPLEMENTED_TOPICS.flatMap(u=>u.lessons.map((p,i)=>({id:u.pageId(i+1),label:`${u.id}.${i+1} ${p.title}`}))).map(o=>`<option value="${esc(o.id)}">${esc(o.label)}</option>`).join('')}</select><button class="btn secondary" data-action="override-lesson" ${!state.identity?'disabled':''}>Mark lesson complete</button></div>
+ <div class="field"><label for="teacher-override-topic">Topic prerequisite to bypass</label><select id="teacher-override-topic"><option value="">Choose a topic…</option>${IMPLEMENTED_TOPICS.filter(u=>u.prerequisite).map(u=>`<option value="${u.id}">Unlock Topic ${u.id} (normally requires ${u.prerequisite} pass)</option>`).join('')}</select><button class="btn secondary" data-action="override-topic" ${!state.identity?'disabled':''}>Grant prerequisite exception</button></div></div>
+ <div class="field" style="margin-top:12px"><label for="teacher-override-reason">Reason (optional, recorded with the action)</label><input class="input" id="teacher-override-reason" maxlength="350" placeholder="e.g., device lost progress; completed on paper"></div>
+ <h3>Active teacher exceptions</h3><div class="btn-row">${Object.entries(state.overrides?.lessons||{}).map(([k,o])=>`<button class="btn secondary small" data-action="revoke-lesson" data-key="${esc(k)}">Revoke lesson ${esc(k)}</button>`).join('')}${Object.entries(state.overrides?.topics||{}).map(([k,o])=>`<button class="btn secondary small" data-action="revoke-topic" data-key="${esc(k)}">Revoke topic ${esc(k)} exception</button>`).join('')}${!(Object.keys(state.overrides?.lessons||{}).length+Object.keys(state.overrides?.topics||{}).length)?'<span class="helper">No current exceptions.</span>':''}</div></div>
  <div class="panel" style="margin-top:18px"><h3>Preview PDF samples</h3><div class="btn-row">${IMPLEMENTED_TOPICS.map(u=>`<button class="btn secondary" data-action="sample-pdf" data-topic="${u.id}">↓ Sample ${u.id} PDF</button>`).join('')}</div></div>
  <div class="panel" style="margin-top:18px"><h3>Release coverage</h3><p class="helper">${IMPLEMENTED_TOPICS.map(u=>'Topic '+u.id).join(' and ')} are functional. Later topics remain on the roadmap.</p></div>`;
 }
@@ -110,6 +150,9 @@ function render(){const samePage=lastRenderedHash===location.hash,savedY=samePag
   const isRecorded=(r.view==='results'||(r.view==='check'&&a.locked))&&a.attempts.length>0;
   if(isRecorded&&topicUnlocked(view(),r.id,teacherOn()))body=renderSubmissionReview(r.id,a,controller.questionBank,teacherOn(),reviewFilter,registered.title);
   else body=controller[r.view](r.number);
+  if(r.view==='page'){const pkey=String(registered.pageId(r.number)),override=view().overrides?.lessons?.[pkey];
+   if(override)body=`<div class="feedback good" role="status">Teacher-completed lesson ${esc(r.id)}.${r.number}. The exception is recorded in this student's progress; it does not represent a graded assessment score.</div>`+body;
+  }
  }
  else body=r.type==='reports'?renderReports():r.type==='teacher'?renderTeacher():home();
  $('#app').innerHTML=header()+body+footer();document.title=(r.type==='topic'&&r.view==='page'?`${r.id}.${r.number} · `:'')+'Class Creation Lab | AP CSA';
@@ -118,6 +161,20 @@ function render(){const samePage=lastRenderedHash===location.hash,savedY=samePag
 function activateTeacher(){modal(`<button class="dialog-close" data-action="modal-close" aria-label="Close">×</button><h2>Teacher access</h2><p class="helper">Enter your local preview access code. This is a classroom convenience, not secure authentication.</p>
  <form id="teacher-form"><div class="field"><label for="teacher-code">Access code</label><input class="input" id="teacher-code" type="password" autocomplete="off" required></div><div class="dialog-actions"><button class="btn secondary" type="button" data-action="modal-close">Cancel</button><button class="btn" type="submit">Activate preview</button></div></form>`);$('#teacher-code').focus();}
 function confirmReset(topic='3.1'){resetTopic=topic;const a=assessment(state,topic);modal(`<button class="dialog-close" data-action="modal-close" aria-label="Close">×</button><h2>Reset ${esc(studentName(state))}'s Topic ${resetTopic} check?</h2><p>This starts a fresh attempt but preserves ${a.attempts.length} previous submission${a.attempts.length===1?'':'s'} and scores in the PDF report.</p><div class="dialog-actions"><button class="btn secondary" data-action="modal-close">Cancel</button><button class="btn" data-action="confirm-reset">Reset check</button></div>`);}
+function requestOverride(kind,key,revoke=false){
+ if(!teacherOn()||!state.identity)return;
+ const topic=kind==='topic'?getImplementedTopic(key):IMPLEMENTED_TOPICS.find(t=>Array.from({length:t.lessons.length},(_,i)=>String(t.pageId(i+1))).includes(String(key)));
+ if(!topic)return toast('Choose a valid lesson or topic.');
+ if(kind==='topic'&&!topic.prerequisite)return toast('The first topic has no prerequisite.');
+ pendingOverride={kind,key:String(key),revoke,reason:($('#teacher-override-reason')?.value||'').trim().slice(0,350)};
+ const label=kind==='lesson'?`lesson ${key}`:`Topic ${key} prerequisite`;
+ modal(`<button class="dialog-close" data-action="modal-close" aria-label="Close">×</button><h2>${revoke?'Revoke':'Authorize'} ${esc(label)}?</h2><p>This will ${revoke?'remove the exception':'change the current student’s saved progress'} on this device. Previous submitted assessment scores will not be changed or fabricated.</p><p class="helper">${esc(pendingOverride.reason||'No reason provided.')}</p><div class="dialog-actions"><button class="btn secondary" data-action="modal-close">Cancel</button><button class="btn" data-action="confirm-override">Confirm ${revoke?'reversal':'override'}</button></div>`);
+}
+function applyOverride(){if(!teacherOn()||!state.identity||!pendingOverride)return;
+ try{applyProgressOverride(state,pendingOverride);save(state);preview=structuredClone(state);pendingOverride=null;closeModal();render();toast('Student progress exception updated. Existing scores are unchanged.',true);}
+ catch(error){toast(error.message||'Override could not be applied.');}
+}
+
 function confirmSwitch(){modal(`<button class="dialog-close" data-action="modal-close" aria-label="Close">×</button><h2>Switch to another student?</h2><p>The current student's progress will be downloaded as a JSON backup before this browser's saved record is cleared.</p><p class="helper">Make sure the backup download succeeds. Students using shared computers should not rely on browser storage alone.</p><div class="dialog-actions"><button class="btn secondary" data-action="modal-close">Cancel</button><button class="btn" data-action="confirm-switch">Back up and switch</button></div>`);}
 function handleClick(event){const trigger=event.target.closest('#teacher-trigger');if(trigger){teacherClicks++;if(teacherClicks>=5){teacherClicks=0;activateTeacher();}return;}
  const nav=event.target.closest('[data-nav]');if(nav){if(!nav.disabled)go(nav.dataset.nav);return;}
@@ -130,6 +187,9 @@ function handleClick(event){const trigger=event.target.closest('#teacher-trigger
  if(act==='switch-student'){confirmSwitch();return;}
  if(act==='confirm-switch'){if(state.identity)exportJson(state);state=blankState();preview=null;setTeacher(false);save(state);closeModal();go('#/home');render();return;}
  if(act==='teacher-exit'){setTeacher(false);preview=null;go('#/home');render();toast('Teacher preview closed.',true);return;}
+ if(act==='override-lesson'||act==='override-topic'){const kind=act==='override-lesson'?'lesson':'topic',key=$('#teacher-override-'+kind)?.value;if(!key)return toast('Select a '+kind+' first.');requestOverride(kind,key);return;}
+ if(act==='revoke-lesson'||act==='revoke-topic'){requestOverride(act==='revoke-lesson'?'lesson':'topic',el.dataset.key,true);return;}
+ if(act==='confirm-override'){applyOverride();return;}
  if(act==='reset-check'){if(teacherOn()&&state.identity&&getImplementedTopic(el.dataset.topic||'3.1'))confirmReset(el.dataset.topic||'3.1');return;}
  if(act==='confirm-reset'){if(!teacherOn())return;const a=assessment(state,resetTopic);a.locked=false;a.draft={};recordEvent(state,'teacher-reset',`${resetTopic} graded check`);save(state);preview=structuredClone(state);closeModal();render();toast('The graded check has been reset. Previous attempts were retained.',true);return;}
  if(act==='sample-pdf'){createReport(makeSample(),{sample:true,topic:el.dataset.topic||'3.1'});toast('Sample PDF downloaded.',true);return;}

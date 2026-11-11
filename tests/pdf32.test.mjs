@@ -20,5 +20,5 @@ test('offline Topic 3.2 PDF includes full answers, reflections, test evidence, a
  assert.match(topic.filename,/Topic3-2_Casey_M/);assert.ok(topic.pages>=2);
  let data=await captured.text();assert.match(data,/Topic 3.2/);assert.match(data,/Permission should be confirmed/);assert.match(data,/Section check 3.2/);assert.match(data,/Q8/);assert.match(data,/Student response/);assert.match(data,/87.5\/100/);
  let x=/startxref\n(\d+)\n%%EOF$/.exec(data);assert.ok(x);assert.equal(data.slice(Number(x[1]),Number(x[1])+4),'xref');
- const cumulative=createReport(s,{cumulative:true});assert.match(cumulative.filename,/Unit3_Cumulative/);data=await captured.text();assert.match(data,/Topic 3.1/);assert.match(data,/Topic 3.2/);assert.match(data,/Topics 3.6-3.9 remain in development/);
+ const cumulative=createReport(s,{cumulative:true});assert.match(cumulative.filename,/Unit3_Cumulative/);data=await captured.text();assert.match(data,/Topic 3.1/);assert.match(data,/Topic 3.2/);assert.match(data,/Topics 3.7-3.9 remain in development/);
 });

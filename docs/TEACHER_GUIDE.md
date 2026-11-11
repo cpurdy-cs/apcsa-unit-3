@@ -1,4 +1,4 @@
-# Teacher Guide | Class Creation Lab v1.14
+# Teacher Guide | Class Creation Lab v1.19
 
 ## Release 1.6 note
 
@@ -16,7 +16,7 @@ Student progress is compatible with the earlier releases. Previous Topic 3.5.8 m
 
 ## Source and scope
 
-Based only on the user-provided **2025 AP Computer Science A Course and Exam Description**, Unit 3. This release implements 3.1 Abstraction and Program Design, 3.2 Impact of Program Design, 3.3 Anatomy of a Class 3.4 Constructors, and 3.5 Methods: How to Write Them. Topics 3.6–3.9 remain planned.
+Based only on the user-provided **2025 AP Computer Science A Course and Exam Description**, Unit 3. This release implements 3.1 Abstraction and Program Design, 3.2 Impact of Program Design, 3.3 Anatomy of a Class 3.4 Constructors, 3.5 Methods: How to Write Them, and 3.6 Passing and Returning References. Topics 3.7–3.9 remain planned.
 
 Plan approximately **two 45–50-minute class periods** for Topic 3.1 **one 45–50-minute period** for Topic 3.2 and **two 45–50-minute periods** for Topic 3.3. These estimates are for teacher planning only; the student-facing site shows no expected completion times. Students work at their own pace.
 
@@ -43,11 +43,11 @@ The Topic 3.2 learning objectives are:
 
 ## Report review
 
-**Reports & backups** provides separate Topic 3.1, 3.2 and 3.3 PDFs and a cumulative Unit 3 report. Topic 3.2 reports include comparisons made in the leaderboard lab, written reflections, test outcomes before/after repairs, software reuse classifications, full graded answers and attempt history. Student reports do not reveal answer keys; teacher preview does.
+**Reports & backups** provides individual Topic 3.1–3.6 PDFs and a cumulative Unit 3 report. Topic 3.2 reports include comparisons made in the leaderboard lab, written reflections, test outcomes before/after repairs, software reuse classifications, full graded answers and attempt history. Student reports do not reveal answer keys; teacher preview does.
 
 ## Preview and resetting attempts
 
-Teacher access: **Ctrl+Alt+Shift+T** or click the build label five times; enter the configured phrase. The access phrase is supplied separately to the instructor and is not included in this package. Teacher preview unlocks the lessons without altering student practice. To reset a submitted check, open **Teacher tools**, select the appropriate **Reset 3.1 / 3.2 / 3.3 / 3.4 / 3.5 check**, and confirm. The prior attempt remains in the student's PDF and saved progress. Always exit teacher preview after using a student device.
+Teacher access: **Ctrl+Alt+Shift+T** or click the build label five times; enter the configured phrase. The access phrase is supplied separately to the instructor and is not included in this package. Teacher preview unlocks the lessons without altering student practice. To reset a submitted check, open **Teacher tools**, select the appropriate **Reset 3.1 / 3.2 / 3.3 / 3.4 / 3.5 / 3.6 check**, and confirm. The prior attempt remains in the student's PDF and saved progress. Always exit teacher preview after using a student device.
 
 ## Update from v1.1
 
@@ -95,3 +95,30 @@ Topic 3.4.4 uses a full-width Java textarea. Tab inserts four spaces, Shift+Tab 
 ### Version 1.10: Single-file Java editor
 
 Topic 3.4.4 now has one code editor and no separate live preview. For each class, students see the given public class header and private fields and insert a complete constructor in the indicated location. The validator checks that the class structure is retained before testing constructor behavior. Existing v1.9 constructor-only saved drafts are shown inside the full class when reopened; all prior scores remain intact.
+
+## v1.15: Topic 3.6 and teacher progress exceptions
+
+Topic 3.6 aligns with 2025 CED Topic 3.6 (printed p. 87), covering EK 3.6.A.1–3. Five pages teach shared object references, parameter mutation versus reassignment, returned references, same-class private access, and writing complete reference-aware methods. The updated, standalone `WaterTank` class workshop requires 18 deterministic behavior, validation and identity tests and ends in a 10-question/100-point graded check.
+
+**Student autosave:** Text and code inputs save continuously to the current browser profile. Completion navigation updates without forcing a reload. A changed code editor shows an untested state until Run Tests succeeds; saved code is not considered automatically correct. Continue recommending JSON exports when switching devices.
+
+**Teacher Progress Override:** While working on the student's own computer/profile, enter the teacher code and open **Teacher tools**. In the Student Progress Override panel, select a lesson to mark completed, or select a topic to allow entry without passing its usual prerequisite. Enter an optional reason, confirm, and exit teacher preview. These actions update the actual saved student record (not temporary preview), log the exception, and appear on PDF reports. They do **not** create passing assessment scores. The panel also allows explicit reversal of a previous override; downstream student work and prior graded attempts are retained when an exception is reversed.
+
+Because GitHub Pages has no teacher database, exceptions can only be made on the student device/record currently open. Neither teacher access nor progress is tamper-proof. No plaintext teacher credential is included in this package.
+
+### v1.16 reference-lesson refinements
+
+Supporting class definitions are available in every Topic 3.6 lesson and open automatically for the private-access lab. The independent class now includes `hasMoreTicketsThan(TicketWallet other)` instead of `sameWallet`. Its 13 tests disclose input calls and both expected and observed results for debugging. Correct answers remain teacher-only during post-assessment student review. Previously submitted checks remain unchanged.
+
+
+### v1.17 independent Topic 3.6.5 class
+
+The workshop is now a **new `WeatherStation` class** not shown in any earlier topic or lesson. Students independently implement an integer `temperature` field (degrees Celsius), a constructor, `getTemperature`, `adjustTemperature`, `calibrateOther`, `chooseColder`, and `isWarmerThan`. The 13 tests check negative values, calibration of a *different* station or an alias to the same one, same-class private-field comparisons, tie handling, and exact returned-reference identity. The teacher's previous approved material in 3.6.1–3.6.4 is unaffected.
+
+Old v1.16 `TicketWallet` work remains in the JSON backup's `legacyV116` evidence and prior graded attempts remain untouched. The revised 3.6.5 must be completed anew for mastery. Supporting sample caller code does **not** disclose the solution implementation.
+
+### v1.18: New Topic 3.6.5 WaterTank assignment
+
+Students write an original `WaterTank` class with private `int capacity` and `int liters` fields. The constructor's preconditions guarantee positive capacity and an initial level between zero and capacity; there is no requirement to reject invalid constructor inputs. The `addWater` and `transferTo` methods have **explicit validation requirements** for their integer arguments. A failed operation returns `false`, leaving all tank states unchanged; successful operations return `true`. `getCapacity`, `getLiters`, `chooseLowerLevel`, and `hasMoreRoomThan` assess additional state, returned-reference identity and same-class private member access. The 18 automatically graded tests give concrete Java-style caller code, expected results and actual returns/states. Students may use different valid implementation strategies and parameter names within the supported Java subset.
+
+This replaces only the 3.6.5 exercise; earlier lessons and section-check questions are unchanged. Imported v1.17 WeatherStation drafts remain under `legacyV117` in progress data, while a prior `legacyV116` TicketWallet draft is also retained. Because the assignment is new, 3.6.5 must be recompleted. Previously submitted section assessments and teacher-authorized progression exceptions are never replaced or scored artificially. All student-facing activity-duration estimates remain omitted.

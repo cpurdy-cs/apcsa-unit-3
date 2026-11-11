@@ -1,21 +1,55 @@
 # Class Creation Lab | AP Computer Science A Unit 3
 
-**Release 1.14: Full-class method workshop, dropdown balancing, editor fixes and teacher access rotation**
+**Release 1.19: live character counts and reliable autosave for numeric-ID inputs**
 
 An interactive, self-paced learning website based on the user-supplied **2025 College Board AP Computer Science A Course and Exam Description, Unit 3: Class Creation**. The website runs entirely in the browser and can be hosted on **GitHub Pages** without a server, Java compiler, build step, or paid services.
 
-**Release scope:** Topics **3.1–3.5** are implemented (24 interactive lesson pages and five graded checks). Topics 3.6–3.9 are not yet implemented.
+**Release scope:** Topics **3.1–3.6** are implemented (29 interactive lesson pages and six graded checks). Topics 3.7–3.9 remain in development.
 
 
 **v1.11 fix:** In 3.4.4, clicking the `PrizeCard`, `ArcadeMachine`, or `Player` challenge buttons now switches the editor to the selected class. Separate drafts and test results persist when switching and after reloading saved progress. No changes to grading, lesson requirements, or previous-topic content.
 
 **v1.12 presentation update:** No estimated minutes or class-period counts appear on student-facing lesson headers or course-roadmap cards for any topic, including unreleased roadmap topics. Incomplete lessons display “In progress” instead of a time estimate. Teacher-only pacing guidance remains in `docs/TEACHER_GUIDE.md`. No assessment, saved-progress, or grading changes.
 
+## v1.19 live-input fix
+
+Corrected the shared DOM lookup for controls whose IDs begin with numbers, including `33-reflection-count`, `34-copy-count`, `34-workshop-save`, `35-editor-save`, `36-editor-save`, and graded-check counters. Previously `querySelector('#33-reflection-count')` was invalid CSS and threw during typing, which prevented the current keystroke from updating the counter and being saved. The shared helper now retrieves simple IDs with `getElementById`, retaining `querySelector` for other CSS selectors.
+
+**Result:** characters update as they are entered, reflection responses save immediately, and code editor/graded-check status displays update without a reload or blur. This is a shared shell fix only: all Topic 3.1–3.6 lesson content, questions, scoring, tests, PDF logic, teacher overrides, and JSON progress schema are unchanged. Added a regression test that deliberately rejects invalid numeric-leading CSS selectors and verified 3.3.4, 3.4.5, 3.5.8 and 3.6.5 in isolated Chromium browser checks.
+
+## v1.18 independent coding task: WaterTank
+
+Topic 3.6.5 now asks students to design an entirely new **`WaterTank`** class with two private integer fields: `capacity` and `liters`. Its methods must check whether a supplied water amount is valid *before changing state*: zero/negative additions or transfers, source shortages, and destination overflow all return `false` without changing either object. The class also compares remaining room through another object's private fields and selects one of two existing tank references by identity. All **18 deterministic execution tests** provide exact inputs, expected behavior, and observed state/return values; invalid cases and boundary values are included. The constructor's documented precondition guarantees valid initial levels and capacities. The sample caller code does not give a solution.
+
+The other Topic 3.6 pages and graded check are unchanged, as are Topics 3.1–3.5. Importing v1.17 progress keeps the prior WeatherStation draft as `legacyV117` and resets only 3.6.5 completion and its three knowledge-check answers. Existing graded submissions, teacher overrides, progress IDs and JSON schema remain intact.
+
+## v1.17 independent coding task
+
+The **3.6.5 workshop** now asks students to build a completely new `WeatherStation` class instead of rewriting `TicketWallet`, which had already appeared in the private-access lesson. A self-contained weather-network scenario explains the specifications: temperature adjustments (including negative readings), calibrating another existing station, returning the identity of the colder station, and comparing private readings across instances. The new class has **13 behavior and reference-identity tests**, with exact inputs and actual results for debugging. Students receive no prewritten solution; the optional supporting panel contains example *caller* code only. **3.6.1–3.6.4 and the graded question bank are unchanged.**
+
+Old 3.6.5 drafts are retained as `legacyV116` in imported progress, and previously submitted assessment attempts remain intact. Because this is a new independent assignment, the former page-5 completion and three practice responses are reset on migration. The student's earlier work is not discarded.
+
+## v1.16 Topic 3.6 refinements
+
+- Every reference lesson now includes a supporting-class panel. Panels are collapsed on pages 3.6.1–3.6.3 and 3.6.5 and expanded automatically on 3.6.4. Private fields are highlighted in the supporting source.
+- Revised the returned-reference lesson subtitle and displayed `>=` with standard separate characters by disabling ligatures.
+- Replaced the unnatural `sameWallet` exercise with `hasMoreTicketsThan(TicketWallet other)`, requiring a real comparison between two wallets. Earlier graded submissions and progress records remain preserved.
+- Corrected the workshop practice prompts and changed the test runner to show actual arguments, executed calls, expected results, observed results, and errors. Failing tests expand by default.
+- Revised graded-question wording, added distinct Java code panels, and retained the original graded question IDs and balanced answer ordering. Already-submitted question snapshots remain unchanged.
+- The post-submission question review and Topic 3.6 PDF display multiline Java code separately from the question text.
+
+## v1.15 additions
+
+- **Topic 3.6 — Passing and Returning Object References:** five lessons on reference aliases, mutation versus parameter reassignment, returning existing references, same-class private access, and a full-class `TicketWallet` workshop. A bounded reference-aware interpreter runs thirteen behavior/identity tests; the graded check has ten questions. The method workshop uses two `TicketWallet` object parameters when comparing identity and selecting an existing object, leaving the formal `this` keyword lesson to Topic 3.9.
+- **Live progress updates:** text editors and reflections autosave with each input event. The app refreshes completion badges, lesson navigation, and lesson requirement indicators without replacing the focused editor, and clears outdated code-test results after edits. Explicit testing remains required for coding mastery.
+- **Teacher Progress Override:** the teacher console can mark an individual lesson complete or grant an exception to a topic prerequisite. Both actions are confirmation-gated, reversible, and logged with optional reasons. They change the saved student record on that device, **never invent a graded assessment score**, and are included in PDF reports. Teacher preview remains separate from the real record.
+- All v1.14 lesson modules and assessment banks for Topics 3.1–3.5 remain unchanged. JSON backups, graded attempt history, and the established localStorage key remain compatible.
+
 ## Modular design (introduced in v1.4)
 
-The application shell, autosave normalization, teacher console, and offline PDF writer now use a **single topic registry** (`js/registry.js`). Topics 3.1–3.5 have separate controllers and topic-specific report writers. Future topics can be added by registering their files, **without editing the previously completed lessons**. Topic 3.4 was added through the registry without rewriting the already-approved Topics 3.1–3.3.
+The application shell, autosave normalization, teacher console, and offline PDF writer now use a **single topic registry** (`js/registry.js`). Topics 3.1–3.6 have separate controllers and topic-specific report writers. Future topics can be added by registering their files, **without editing the previously completed lessons**. Topic 3.4 was added through the registry without rewriting the already-approved Topics 3.1–3.3.
 
-See **`docs/ARCHITECTURE.md`** for the plugin contract and the steps for adding Topic 3.6 later.
+See **`docs/ARCHITECTURE.md`** for the plugin contract and the steps for adding Topic 3.7 later.
 
 ## Topic 3.1: Abstraction and Program Design (four lessons)
 
@@ -75,7 +109,7 @@ The 3.4 section check has **10 questions worth 10 points each**, including two c
 - Completing required work unlocks the next lesson; getting 80% or more on a topic check unlocks the next implemented topic.
 - Practice permits unlimited attempts. Checks permit **one final submission**, followed by a **teacher-authorized on-device reset** if needed. Each reset retains earlier attempt history.
 - Browser `localStorage` autosaves progress across refreshes. JSON backups can be exported and imported for transfers or recovery; backups from **v1.0 / v1.1** remain compatible.
-- Download **individual Topic 3.1–3.5 PDF reports** and a **cumulative Unit 3 PDF**. Reports contain the student's submitted answers, graded scores, all attempts, and selected practice evidence, including written reflections.
+- Download **individual Topic 3.1–3.6 PDF reports** and a **cumulative Unit 3 PDF**. Reports contain the student's submitted answers, graded scores, all attempts, and selected practice evidence, including written reflections.
 - Display order is deterministically randomized per student. Stored responses and scoring are keyed to original question identities, not their shuffled positions.
 
 **Important security note:** GitHub Pages cannot provide server-verified identity, tamper-resistant progress, genuine single-attempt security, or true teacher password secrecy. Treat the checks as classroom learning evidence, not secure high-stakes exams.
@@ -84,7 +118,7 @@ The 3.4 section check has **10 questions worth 10 points each**, including two c
 
 Use **Ctrl + Alt + Shift + T** (or five clicks on the small build label), then enter the teacher access phrase supplied separately to the instructor. No teacher credentials are included in this repository or its documentation.
 
-Teacher preview unlocks all 24 available lesson pages, shows answers, allows sample report exports, and automatically offers separate reset buttons for every implemented topic. Preview practice doesn't overwrite a student's record. A reset *does* modify the real student's local record. Exit preview when finished.
+Teacher preview unlocks all 29 available lesson pages, shows answers, allows sample report exports, and automatically offers separate reset buttons for every implemented topic. Preview practice doesn't overwrite a student's record. A reset *does* modify the real student's local record. Exit preview when finished.
 
 ## GitHub Pages deployment
 
@@ -92,7 +126,7 @@ Teacher preview unlocks all 24 available lesson pages, shows answers, allows sam
 2. Upload its **contents** (including `index.html`, `css/`, `js/`, `docs/`) to the root of your GitHub repository.
 3. Choose **Settings → Pages → Deploy from a branch**, select `main` and `/(root)`.
 4. Open the HTTPS site URL GitHub gives you.
-5. Test with a student profile, verify 3.1→3.2→3.3→3.4 unlocking, check all four PDF exports, and test JSON backup/import.
+5. Test with a student profile, verify sequential progression through 3.6, check all six topic PDFs, and test JSON backup/import.
 
 The site uses hash-based routes (such as `#/topic/3.2/page/2`) so it works under a GitHub project subdirectory. No installation or network resources are required once loaded. For a local preview, run `python -m http.server 8000` from the extracted directory and visit `http://localhost:8000`. Do not rely on direct `file://` loading for JavaScript modules.
 
@@ -123,7 +157,7 @@ With Node 20+:
 npm test
 ```
 
-The automated regression suite covers all four topics, modular registration, legacy progress migration, graded checks, simulated student workflows, teacher resets, and PDF exports. Topic 3.4 lesson layouts and their check were reviewed in Chromium using isolated page previews. This environment blocks ordinary local website navigation in Chromium; verify in a real school browser before deployment. **Test on school Chromebooks before classroom release.**
+The automated regression suite covers all six topics, modular registration, legacy progress migration, graded checks, simulated student workflows, teacher resets, and PDF exports. Topic 3.4 lesson layouts and their check were reviewed in Chromium using isolated page previews. This environment blocks ordinary local website navigation in Chromium; verify in a real school browser before deployment. **Test on school Chromebooks before classroom release.**
 
 ## Copyright
 

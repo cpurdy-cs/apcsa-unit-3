@@ -1,3 +1,43 @@
+## Version 1.19 — Live character counts and dependable text autosave
+
+1. Fixed the shared DOM query helper: simple `#id` references now resolve with `document.getElementById`, including IDs beginning with a digit (invalid as bare CSS selectors). This removes the exception that interrupted live character counts and skipped saving typed text in 3.3.4 and 3.4.5.
+2. The same change restores inline save feedback for the 3.4.4, 3.5.8, and 3.6.5 code editors, and immediate graded-answer counters that used digit-prefixed IDs.
+3. Added targeted regression tests for per-keystroke counts, persistence and editor labels. Confirmed behavior in a Chromium browser through isolated module imports, including no focus loss on typing.
+4. No approved lesson content, questions, grading, student progress schema, teacher credentials, overrides, or PDF functionality was changed.
+
+## Version 1.18 — More realistic Topic 3.6.5 assignment with argument validation
+
+1. Replaced `WeatherStation` with a new `WaterTank` problem containing two private integer fields (`capacity`, `liters`). Students write the complete class from specifications; no constructor or method implementations are provided.
+2. `addWater(int amount)` rejects nonpositive amounts and overflow, while `transferTo(WaterTank other, int amount)` must reject nonpositive amounts, source shortages and recipient overflow. Invalid operations return `false` and must not modify either tank. Constructor inputs are specified as valid preconditions.
+3. Added 18 behavior and object-identity test cases, with exact inputs, expected returns and states, and observed values. Coverage includes boundary fills/transfers, both objects remaining unchanged after rejection, alias mutation, returning the same tank reference, and same-class private comparisons.
+4. Updated the supporting caller code, all three page-5 knowledge checks, Topic 3.6 PDF evidence, and report labels without changing lessons 3.6.1–3.6.4 or the original 3.6 graded-check questions.
+5. v1.17 student drafts are kept under `legacyV117`; previous `legacyV116` work, graded assessment history, and teacher overrides are preserved. Page 3.6.5 must be recompleted for the new assignment. LocalStorage key and JSON schema remain unchanged.
+
+## Version 1.17 — New standalone 3.6.5 class-writing assignment
+
+1. Replaced the repeated `TicketWallet` coding workshop with a new, self-contained `WeatherStation` class that has not appeared in previous lessons. The specifications require a private integer temperature field, constructor, getter, own-reading adjustment, calibration of a referenced station, choosing an existing colder station reference, and a same-class private comparison.
+2. Replaced all 13 workshop tests with signed-temperature, mutation, alias, independent-object, strict-comparison and returned-identity cases. Each test still gives inputs, expected output, and actual execution results.
+3. Rewrote only the 3.6.5 knowledge-check questions and sample caller code. Topic 3.6's first four lessons and its 10 graded questions are unchanged.
+4. Preserved v1.16 student code as `legacyV116` during JSON/local progress import, but require completion of the new workshop. Preserve all prior graded submissions, topic progression overrides, and schema-1 storage identifiers.
+5. Previously approved Topics 3.1–3.5 remain byte-for-byte unchanged.
+
+## Version 1.16 — Topic 3.6 instructional clarity and test diagnostics
+
+1. Added collapsible supporting-class definitions to all Topic 3.6 lessons. The private-field examples in 3.6.4 are expanded by default with visibility highlighted.
+2. Clarified the returned-reference lesson subtitle and disabled code-font ligatures so `>=` displays as two characters.
+3. Replaced `sameWallet` with `hasMoreTicketsThan(TicketWallet other)`, with identity tests still covered by the existing `chooseRicher` exercises and reference-return tests.
+4. Rebuilt the Topic 3.6 test feedback to show inputs, expected state/reference identity, observed outputs, and execution errors for every case. Failed cases expand automatically.
+5. Rewrote ambiguous Topic 3.6 practice and graded-check wording, separated Java code from question prose, and extended code formatting to submission review and PDF reports.
+6. Preserved all approved Topic 3.1–3.5 files and all existing lesson, assessment, reset, teacher-override, and progress storage keys.
+
+## Version 1.15 — Topic 3.6, live updates and teacher overrides
+
+1. Added five original, interactive Topic 3.6 pages (reference diagrams, argument mutation/reassignment, return aliases, class-private access, and full TicketWallet coding workshop), a 10-question graded check, and PDF evidence. The independent class runs 13 identity and behavior tests.
+2. Updated shared `commit()` to immediately autosave and refresh lesson navigation, page completion badges and dependent progress indicators without replacing the active editor. Changing code invalidates stale test results.
+3. Added teacher lesson-completion and prerequisite exceptions with explicit confirmation, optional reasons, permanent local recording, and reversal. Exceptions do not change or synthesize graded scores. PDF reports distinguish these teacher actions from graded work.
+4. Preserved every approved Topic 3.1–3.5 lesson/controller/content/report module unchanged. Continued schema-1 JSON compatibility and the existing hashed teacher access mechanism; no plaintext teacher password appears in the distribution.
+5. Added topic engine, progression, grading, teacher-exception, old-save, and PDF tests. No student-facing completion-time estimates were added.
+
 ## Version 1.14 — Topic 3.5 completion and teacher access update
 
 1. Rotated the teacher access phrase to the instructor-requested memorable phrase; it is deliberately absent from distributed documents and source files (the browser stores only the SHA-256 comparison value). Also rotated the teacher session key to prevent an older preview session from remaining open.

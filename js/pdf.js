@@ -69,8 +69,17 @@ export function createReport(st,{cumulative=false,sample=false,topic='3.1'}={}){
  report.heading(cumulative?'UNIT 3 | Cumulative progress report':`TOPIC ${topic} | Student report`,17);
  report.line(`Student: ${display(st)}`);report.line(`Generated: ${new Date().toLocaleString('en-US')}`);
  report.line('Curriculum: 2025 AP Computer Science A, Unit 3 Class Creation');
- report.line('Report format: Class Creation Lab v1.13');report.blank(8);
+ report.line('Report format: Class Creation Lab v1.18');report.blank(8);
  if(sample)report.line('TEACHER SAMPLE - NOT A STUDENT SUBMISSION',{bold:true,color:'0.6 0.1 0.1'});
+ // Show recorded teacher exceptions on individual and cumulative reports without inventing scores.
+ const lessonOverrides=Object.entries(st.overrides?.lessons||{}).filter(([k])=>cumulative||k.startsWith(topic+'.')||(topic==='3.1'&&/^\d+$/.test(k)));
+ const topicOverrides=Object.entries(st.overrides?.topics||{}).filter(([k])=>cumulative||k===topic);
+ if(lessonOverrides.length||topicOverrides.length){
+  report.heading('Teacher-authorized progress exceptions',13);
+  for(const [key,x] of lessonOverrides)report.line(`Lesson ${key}: teacher-completed ${x.at||''}${x.reason?' | '+x.reason:''}`,{size:9});
+  for(const [key,x] of topicOverrides)report.line(`Topic ${key}: prerequisite overridden ${x.at||''}${x.reason?' | '+x.reason:''}; no score awarded`,{size:9});
+  report.blank(10);
+ }
  if(cumulative){
   report.heading('Nine-topic unit dashboard',14);
   TOPICS.forEach(t=>{

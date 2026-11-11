@@ -9,7 +9,7 @@ import {normalizeState} from '../js/storage.js';
 import {getImplementedTopic,topicUnlocked} from '../js/registry.js';
 function solution(c){return starter35(c.id).replace('    // Write your complete method here.',c.example.split('\n').map(x=>'    '+x).join('\n'));}
 test('3.5 has eight lessons and 12 assessment questions aligned with 2025 method scope',()=>{
- assert.equal(PAGE35.length,8);assert.equal(QUESTIONS35.length,12);assert.ok(getImplementedTopic('3.5'));assert.equal(getImplementedTopic('3.6'),null);
+ assert.equal(PAGE35.length,8);assert.equal(QUESTIONS35.length,12);assert.ok(getImplementedTopic('3.5'));assert.ok(getImplementedTopic('3.6'));
  assert.ok(QUESTIONS35.some(x=>x.objective.includes('3.5.A.8')));assert.ok(QUESTIONS35.some(x=>x.objective.includes('3.5.A.4')));
  for(let n=1;n<=8;n++)assert.equal(PRACTICE35[n].length,3);
 });

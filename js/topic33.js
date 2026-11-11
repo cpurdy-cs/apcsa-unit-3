@@ -36,12 +36,11 @@ export function assembledClass(answers){
  return `${text('header')}\n    ${text('owner')}\n    ${text('tickets')}\n\n    ${text('ctor')} {\n        owner = ownerName;\n        tickets = initialTickets;\n    }\n\n    ${text('getter')} {\n        return tickets;\n    }\n\n    ${text('add')} {\n        tickets += amount;\n        audit();\n    }\n\n    ${text('helper')} {\n        System.out.println(tickets);\n    }\n}`;
 }
 export function complete33(n,d){
- return true;
  const answersOK=qs=>qs.every(q=>d.answers?.[q.id]===q.answer);
  if(n===1)return ANATOMY.every(p=>d.inspected?.includes(p.id))&&CLASS_PARTS.every(p=>d.parts?.[p.id]===p.answer)&&d.partsChecked===true&&d.concept===1;
  if(n===2)return ['inside-score','outside-score','inside-get','outside-get'].every(k=>d.probed?.includes(k))&&answersOK(ACCESS_TRANSFER);
  if(n===3)return !!d.created&&['a','b'].every(id=>(d.calls||[]).some(x=>x.id===id&&x.kind==='add'))&&(d.calls||[]).some(x=>x.kind==='get')&&answersOK(OBJECT_TRANSFER);
- if(n===4)return d.validated===true&&d.clientChecked===true&&answersOK(BUILD_TRANSFER)&&String(d.reflection||'').trim().length>=0;
+ if(n===4)return d.validated===true&&d.clientChecked===true&&answersOK(BUILD_TRANSFER)&&String(d.reflection||'').trim().length>=40;
  return false;
 }
 function transfer33(qs,d,seed,page){const ordered=stableShuffle(qs,seed,`33-practice-order-${page}`);

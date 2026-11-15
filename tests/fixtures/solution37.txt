@@ -1,0 +1,33 @@
+public class TrailGate {
+    private int capacity;
+    private int admitted;
+    private static int totalAdmitted;
+    public static final int MAX_GROUP_SIZE = 8;
+
+    public TrailGate(int maxVisitors) {
+        capacity = maxVisitors;
+        admitted = 0;
+    }
+
+    public boolean admitGroup(int groupSize) {
+        if (groupSize <= 0 || groupSize > MAX_GROUP_SIZE || admitted + groupSize > capacity) {
+            return false;
+        }
+        admitted += groupSize;
+        totalAdmitted += groupSize;
+        return true;
+    }
+
+    public int getAdmitted() {
+        return admitted;
+    }
+
+    public static int getTotalAdmitted() {
+        return totalAdmitted;
+    }
+
+    public static boolean canAdmitGroup(TrailGate gate, int groupSize) {
+        return groupSize > 0 && groupSize <= TrailGate.MAX_GROUP_SIZE
+               && gate.admitted + groupSize <= gate.capacity;
+    }
+}

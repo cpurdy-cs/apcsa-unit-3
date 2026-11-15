@@ -1,0 +1,18 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {PAGE37,PRACTICE37,QUESTIONS37,EXAMPLES37} from '../js/content37.js';
+import {render37Page,render37Check,complete37,count37,grade37} from '../js/topic37.js';
+import {getImplementedTopic,pageUnlocked,topicUnlocked,topicCompleted} from '../js/registry.js';
+import {blankState,normalizeState} from '../js/storage.js';
+test('3.7 covers every 2025 College Board static and final essential knowledge item',()=>{assert.equal(PAGE37.length,5);assert.equal(QUESTIONS37.length,10);for(let i=1;i<=5;i++)assert.equal(PRACTICE37[i].length,3);assert.equal(EXAMPLES37[2].length,3);assert.equal(EXAMPLES37[3].length,5);assert.equal(EXAMPLES37[4].length,4);assert.ok(getImplementedTopic('3.7'));for(const ref of ['3.7.A.1','3.7.A.2','3.7.B.1','3.7.B.2','3.7.B.3'])assert.ok(QUESTIONS37.some(q=>q.objective.includes(ref)),ref);});
+test('3.7 requires practical experiments as well as 3 correct practice answers per lesson',()=>{for(let n=1;n<=5;n++){const d={answers:Object.fromEntries(PRACTICE37[n].map(q=>[q.id,q.answer]))};assert.equal(complete37(n,d),false);if(n===1){d.players=[5,0,0];d.scoreChanges=1;d.predictedCreate=d.predictedScore=true;}else if(n===5)d.fullClass={passed:true};else d.passed=EXAMPLES37[n].map(x=>x.id);assert.equal(complete37(n,d),true);}});
+test('graded check preserves question snapshot, shows Java as multiline code and uses one 100-point rubric',()=>{const a={draft:Object.fromEntries(QUESTIONS37.map((q,i)=>[q.id,i<2?(q.answer+1)%4:q.answer]))};assert.equal(count37(a),10);const result=grade37(a);assert.equal(result.score,80);assert.equal(result.questions.length,10);const html=render37Check(a,42,false);assert.match(html,/Read the following Java code/);assert.match(html,/class="topic36-check"/);assert.doesNotMatch(html,/Teacher key:/);assert.match(render37Check(a,42,true),/Teacher key:/);assert.match(render37Page(5,{},42),/TrailGate/);assert.doesNotMatch(render37Page(5,{},42),/public class TrailGate \{/);});
+test('Topic 3.7 unlocks only after passing 3.6, retains earlier schema-1 backup work',()=>{const original=blankState();original.pages['3.3.4']={completed:true,data:{reflection:'My explanation'}};original.assessments['3.6'].attempts=[{at:'2026-11-15',score:80}];original.overrides.topics['3.6']={at:'2026-11-14',reason:'Prior completion'};const saved=normalizeState(JSON.parse(JSON.stringify(original)));assert.equal(saved.pages['3.3.4'].data.reflection,'My explanation');assert.equal(saved.assessments['3.6'].attempts[0].score,80);assert.equal(saved.overrides.topics['3.6'].reason,'Prior completion');assert.equal(topicUnlocked(saved,'3.7'),true);assert.equal(pageUnlocked(saved,'3.7',2),false);for(let i=1;i<=5;i++)saved.pages[`3.7.${i}`]={completed:true,data:{}};assert.equal(topicCompleted(saved,'3.7'),true);const empty=blankState();assert.equal(topicUnlocked(empty,'3.7'),false);});
+
+test('3.7 missed-question review includes options and student response without revealing the answer key',async()=>{
+ const {renderSubmissionReview}=await import('../js/review.js');
+ const qs=QUESTIONS37.slice(0,3),a={at:'2026-11-15',score:66.67,points:Object.fromEntries(qs.map((q,i)=>[q.id,i===0?0:100/3])),answers:Object.fromEntries(qs.map((q,i)=>[q.id,i===0?(q.answer+1)%q.options.length:q.answer])),questions:qs};
+ const html=renderSubmissionReview('3.7',{attempts:[a]},qs,false,'missed');
+ assert.match(html,/Missed questions \(1\)/);assert.match(html,/Your response/);assert.match(html,/Review one shared class-variable copy/);
+ for(const option of qs[0].options)assert.ok(html.includes(option.replaceAll('`','')),option);
+ assert.doesNotMatch(html,/Teacher key:/);
+});

@@ -1,3 +1,11 @@
+## Version 1.20 — Topic 3.7: Class Variables and Methods
+
+1. Added 3.7.1–3.7.5 through the modular topic registry. Interactive lessons compare independently stored fields and shared class state, public static access, static method restrictions, and final constants.
+2. New full-class TrailGate coding workshop with 21 executable behavior tests and diagnostic expected/actual results. The parser is isolated to the new topic, preserving prior Java evaluators.
+3. New graded 10-question Topic 3.7 check, 80% mastery, one final submission, teacher reset, original code and response snapshots, missed-question review without student answer keys.
+4. New Topic 3.7 and cumulative PDF evidence, with multiline student Java source and graded responses; preserves schema-1 JSON backups, teacher overrides and previous grading history.
+5. All previously approved Topic 3.1–3.6 content and implementation modules remain unchanged. Shared application edit sync extended only to clear stale 3.7 tests, retaining the v1.19 live autosave fix. No plaintext teacher code distributed.
+
 ## Version 1.19 — Live character counts and dependable text autosave
 
 1. Fixed the shared DOM query helper: simple `#id` references now resolve with `document.getElementById`, including IDs beginning with a digit (invalid as bare CSS selectors). This removes the exception that interrupted live character counts and skipped saving typed text in 3.3.4 and 3.4.5.

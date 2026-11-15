@@ -1,15 +1,21 @@
 # Class Creation Lab | AP Computer Science A Unit 3
 
-**Release 1.19: live character counts and reliable autosave for numeric-ID inputs**
+**Release 1.20: Topic 3.7 — Class Variables and Methods**
 
 An interactive, self-paced learning website based on the user-supplied **2025 College Board AP Computer Science A Course and Exam Description, Unit 3: Class Creation**. The website runs entirely in the browser and can be hosted on **GitHub Pages** without a server, Java compiler, build step, or paid services.
 
-**Release scope:** Topics **3.1–3.6** are implemented (29 interactive lesson pages and six graded checks). Topics 3.7–3.9 remain in development.
+**Release scope:** Topics **3.1–3.7** are implemented (34 interactive lesson pages and seven graded checks). Topics 3.8–3.9 remain in development.
 
 
 **v1.11 fix:** In 3.4.4, clicking the `PrizeCard`, `ArcadeMachine`, or `Player` challenge buttons now switches the editor to the selected class. Separate drafts and test results persist when switching and after reloading saved progress. No changes to grading, lesson requirements, or previous-topic content.
 
 **v1.12 presentation update:** No estimated minutes or class-period counts appear on student-facing lesson headers or course-roadmap cards for any topic, including unreleased roadmap topics. Incomplete lessons display “In progress” instead of a time estimate. Teacher-only pacing guidance remains in `docs/TEACHER_GUIDE.md`. No assessment, saved-progress, or grading changes.
+
+## v1.20 — Class Variables and Methods
+
+Added five independent, strictly sequenced Topic 3.7 lessons: (1) shared versus per-object state with a responsive multi-object Player visualizer, (2) declaring and accessing public static variables through the class name, (3) static-method access restrictions and static-to-static calls, (4) `final` constants and assignment legality, and (5) a full **TrailGate** Java class-writing project. The new workshop requires `private int capacity`, `private int admitted`, `private static int totalAdmitted`, and `public static final int MAX_GROUP_SIZE = 8`, plus a constructor, an instance mutator, an instance getter, and two class methods. Its isolated, bounded evaluator runs **21 deterministic tests** of class-level shared totals, individual counts, static dispatch, validation, and boundary cases with exact expected/observed results. It is a Java subset, not a general compiler.
+
+A new 10-question, 100-point graded check requires 80% mastery. Students retain unlimited practice, stable balanced choices, one submitted graded attempt, post-submission missed-question review with correct answers teacher-only, teacher resets/overrides, JSON backups, and topic/cumulative PDFs. The v1.19 numeric-leading-ID autosave fix and already-approved Topic 3.1–3.6 source modules are preserved. Topic 3.7 modules are registered in the existing topic registry without changing prior lesson content or question banks. All student-facing pacing estimates remain hidden.
 
 ## v1.19 live-input fix
 
@@ -47,9 +53,9 @@ Old 3.6.5 drafts are retained as `legacyV116` in imported progress, and previous
 
 ## Modular design (introduced in v1.4)
 
-The application shell, autosave normalization, teacher console, and offline PDF writer now use a **single topic registry** (`js/registry.js`). Topics 3.1–3.6 have separate controllers and topic-specific report writers. Future topics can be added by registering their files, **without editing the previously completed lessons**. Topic 3.4 was added through the registry without rewriting the already-approved Topics 3.1–3.3.
+The application shell, autosave normalization, teacher console, and offline PDF writer now use a **single topic registry** (`js/registry.js`). Topics 3.1–3.7 have separate controllers and topic-specific report writers. Future topics can be added by registering their files, **without editing the previously completed lessons**. Topic 3.4 was added through the registry without rewriting the already-approved Topics 3.1–3.3.
 
-See **`docs/ARCHITECTURE.md`** for the plugin contract and the steps for adding Topic 3.7 later.
+See **`docs/ARCHITECTURE.md`** for the plugin contract and the steps for adding future topics.
 
 ## Topic 3.1: Abstraction and Program Design (four lessons)
 

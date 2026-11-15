@@ -1,10 +1,10 @@
-# Modular architecture | v1.19
+# Modular architecture | v1.20
 
-Version 1.4 established the architecture. Versions 1.5 and 1.7 prove the extension point by adding Topics 3.3 and 3.4 as independent modules. Topics 3.5 and 3.6 use the same extension point. Topics 3.7–3.9 remain unimplemented.
+Version 1.4 established the architecture. Versions 1.5 and 1.7 prove the extension point by adding Topics 3.3 and 3.4 as independent modules. Topics 3.5–3.7 use the same extension point. Topics 3.8–3.9 remain unimplemented.
 
 ## Goal
 
-You can stop after Topic 3.6 and later add Topic 3.7 **without editing the approved Topic 3.1–3.6 implementation files**. The core systems discover registered topics instead of having special cases for specific topic IDs.
+You can stop after Topic 3.7 and later add Topic 3.8 **without editing the approved Topic 3.1–3.7 implementation files**. The core systems discover registered topics instead of having special cases for specific topic IDs.
 
 ## Where things live
 
@@ -36,7 +36,7 @@ They were deliberately **not migrated**:
 - Question IDs, snapshots, attempt history and the localStorage key `flourbluff-apcsa-u3-v1` remain intact.
 - JSON backup `schema: 1` remains supported.
 
-Topics 3.2–3.6 use dotted IDs. Topic 3.6 uses `3.6.1`–`3.6.5`. Future topics should follow the same convention.
+Topics 3.2–3.7 use dotted IDs. Topic 3.7 uses `3.7.1`–`3.7.5`. Future topics should follow the same convention.
 
 ## Registry plugin contract
 
@@ -70,9 +70,9 @@ All controller methods share the same context, including `view()`, `pData(key)`,
 
 Use each topic's own `data-action` prefix (e.g. `33-`) to prevent event collisions. Topic 3.1 predates this convention and is intentionally retained under its original action names.
 
-## Add Topic 3.7 later
+## Add a future topic (such as Topic 3.8)
 
-1. Add `js/content37.js`, `js/topic37.js`, and separate `js/topics/topic37-controller.js` and `js/topics/report37.js`. Keep the supported Java execution subset explicit.
+1. Add new topic-specific content, rendering, controller, and report files (following the `js/content37.js`, `js/topic37.js`, `js/topics/topic37-controller.js`, and `js/topics/report37.js` pattern). Keep the supported Java execution subset explicit.
 2. Register the topic's lesson metadata, page IDs, controller, and report writer in `js/registry.js`.
 3. Existing generic shell, normalization, and PDF code recognizes the registered topic. Preserve all existing page IDs, question IDs, graded snapshots, and schema-1 storage key.
 4. Include targeted tests for Java semantics, the student workflow, teacher reset, progress backup, and PDF evidence. Run the complete regression suite and inspect the student pages before release.
@@ -105,3 +105,12 @@ The self-contained `WeatherStation` workshop was introduced to replace writing `
 ## v1.18 Topic 3.6.5 change
 
 The standalone `WaterTank` replaces `WeatherStation` only in Topic 3.6.5. `js/topics/reference-engine36.js` now models two private integer fields, checks 18 independent state/identity outcomes, and accepts booleans, method calls, conditionals and primitive/referenced parameter values within its documented Java subset. `js/topic36.js` and the page-5 knowledge checks in `js/content36.js` supply new specifications and caller snippets. `js/topics/report36.js` includes the new full-class code and test count. The stored `topic36Revision:3` archives v1.17 work under `legacyV117` (and keeps any older `legacyV116`) while resetting only page 3.6.5 completion and the new practice questions. Do not change previous graded submissions, registered page IDs, the teacher override log, the schema-1 storage format, or approved earlier lessons.
+
+## v1.20 Topic 3.7 plugin
+
+- `js/content37.js`: original 2025 CED-aligned content for five static/final lessons, 10 graded questions, and knowledge checks.
+- `js/topic37.js`: interactive Player shared-state factory, class-member experiments, Java code panels, graded-check renderer and snapshots.
+- `js/topics/topic37-controller.js`: page navigation, gated progress, autosave input handling, grading, and editor key support.
+- `js/topics/static-engine37.js`: bounded, isolated TrailGate-specific parser and interpreter modeling Java class-level static storage, class-qualified member access, static dispatch, instance-field access through object references, and final assignment restrictions; 21 deterministic test scenarios. No eval or server.
+- `js/topics/report37.js`: individual and cumulative PDF evidence with multiline source, test summary, and graded question snapshots.
+- v1.19 IDs, storage key, schema 1, and all Topic 3.1–3.6 lesson module source are preserved. The shared `js/app.js` includes only a focus-preserving clearing of stale 3.7 test output when a new edit is typed.

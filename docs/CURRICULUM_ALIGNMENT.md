@@ -1,4 +1,4 @@
-# 2025 College Board AP CSA Unit 3 | Release 1.19 alignment
+# 2025 College Board AP CSA Unit 3 | Release 1.20 alignment
 
 **Source used:** user-supplied *AP Computer Science A Course and Exam Description*, Course Framework V.1, © 2025 College Board, Unit 3 *Class Creation*. The attached PDF is the sole curricular source. All lesson scenarios and scored questions are original to this project.
 
@@ -45,11 +45,10 @@ CED p. 83 (attached PDF p. 11), LO **3.3.A**: designate access and visibility co
 
 **Assessment:** 10 graded questions, 10 points each. Requires eight correct. Independent practice requires successful completion but permits unlimited retries. The builder and visibility checker only evaluate the specified rules; they are not presented as a full Java compiler.
 
-## Remaining roadmap (3.1–3.6 are now implemented)
+## Remaining roadmap (3.1–3.7 are now implemented)
 
 | Topic | Planned pages | Suggested periods |
 |---|---:|---:|
-| 3.7 Class Variables and Methods | 5 | 2 |
 | 3.8 Scope and Access | 4 | 2 |
 | 3.9 this Keyword | 3 | 1 |
 
@@ -100,3 +99,17 @@ CED printed p. 87; LO 3.6.A, EK 3.6.A.1–3; skills 2.C and 4.A.
 **v1.17 Topic 3.6.5 transfer task:** Students apply all three essential knowledge statements to a fresh WeatherStation class that was not provided earlier. The `calibrateOther` method mutates an object through a copied reference; `chooseColder` must return one of two existing references without allocating; `isWarmerThan` accesses another WeatherStation's private `temperature` field from inside the same class. Signed temperature inputs and a same-object calibration case prevent direct reuse of the older TicketWallet solution.
 
 **Current v1.18 Topic 3.6.5:** Students write a completely new `WaterTank` class with private fields `capacity` and `liters`, plus a constructor, accessors, and methods for valid/invalid additions and transfers. `transferTo(other, amount)` modifies a supplied object through a copied reference and preserves both objects' state on invalid inputs (3.6.A.1). `chooseLowerLevel(first, second)` returns the existing object reference rather than a copy (3.6.A.2). `hasMoreRoomThan(other)` and transfer validation read the private fields of another `WaterTank` from inside the same class (3.6.A.3). The 18 tests also exercise boundary values, alias behavior, and observed return values. Previous WeatherStation text above is historical, not the current workshop.
+
+## Topic 3.7: Class Variables and Methods
+
+CED printed p. 88 (attached PDF p. 16), LO 3.7.A and 3.7.B; suggested skills 2.C and 3.B.
+
+| Essential knowledge | Active student work | Graded check |
+|---|---|---|
+| 3.7.A.1 Static methods cannot directly access instance state without an object | 3.7.3 compiles/not-compiles experiments, static method with Counter reference; 3.7.5 `canAdmitGroup` inspects a specified TrailGate | Q5, Q6 |
+| 3.7.A.2 Static methods access class state and call other class methods | 3.7.3 static field and static helper experiment; 3.7.5 `getTotalAdmitted` and shared count | Q6, Q8 |
+| 3.7.B.1 One class-wide shared variable | 3.7.1 Player factory with independent scores and shared playerCount; 3.7.5 multiple gates share `totalAdmitted` | Q1–Q4, Q10 |
+| 3.7.B.2 Public static variables accessed by class name and dot | 3.7.2 declaration/expression builder; 3.7.4 and 3.7.5 public class constant reads | Q7 |
+| 3.7.B.3 Final prohibits reassignment | 3.7.4 four compile/predict/repair scenarios and 3.7.5 `public static final int MAX_GROUP_SIZE = 8` | Q9, Q10 |
+
+Students complete five guided lessons plus a substantial, original full-class Java TrailGate workshop (21 deterministic behavior cases); one graded 10-question / 100-point check requires eight correct to pass. Answers are ordered per student seed; review after submission includes original code and chosen answers but no student answer key. Course-year heading remains 2026; 2025 identifies the curriculum source.

@@ -1,4 +1,4 @@
-# Teacher Guide | Class Creation Lab v1.19
+# Teacher Guide | Class Creation Lab v1.20
 
 ## Release 1.6 note
 
@@ -16,7 +16,7 @@ Student progress is compatible with the earlier releases. Previous Topic 3.5.8 m
 
 ## Source and scope
 
-Based only on the user-provided **2025 AP Computer Science A Course and Exam Description**, Unit 3. This release implements 3.1 Abstraction and Program Design, 3.2 Impact of Program Design, 3.3 Anatomy of a Class 3.4 Constructors, 3.5 Methods: How to Write Them, and 3.6 Passing and Returning References. Topics 3.7–3.9 remain planned.
+Based only on the user-provided **2025 AP Computer Science A Course and Exam Description**, Unit 3. This release implements 3.1 Abstraction and Program Design, 3.2 Impact of Program Design, 3.3 Anatomy of a Class 3.4 Constructors, 3.5 Methods: How to Write Them, 3.6 Passing and Returning References, and 3.7 Class Variables and Methods. Topics 3.8–3.9 remain planned.
 
 Plan approximately **two 45–50-minute class periods** for Topic 3.1 **one 45–50-minute period** for Topic 3.2 and **two 45–50-minute periods** for Topic 3.3. These estimates are for teacher planning only; the student-facing site shows no expected completion times. Students work at their own pace.
 
@@ -122,3 +122,9 @@ Old v1.16 `TicketWallet` work remains in the JSON backup's `legacyV116` evidence
 Students write an original `WaterTank` class with private `int capacity` and `int liters` fields. The constructor's preconditions guarantee positive capacity and an initial level between zero and capacity; there is no requirement to reject invalid constructor inputs. The `addWater` and `transferTo` methods have **explicit validation requirements** for their integer arguments. A failed operation returns `false`, leaving all tank states unchanged; successful operations return `true`. `getCapacity`, `getLiters`, `chooseLowerLevel`, and `hasMoreRoomThan` assess additional state, returned-reference identity and same-class private member access. The 18 automatically graded tests give concrete Java-style caller code, expected results and actual returns/states. Students may use different valid implementation strategies and parameter names within the supported Java subset.
 
 This replaces only the 3.6.5 exercise; earlier lessons and section-check questions are unchanged. Imported v1.17 WeatherStation drafts remain under `legacyV117` in progress data, while a prior `legacyV116` TicketWallet draft is also retained. Because the assignment is new, 3.6.5 must be recompleted. Previously submitted section assessments and teacher-authorized progression exceptions are never replaced or scored artificially. All student-facing activity-duration estimates remain omitted.
+
+### Version 1.20: Topic 3.7 classroom guidance
+
+Lessons 3.7.1–3.7.5 correspond to the 2025 College Board Unit 3, Topic 3.7 (printed CED p. 88), with two suggested periods for teacher planning. Student pages include **no time estimates**. Guide students to notice that creating a Player changes one shared count while scores remain independent. The static-method lab specifically distinguishes direct instance access (invalid) from access through a supplied object (valid), and permits static-to-static calls. The `final` lab distinguishes class-level sharing from immutability.
+
+In the independent TrailGate challenge, students write a full class from specifications. Test 1–21 cover valid/invalid group sizes, capacity boundaries, shared counters across objects, static reads and object-reference parameters. Test output shows Java-style input code and observed results. This is a restricted subset of Java, and a real IDE remains authoritative for advanced syntax. The 10-question section check needs 8 correct; the student review omits correct answers while teacher preview can show them. Teacher resets, topic prerequisite overrides, and exported PDFs follow the existing shared workflow.

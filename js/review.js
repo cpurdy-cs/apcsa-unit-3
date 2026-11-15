@@ -10,6 +10,11 @@ export function reviewGuidance35(topic,area,objective){
  if(id==='3.2')return 'Review reliability testing, unintended consequences, licensing, and the responsible use of code.';
  if(id==='3.3')return 'Review public and private access, instance variables, constructors, and valid class declarations.';
  if(id==='3.4')return 'Review object initialization, default field values, constructor parameters, and defensive copying.';
+ if(id==='3.7'){
+  if(/final|constant/i.test(area))return 'Review the difference between static shared ownership and final preventing reassignment; practice reading class constants.';
+  if(/method|access/i.test(area))return 'Review static method restrictions, static-to-static calls, and supplying an object reference to read instance fields.';
+  return 'Review one shared class-variable copy versus separate per-object state and use ClassName.field for public class members.';
+ }
  if(id==='3.6'){
   if(/private|access/.test(String(area).toLowerCase()))return 'Review same-class private access and public accessors for other classes.';
   if(/return|identity/.test(String(area).toLowerCase()))return 'Review how methods return existing references and how == compares object identity.';
@@ -30,6 +35,7 @@ export function relatedLesson(topic,area='',objective=''){
  if(t==='3.2')return /reliab|test|boundary/.test(a)?2:/licen|reuse|permission/.test(a)?3:1;
  if(t==='3.3')return /object|instance/.test(a)?3:/build|design|declaration/.test(a)?4:2;
  if(t==='3.4')return /default|implicit|availability/.test(a)?2:/defensive|mutable|copy/.test(a)?5:/writing|debugging|parameter/.test(a)?4:1;
+ if(t==='3.7')return /final|constant/i.test(a)?4:/method|restriction/i.test(a)?3:/class-name|access/i.test(a)?2:1;
  if(t==='3.6')return /private|access/.test(a)?4:/return|identity/.test(a)?3:/mutat|reassign|parameter/.test(a)?2:1;
  if(t==='3.5')return /precondition|debug/.test(a)?7:/primitive|parameter/.test(a)?4:/control|early|flow/.test(a)?6:/accessor|mutator|state/.test(a)?5:/return|print/.test(a)?3:1;
  return 1;

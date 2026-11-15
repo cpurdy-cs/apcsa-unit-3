@@ -252,3 +252,22 @@ dialog{border:1px solid #d8dce1;border-radius:15px;padding:0;width:min(520px,cal
 .reference36-test-data pre code{font:inherit;background:transparent;padding:0}
 .reference36-test-data .reference36-actual-fail{border-color:#b96c77;background:#fff2f3}
 @media(max-width:710px){.reference36-test-data{grid-template-columns:1fr}.reference36-support>summary{align-items:flex-start}}
+
+/* Topic 3.7 — shared class state, objects, guided experiments and full-class work. */
+.topic37-page .topic37-state{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:14px;margin:16px 0;align-items:start}
+.topic37-page .topic37-shared{background:rgba(80,0,0,.065);border:2px solid #75434b;border-radius:12px;padding:18px;min-width:0}
+.topic37-page .topic37-big{font-size:1.45rem;font-weight:750;color:#500000;margin-top:16px}
+.topic37-page .topic37-objects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0}
+.topic37-page .topic37-object{background:var(--panel, #fff);border:1px solid #cfcbd0;border-radius:10px;padding:13px;min-width:0}
+.topic37-page .topic37-object p{margin:11px 0}
+.topic37-page .topic37-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start;margin-bottom:16px}
+.topic37-page .topic37-actions .field{margin-bottom:0;min-width:0}
+.topic37-page .topic37-actions .btn{justify-self:start}
+.topic37-page .topic37-control{margin:18px 0}
+.topic37-page .topic37-control select{max-width:100%}
+.topic37-page .topic37-requirements{font-size:.88rem;color:#52505a;margin-top:12px}
+.topic37-page .reference36-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
+.topic37-page .reference36-code pre{white-space:pre;overflow:auto;font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+.topic37-page .topic37-workshop .method35-spec{margin:18px 0}
+@media(max-width:850px){.topic37-page .topic37-state{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:560px){.topic37-page .topic37-objects{grid-template-columns:minmax(0,1fr)}.topic37-page .reference36-tabs .btn{width:100%;justify-content:center}}

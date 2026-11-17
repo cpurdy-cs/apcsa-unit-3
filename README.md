@@ -1,10 +1,16 @@
 # Class Creation Lab | AP Computer Science A Unit 3
 
-**Release 1.24: Standalone instruction added to Topics 3.5–3.7 (existing student work preserved)**
+**Release 1.25: Complete caller code added to Topics 3.5.2 and 3.5.3 (existing student work preserved)**
 
 An interactive, self-paced learning website based on the user-supplied **2025 College Board AP Computer Science A Course and Exam Description, Unit 3: Class Creation**. The website runs entirely in the browser and can be hosted on **GitHub Pages** without a server, Java compiler, build step, or paid services.
 
 **Release scope:** Topics **3.1–3.8** are implemented (38 interactive lesson pages and eight graded checks). Topic 3.9 remains in development.
+
+## v1.25 — Complete method-call context in Topics 3.5.2 and 3.5.3
+
+The state-changing method experiments in **3.5.2** now show the entire `Runner.main` caller and corresponding `Player` or `TicketWallet` class for every selection. The actual method call is prominent; the before-and-after readout names the specific object's field. All three examples compile as real Java.
+
+The return-versus-print experiments in **3.5.3** also show complete `Runner.main` caller code and the complete corresponding class. Students can see exactly where `getScore()` or `hasEnough(12)` returns a value into a caller variable versus `showScore()` printing to the console without returning a value. The three calls are valid Java and compile. The original activities, button actions, practice and graded questions, page IDs, completion rules, saved progress schema, teacher controls, and PDF reports are unchanged. Existing student completions and scores remain valid. Three focused regression checks protect the calls and old progress.
 
 ## v1.24 — Instructional completeness improvements for Topics 3.5–3.7
 

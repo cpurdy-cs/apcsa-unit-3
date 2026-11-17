@@ -1,3 +1,7 @@
+## v1.25 — Visible Java callers in Topic 3.5.2–3.5.3
+
+Added complete Java caller and supporting class to all three state-changing method experiments in 3.5.2 and all three return-versus-print experiments in 3.5.3. Each activity now identifies exactly which method call executes and how the caller uses the result. Verified all six examples with `javac`. Read-only contextual changes; no practice, completion, grading, progress, assessment or teacher-tool contracts changed.
+
 ## v1.24 — Standalone instruction for Topics 3.5–3.7
 
 - Added new visible explanations, worked Java examples and activity guidance before the experiments on all eight Topic 3.5 pages, all five Topic 3.6 pages and all five Topic 3.7 pages.

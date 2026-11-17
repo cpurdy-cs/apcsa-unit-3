@@ -346,3 +346,9 @@ dialog{border:1px solid #d8dce1;border-radius:15px;padding:0;width:min(520px,cal
 .topic-instruction-takeaway{border-left:3px solid #af8290;padding:8px 12px;background:#f8f3f5;line-height:1.6}
 .topic-instruction-next{border:1px solid #dac8ce;border-radius:8px;padding:11px 13px;line-height:1.55;background:#fff}
 @media(max-width:900px){.topic-instruction-grid{grid-template-columns:1fr}}
+
+/* v1.25: visible Java callers and complete classes in Topics 3.5.2–3.5.3. */
+.topic35-page .method35-change-code{display:grid;grid-template-columns:1fr;gap:13px;margin:16px 0;min-width:0}
+.topic35-page .method35-change-code .code-stage{min-width:0}
+.topic35-page .method35-change-code .code-main{white-space:pre;overflow-x:auto;overflow-wrap:normal;tab-size:4;font-size:12.5px;line-height:1.65}
+.topic35-page .callout .helper{margin-top:6px;margin-bottom:0;color:inherit}

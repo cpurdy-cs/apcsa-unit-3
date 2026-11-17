@@ -1,4 +1,5 @@
 import {TOPICS,IMPLEMENTED_TOPICS,getImplementedTopic,topicProgress,topicCompleted,topicUnlocked,pageUnlocked,pageKey} from './registry.js';
+import {renderSidebarTopics} from './sidebar-status.js';
 import {blankState,load,save,exportJson,importJson,teacherOn,setTeacher,assessment,passed,recordEvent} from './storage.js';
 import {createReport} from './pdf.js';
 import {shuffledOptions as importOptionShuffle} from './order.js';
@@ -55,9 +56,16 @@ function syncLiveProgress(){
    const badge=document.querySelector('.topic37-page .topic37-workshop .method35-actions .pill');
    if(badge){badge.textContent='Not tested yet';badge.classList.remove('green');}
  }
+ if(editor?.id==='38-code-editor'){
+  document.querySelectorAll('.topic38-page .test-results,.topic38-page .topic38-workshop > .feedback').forEach(node=>node.remove());
+  const badge=document.querySelector('.topic38-page .topic38-workshop .method35-actions .pill');
+  if(badge){badge.textContent='Not tested yet';badge.classList.remove('green');}
+ }
  if(editor?.id==='34-constructor-editor'){
    document.querySelectorAll('.lesson-content .ctor-test-grid, .lesson-content > section.panel > .feedback').forEach(node=>node.remove());
  }
+ const nav=document.querySelector('.topic-nav');
+ if(nav)nav.innerHTML=renderSidebarTopics(view(),teacherOn(),routeNow.id);
  // This code intentionally does not replace the active input or editor.
 }
 function scheduleLiveProgress(){if(uiSyncPending)return;uiSyncPending=true;if(typeof requestAnimationFrame==='function')requestAnimationFrame(syncLiveProgress);else Promise.resolve().then(syncLiveProgress);}
@@ -85,13 +93,11 @@ function header(){const st=view(),t=teacherOn();return `<div class="layout">
  <aside class="sidebar" aria-label="Unit navigation">
  <div class="brand"><div class="brand-mark" aria-label="FB">FB</div><div class="brand-text"><strong>Class Creation Lab</strong><small>AP CSA · Unit 3</small></div></div>
  <div class="nav-overline">THE COURSE</div><nav class="topic-nav" aria-label="Topics">
- ${TOPICS.map(u=>{const ok=topicUnlocked(st,u.id,t);const href=ok?`#/topic/${u.id}/page/1`:'';
- return `<button class="topic-item ${u.implemented?'current':''}" data-nav="${href}" ${ok?'':'disabled'} title="${ok?'Open topic':u.implemented?'Pass the previous topic to unlock':'Planned for future release'}"><span class="topic-number">${u.id}</span><span class="name">${esc(u.title)}</span><span class="lock">${ok?'●':'🔒'}</span></button>`;
- }).join('')}</nav>
+ ${renderSidebarTopics(st,t,route().type==='topic'?route().id:'')}</nav>
  <div class="sidebar-bottom"><div class="student-pill"><span class="student-dot"></span>${esc(studentName(st))}</div><div class="mini-muted">${t?'Preview changes are not saved to the student record':'Saved locally on this device'}</div>
  <button class="side-link" data-nav="#/reports">Reports &amp; backups</button><br><button class="side-link" data-action="switch-student">Switch student</button>
  ${t?'<br><button class="side-link" data-nav="#/teacher">Teacher tools</button>':''}
- <br><button class="teacher-footer" id="teacher-trigger" title="Build information" aria-label="Build information">Build 1.20 · 2025 CED</button></div>
+ <br><button class="teacher-footer" id="teacher-trigger" title="Build information" aria-label="Build information">Build 1.24 · 2025 CED</button></div>
  </aside><main class="app-main" id="main-content"><div class="topbar"><div class="crumbs">AP COMPUTER SCIENCE A <span aria-hidden="true">/</span> UNIT 3 ${t?'/ TEACHER PREVIEW':''}</div>
  <div class="top-actions">${t?'<span class="teacher-banner">TEACHER PREVIEW</span>':''}<button class="btn secondary small" data-action="backup-json">↓ Backup</button><button class="btn secondary small" data-nav="#/reports">Reports</button>${t?'<button class="btn small" data-action="teacher-exit">Exit preview</button>':''}</div></div><div class="content">`;
 }
@@ -106,7 +112,7 @@ function renderEntry(){const topics=IMPLEMENTED_TOPICS.map(x=>x.id).join(', ').r
  <div class="field"><label for="last-initial">Last initial</label><input id="last-initial" class="input" maxlength="1" required pattern="[A-Za-z]" placeholder="R"></div></div>
  <p class="fineprint">Only your first name and last initial are saved. Progress stays in this browser unless you export it.</p><button class="btn block" type="submit">Start learning →</button></form>
  <div class="separator"></div><button class="btn secondary block" data-action="import-backup">Restore progress from JSON backup</button>
- <div style="text-align:center;margin-top:16px"><button class="teacher-footer" id="teacher-trigger" aria-label="Build information">Build 1.20 · 2025 CED</button></div></div>
+ <div style="text-align:center;margin-top:16px"><button class="teacher-footer" id="teacher-trigger" aria-label="Build information">Build 1.24 · 2025 CED</button></div></div>
  <input type="file" id="backup-file" accept=".json,application/json" hidden><dialog id="modal"><div class="dialog-body" id="modal-body"></div></dialog>`;
 }
 function home(){const st=view(),t=teacherOn();const first=IMPLEMENTED_TOPICS[0],firstDone=topicProgress(st,first.id),next=firstDone===first.lessons.length?IMPLEMENTED_TOPICS[1]:null;

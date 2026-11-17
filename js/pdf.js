@@ -69,7 +69,7 @@ export function createReport(st,{cumulative=false,sample=false,topic='3.1'}={}){
  report.heading(cumulative?'UNIT 3 | Cumulative progress report':`TOPIC ${topic} | Student report`,17);
  report.line(`Student: ${display(st)}`);report.line(`Generated: ${new Date().toLocaleString('en-US')}`);
  report.line('Curriculum: 2025 AP Computer Science A, Unit 3 Class Creation');
- report.line('Report format: Class Creation Lab v1.20');report.blank(8);
+ report.line('Report format: Class Creation Lab v1.21');report.blank(8);
  if(sample)report.line('TEACHER SAMPLE - NOT A STUDENT SUBMISSION',{bold:true,color:'0.6 0.1 0.1'});
  // Show recorded teacher exceptions on individual and cumulative reports without inventing scores.
  const lessonOverrides=Object.entries(st.overrides?.lessons||{}).filter(([k])=>cumulative||k.startsWith(topic+'.')||(topic==='3.1'&&/^\d+$/.test(k)));
@@ -89,7 +89,7 @@ export function createReport(st,{cumulative=false,sample=false,topic='3.1'}={}){
   });
   report.blank(8);
   const planned=TOPICS.filter(x=>!x.implemented);
-  if(planned.length)report.line(`Topics ${planned[0].id}-${planned.at(-1).id} remain in development.`,{size:9});
+  if(planned.length)report.line(`${planned.length===1?"Topic":"Topics"} ${planned.length===1?planned[0].id:planned[0].id+"-"+planned.at(-1).id} ${planned.length===1?"remains":"remain"} in development.`,{size:9});
   IMPLEMENTED_TOPICS.forEach((entry,index)=>{if(index>0)report.newPage();entry.writeReport(report,st);});
  }else getImplementedTopic(topic).writeReport(report,st);
  const n=(st.identity?.first||'Teacher')+'_'+(st.identity?.last||'Sample');

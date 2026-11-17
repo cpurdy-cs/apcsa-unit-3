@@ -1,3 +1,4 @@
+import {renderLessonInstruction} from './topics/instruction35-37.js';
 import {stableShuffle,placeCorrectOption,gradedChoiceTargets} from './order.js';
 import {PAGE35,METHOD_PARTS35,CHANGE_DEMOS35,RETURN_DEMOS35,PARAM_DEMOS35,ACCESS_SLOTS35,FLOW_DEMOS35,BUG_TESTS35,BUG_REPAIRS35,PRACTICE35,QUESTIONS35} from './content35.js';
 import {CLASS_SPEC35,starterClass35} from './topics/class-engine35.js';
@@ -47,7 +48,7 @@ function page8(d,seed){
  <div class="method35-actions"><button class="btn" data-action="35-workshop-run">Test complete class</button><span class="pill ${state.passed?'green':''}">${result?`${result.tests.filter(t=>t.pass).length}/${result.total} tests passed`:'Not tested yet'}</span><span class="fineprint" id="35-editor-save">Autosaved locally</span></div>
  ${result?`<div class="feedback ${result.ok?'good':'bad'}" role="status">${result.ok?'✓ Your class passes every test.':e(result.error||'One or more behaviors need attention. Review the failing tests below.')}</div>${result.tests.length?`<div class="test-results">${result.tests.map(t=>`<div class="test-item ${t.pass?'pass':'fail'}"><strong>${t.pass?'✓':'×'} Test ${t.number} · ${e(t.name)}</strong><span>${e(t.detail)}</span></div>`).join('')}</div>`:''}`:''}</section>${practice(8,d,seed)}`;
 }
-export function render35Page(n,d,seed){return [page1,page2,page3,page4,page5,page6,page7,page8][n-1](d,seed);}
+export function render35Page(n,d,seed){return renderLessonInstruction('3.5',n)+[page1,page2,page3,page4,page5,page6,page7,page8][n-1](d,seed);}
 export const answerCount35=a=>QUESTIONS35.filter(q=>q.kind==='choice'?Number.isInteger(a.draft?.[q.id]):q.items.every((_,i)=>a.draft?.[q.id]?.[i]!==undefined&&a.draft?.[q.id]?.[i]!=='')).length;
 export const answersComplete35=a=>answerCount35(a)===QUESTIONS35.length;
 export function grade35(a){let correct=0;const answers={},points={};for(const q of QUESTIONS35){const v=a.draft?.[q.id];const ok=q.kind==='choice'?v===q.answer:q.items.every(([,ans],i)=>v?.[i]===ans);answers[q.id]=v===undefined?null:structuredClone(v);points[q.id]=ok?Number((100/QUESTIONS35.length).toFixed(6)):0;if(ok)correct++;}const score=Math.round(correct/QUESTIONS35.length*10000)/100;return {at:new Date().toISOString(),score,answers,points,questions:QUESTIONS35.map(q=>({...q})),questionBank:'2025-U3.5-v1'};}

@@ -1,10 +1,10 @@
-# Modular architecture | v1.20
+# Modular architecture | v1.24
 
-Version 1.4 established the architecture. Versions 1.5 and 1.7 prove the extension point by adding Topics 3.3 and 3.4 as independent modules. Topics 3.5–3.7 use the same extension point. Topics 3.8–3.9 remain unimplemented.
+Version 1.4 established the architecture. Versions 1.5 and 1.7 prove the extension point by adding Topics 3.3 and 3.4 as independent modules. Topics 3.5–3.8 use the same extension point. Topic 3.9 remains unimplemented.
 
 ## Goal
 
-You can stop after Topic 3.7 and later add Topic 3.8 **without editing the approved Topic 3.1–3.7 implementation files**. The core systems discover registered topics instead of having special cases for specific topic IDs.
+You can stop after Topic 3.8 and later add Topic 3.9 **without editing the approved Topic 3.1–3.8 implementation files**. The core systems discover registered topics instead of having special cases for specific topic IDs.
 
 ## Where things live
 
@@ -36,7 +36,7 @@ They were deliberately **not migrated**:
 - Question IDs, snapshots, attempt history and the localStorage key `flourbluff-apcsa-u3-v1` remain intact.
 - JSON backup `schema: 1` remains supported.
 
-Topics 3.2–3.7 use dotted IDs. Topic 3.7 uses `3.7.1`–`3.7.5`. Future topics should follow the same convention.
+Topics 3.2–3.8 use dotted IDs. Topic 3.8 uses `3.8.1`–`3.8.4`. Future topics should follow the same convention.
 
 ## Registry plugin contract
 
@@ -114,3 +114,14 @@ The standalone `WaterTank` replaces `WeatherStation` only in Topic 3.6.5. `js/to
 - `js/topics/static-engine37.js`: bounded, isolated TrailGate-specific parser and interpreter modeling Java class-level static storage, class-qualified member access, static dispatch, instance-field access through object references, and final assignment restrictions; 21 deterministic test scenarios. No eval or server.
 - `js/topics/report37.js`: individual and cumulative PDF evidence with multiline source, test summary, and graded question snapshots.
 - v1.19 IDs, storage key, schema 1, and all Topic 3.1–3.6 lesson module source are preserved. The shared `js/app.js` includes only a focus-preserving clearing of stale 3.7 test output when a new edit is typed.
+
+## v1.21 Topic 3.8 and sidebar
+
+- New `js/content38.js`, `js/topic38.js`, `js/topics/topic38-controller.js`, `js/topics/scope-engine38.js`, and `js/topics/report38.js`. The bounded scope engine interprets method-local variables using a lexical scope stack, independent of earlier approved engines.
+- `js/sidebar-status.js` produces status-aware topic and active-lesson navigation from the registry, actual passing submissions, page completion and teacher overrides. `js/app.js` imports this shared helper and refreshes only sidebar status after live inputs; it does not replace a focused editor.
+- Only new topic registration and shared shell/CSS/report metadata are changed; previously approved content and topic controllers remain untouched.
+
+
+## v1.24 instructional-only modules (Topics 3.5–3.7)
+
+`js/topics/instruction35-37.js` supplies purely presentational concept panels prefixed before the previously approved Topic 3.5, 3.6 and 3.7 activities. There are no `data-action` handlers, inputs, completion conditions, or new save keys in these panels. Existing topic modules call `renderLessonInstruction(topicId, pageNumber)` before rendering their original pages. Assessment, grading, controllers, localStorage normalization, teacher overrides and report writers are unchanged. The accompanying tests assert that every one of the 18 lessons now teaches the concept before the original activity and that no controls or completion logic are added.

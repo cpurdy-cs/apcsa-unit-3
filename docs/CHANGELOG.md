@@ -1,3 +1,33 @@
+## v1.24 — Standalone instruction for Topics 3.5–3.7
+
+- Added new visible explanations, worked Java examples and activity guidance before the experiments on all eight Topic 3.5 pages, all five Topic 3.6 pages and all five Topic 3.7 pages.
+- Instruction is separate and read-only: no new response fields, grading gates, question changes or progress mutations.
+- All lesson completion, quiz, draft, JSON-backup, teacher reset/override and PDF identifiers remain unchanged.
+- Earlier approved topics 3.1–3.4, 3.8 and existing coding engines remain byte-for-byte unchanged.
+- New tests cover all 18 teaching panels, their placement before the activities, preservation of the editors and completion contracts.
+
+## Version 1.23 — Topic 3.8 instructional clarity
+
+1. Added self-contained learning sections with definitions, worked Java examples, and explicit directions before every Topic 3.8 activity.
+2. 3.8.2 shows complete `Runner` and `RewardCalc` classes before students predict `score` and `result`. The subsequent step-through remains interactive and gated by predictions.
+3. 3.8.3 begins by teaching shadowing and explaining parameter/field name resolution. Its five scenarios now show consistently indented Java and a full proposed code change upon selecting a repair; "Test your repair" is now accurately labeled "Check selected repair".
+4. Rewrote debugging cases 3 and 5 with clearer purpose and valid corrected Java. Aligned the case selection controls in a responsive grid.
+5. Preserved graded question banks, answer keys, previously approved topic files, progress keys, existing submissions, teacher controls, and JSON backups.
+
+## Version 1.22 — Clarified 3.8.2 caller and trace predictions
+
+1. Displayed the complete `Runner.main` caller code **above** the method trace, including the `applyBonus(score)` call and `result` assignment. Previously, a short caller snippet appeared below the long method code and was easy to miss.
+2. Rewrote the student instructions as three explicit tasks: read caller code, predict both caller variables (`score` and `result`), and step through the method.
+3. Added `Caller result` to the execution-state visualizer, highlighting the caller line and correctly tracking when the return value is assigned. Both predictions are required for new traces.
+4. Kept legacy completed Topic 3.8.2 records valid; no changes to its practice questions, other lessons, quiz, teacher tools, or save format.
+
+## Version 1.21 — Topic 3.8: Scope and Access
+
+1. Added four independent modular pages: scope explorer, parameter/local lifetime trace, shadowing/scope debugging, and a full DroneBattery class workshop with 20 behavior tests.
+2. Added a 10-question graded check with code panels, one final submission, 80% passing threshold, teacher reset and missed-question review; individual and cumulative PDF evidence.
+3. Reworked shared left navigation to display completed, current, available and locked topics, per-topic counts and an expanded lesson list for the current topic, including responsive styling.
+4. Preserved all approved Topics 3.1–3.7 implementation files, grading rules, backups, teacher-code hash, overrides and the v1.19 live-text fix. Updated only shared registry/navigation/report metadata.
+
 ## Version 1.20 — Topic 3.7: Class Variables and Methods
 
 1. Added 3.7.1–3.7.5 through the modular topic registry. Interactive lessons compare independently stored fields and shared class state, public static access, static method restrictions, and final constants.

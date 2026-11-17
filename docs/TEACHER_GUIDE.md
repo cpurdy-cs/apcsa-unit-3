@@ -1,4 +1,8 @@
-# Teacher Guide | Class Creation Lab v1.20
+### Version 1.24: Standalone teaching material in Topics 3.5–3.7
+
+Every one of the 18 lessons in 3.5–3.7 now begins with an instructional panel (concept explanation, Java example, key rules and directions). These are read-only teaching additions. Previously recorded completed activities, graded submissions, teacher exceptions, JSON backups and PDF evidence remain valid. No students need to redo any work due to this release.
+
+# Teacher Guide | Class Creation Lab v1.21
 
 ## Release 1.6 note
 
@@ -16,7 +20,7 @@ Student progress is compatible with the earlier releases. Previous Topic 3.5.8 m
 
 ## Source and scope
 
-Based only on the user-provided **2025 AP Computer Science A Course and Exam Description**, Unit 3. This release implements 3.1 Abstraction and Program Design, 3.2 Impact of Program Design, 3.3 Anatomy of a Class 3.4 Constructors, 3.5 Methods: How to Write Them, 3.6 Passing and Returning References, and 3.7 Class Variables and Methods. Topics 3.8–3.9 remain planned.
+Based only on the user-provided **2025 AP Computer Science A Course and Exam Description**, Unit 3. This release implements 3.1 Abstraction and Program Design, 3.2 Impact of Program Design, 3.3 Anatomy of a Class 3.4 Constructors, 3.5 Methods: How to Write Them, 3.6 Passing and Returning References, and 3.7 Class Variables and Methods. Topic 3.9 remains planned.
 
 Plan approximately **two 45–50-minute class periods** for Topic 3.1 **one 45–50-minute period** for Topic 3.2 and **two 45–50-minute periods** for Topic 3.3. These estimates are for teacher planning only; the student-facing site shows no expected completion times. Students work at their own pace.
 
@@ -128,3 +132,13 @@ This replaces only the 3.6.5 exercise; earlier lessons and section-check questio
 Lessons 3.7.1–3.7.5 correspond to the 2025 College Board Unit 3, Topic 3.7 (printed CED p. 88), with two suggested periods for teacher planning. Student pages include **no time estimates**. Guide students to notice that creating a Player changes one shared count while scores remain independent. The static-method lab specifically distinguishes direct instance access (invalid) from access through a supplied object (valid), and permits static-to-static calls. The `final` lab distinguishes class-level sharing from immutability.
 
 In the independent TrailGate challenge, students write a full class from specifications. Test 1–21 cover valid/invalid group sizes, capacity boundaries, shared counters across objects, static reads and object-reference parameters. Test output shows Java-style input code and observed results. This is a restricted subset of Java, and a real IDE remains authoritative for advanced syntax. The 10-question section check needs 8 correct; the student review omits correct answers while teacher preview can show them. Teacher resets, topic prerequisite overrides, and exported PDFs follow the existing shared workflow.
+
+### Version 1.23: Topic 3.8 is self-contained
+
+Each Topic 3.8 lesson now begins with a mini-lesson. The first defines field, parameter and block scope with a worked class; the second explains Java's copied primitive arguments and the return value, and places both entire caller and callee definitions **before** the prediction controls. The third defines shadowing and compares a hidden-field bug with a corrected constructor; its five cases preview the full code resulting from the student's selected change and the button checks their choice rather than claiming to execute a Java compiler. The fourth guides students in choosing fields versus locals for a new class and outlines a testing plan. The original graded questions and progress rules are unchanged. Correct repairs for all five debugging scenarios compile under Java 21.
+
+### Version 1.21: Topic 3.8 classroom guidance
+
+Topic 3.8 aligns with the 2025 College Board CED printed p.89. The suggested two instructional periods are teacher planning information only and are not displayed on student-facing pages. Scope Explorer 3.8.1 asks students to predict whether names are accessible at five locations in a displayed class. The 3.8.2 execution trace shows a primitive argument copied into a parameter, a local created in the method, another created within an if block, and the caller variable remaining unchanged. 3.8.3 uses five block and shadowing repairs. 3.8.4 asks for an original complete DroneBattery class with private fields, local computations, method arguments, conditional flow and 20 behavior checks. The restricted evaluator is not a full Java compiler; test novel Java syntax against real javac before assigning if needed.
+
+The left sidebar now uses both color and text/icon cues: green check = passed topic, maroon current topic = current work, gray lock = unavailable, and a nested lesson list shows completed/current/locked lessons. A passed topic is distinguished from simply completing its lesson pages. Preview mode still shows all topics without creating scores.

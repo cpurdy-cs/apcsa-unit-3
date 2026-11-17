@@ -45,11 +45,10 @@ CED p. 83 (attached PDF p. 11), LO **3.3.A**: designate access and visibility co
 
 **Assessment:** 10 graded questions, 10 points each. Requires eight correct. Independent practice requires successful completion but permits unlimited retries. The builder and visibility checker only evaluate the specified rules; they are not presented as a full Java compiler.
 
-## Remaining roadmap (3.1–3.7 are now implemented)
+## Remaining roadmap (3.1–3.8 are now implemented)
 
 | Topic | Planned pages | Suggested periods |
 |---|---:|---:|
-| 3.8 Scope and Access | 4 | 2 |
 | 3.9 this Keyword | 3 | 1 |
 
 The College Board topic allocations total 18 periods. The broader 21-period plan includes three integrated application/review periods after the planned units. **These additional activities are not yet part of the release.**
@@ -113,3 +112,14 @@ CED printed p. 88 (attached PDF p. 16), LO 3.7.A and 3.7.B; suggested skills 2.C
 | 3.7.B.3 Final prohibits reassignment | 3.7.4 four compile/predict/repair scenarios and 3.7.5 `public static final int MAX_GROUP_SIZE = 8` | Q9, Q10 |
 
 Students complete five guided lessons plus a substantial, original full-class Java TrailGate workshop (21 deterministic behavior cases); one graded 10-question / 100-point check requires eight correct to pass. Answers are ordered per student seed; review after submission includes original code and chosen answers but no student answer key. Course-year heading remains 2026; 2025 identifies the curriculum source.
+
+## Topic 3.8: Scope and Access
+
+CED printed p. 89 (user-attached PDF p. 17), LO 3.8.A, EK 3.8.A.1–2; suggested skills 3.B, 3.D, and 4.A.
+
+| Essential knowledge | Interactive student work | Graded check |
+|---|---|---|
+| 3.8.A.1 Local variables, parameter scope, nested blocks and access restrictions | 3.8.1 scope visualizer, 3.8.2 method step-through with locals entering and leaving scope, 3.8.3 block/sibling debugging, 3.8.4 DroneBattery local computations | Q1–2, Q4–6, Q8–10 |
+| 3.8.A.2 Local/parameter names shadow instance variables | 3.8.3 constructor shadowing repair; 3.8.4 separate local, parameter and instance-field state | Q3, Q7 |
+
+**Assessment:** ten original questions, 100 points, eight correct needed; student review retains original code panels and chosen responses without exposing the correct answer. The four lessons contain unlimited practice and the full independent DroneBattery editor (20 bounded tests). Student-facing pages contain no lesson-duration estimates.

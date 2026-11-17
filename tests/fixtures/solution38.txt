@@ -1,0 +1,41 @@
+public class DroneBattery {
+    private int charge;
+    private int flights;
+
+    public DroneBattery(int initialCharge) {
+        charge = initialCharge;
+        flights = 0;
+    }
+
+    public int getCharge() {
+        return charge;
+    }
+
+    public int getFlights() {
+        return flights;
+    }
+
+    public boolean canFly(int requiredCharge) {
+        return requiredCharge > 0 && requiredCharge <= charge;
+    }
+
+    public boolean completeFlight(int requiredCharge) {
+        if (requiredCharge <= 0 || requiredCharge > charge) {
+            return false;
+        }
+        int remaining = charge - requiredCharge;
+        charge = remaining;
+        flights++;
+        return true;
+    }
+
+    public void recharge(int amount) {
+        if (amount > 0) {
+            int updatedCharge = charge + amount;
+            if (updatedCharge > 100) {
+                updatedCharge = 100;
+            }
+            charge = updatedCharge;
+        }
+    }
+}

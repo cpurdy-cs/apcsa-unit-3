@@ -271,3 +271,78 @@ dialog{border:1px solid #d8dce1;border-radius:15px;padding:0;width:min(520px,cal
 .topic37-page .topic37-workshop .method35-spec{margin:18px 0}
 @media(max-width:850px){.topic37-page .topic37-state{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:560px){.topic37-page .topic37-objects{grid-template-columns:minmax(0,1fr)}.topic37-page .reference36-tabs .btn{width:100%;justify-content:center}}
+
+/* v1.21 navigation: visibly distinguish mastered, current, available and locked work. */
+.topic-nav{gap:5px}.topic-nav-entry{min-width:0}.topic-item{align-items:center;gap:9px;padding:9px 10px;border:1px solid transparent;min-height:52px;cursor:pointer}
+.topic-item:disabled{cursor:not-allowed}.topic-nav-detail{display:grid;gap:3px;flex:1;min-width:0}.topic-nav-title{display:flex;gap:7px;align-items:baseline}.topic-nav-title .topic-number{min-width:23px}.topic-nav-title .name{font-size:12px;line-height:1.3;min-width:0}.topic-status-icon{display:grid;place-items:center;flex:0 0 25px;width:25px;height:25px;border-radius:8px;background:#edf0f3;color:#6b737e;font-size:12px;font-weight:900}.topic-nav-meta{color:#737c88;font-size:10px;line-height:1.3;font-weight:700}
+.topic-item.status-completed .topic-status-icon{color:#136b50;background:#def5ea}.topic-item.status-completed .topic-nav-meta{color:#217250}.topic-item.status-completed{color:#31594c}
+.topic-item.status-current{border-color:#b47c87;background:#f9ecef;box-shadow:inset 3px 0 0 #500000;color:#500000}.topic-item.status-current .topic-status-icon{background:#500000;color:#fff}.topic-item.status-current .topic-nav-meta{color:#803b48}
+.topic-item.status-in-progress .topic-status-icon,.topic-item.status-check-ready .topic-status-icon{background:#f5ecdb;color:#855900}
+.topic-item.status-locked,.topic-item.status-coming-soon{opacity:.72;color:#777f89}.topic-item.status-locked .topic-status-icon,.topic-item.status-coming-soon .topic-status-icon{background:#f1f1f2}
+.sidebar-lesson-list{border-left:2px solid #dfc8cc;margin:4px 3px 9px 23px;padding-left:8px;display:grid;gap:2px}
+.sidebar-lesson{display:flex;align-items:center;gap:8px;padding:7px 5px;width:100%;font-size:10px;text-align:left;border:0;background:transparent;color:#56616c;border-radius:6px;min-height:29px}.sidebar-lesson>span:first-child{flex:0 0 14px;color:#8c949e}.sidebar-lesson-name{min-width:0;line-height:1.25}.sidebar-lesson.done>span:first-child{color:#127653;font-weight:900}.sidebar-lesson.current{background:#f6e6e9;color:#500000;font-weight:800}.sidebar-lesson:disabled{opacity:.55}.sidebar-lesson:not(:disabled):hover{background:#f4edf0}
+/* Topic 3.8: code/visible-scope comparison, clear controls on school Chromebooks. */
+.topic38-workbench{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(240px,.88fr);gap:15px;align-items:start;margin:17px 0}.topic38-code{background:#1b2230;color:#e7eefa;border-radius:10px;min-width:0;padding:14px 12px}.topic38-code>.kicker{color:#d9bac0}.topic38-code pre{white-space:pre;overflow-x:auto;font:12px/1.75 Consolas,'Liberation Mono',monospace;margin:0}.topic38-code-line{display:block;border-left:3px solid transparent;padding:0 5px}.topic38-code-line.selected{background:#583443;border-left-color:#f1bbc7}.topic38-code-line code{background:transparent;color:inherit;white-space:pre}.topic38-line-number{display:inline-block;min-width:25px;color:#a7b4c5;user-select:none}.topic38-controls{min-width:0;border:1px solid #ddd8dc;border-radius:11px;padding:14px;background:#fafbfc;display:grid;gap:13px}.topic38-controls>.field{min-width:0}.topic38-controls p{margin:3px 0}.topic38-question{font-weight:800;color:#500000}.topic38-variables{display:grid;gap:7px}.topic38-variables>div{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid #e1e4e8;border-radius:7px;background:white;padding:7px 10px;font-size:12px}.topic38-variables code{font-weight:800;color:#500000}.topic38-page .reference36-tabs{flex-wrap:wrap;gap:8px}.topic38-page .reference36-tabs>.btn{white-space:normal;text-align:center}.topic38-page .field{margin:11px 0}.topic38-workshop .field{margin:16px 0}.topic38-code code{font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0}
+@media(max-width:1150px){.topic38-workbench{grid-template-columns:1fr}.topic38-code{overflow:hidden}}
+@media(max-width:730px){.sidebar{position:static;height:auto}.sidebar .topic-nav,.sidebar .nav-overline{display:grid}.sidebar .nav-overline{margin:12px 3px 6px}.sidebar .topic-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar .topic-nav-entry.active{grid-column:1/-1}.sidebar-lesson-list{grid-template-columns:repeat(2,minmax(0,1fr))}.topic-item{padding:8px 6px}.topic-nav-title{flex-wrap:wrap}}
+@media(max-width:420px){.sidebar .topic-nav{grid-template-columns:1fr}.sidebar-lesson-list{grid-template-columns:1fr}}
+
+/* v1.22: keep the 3.8.2 caller visible before the trace and spell out both predictions. */
+.topic38-trace .topic38-caller{margin:15px 0 17px;background:#f9f6f7;border:1px solid #d5c5c9;border-left:4px solid #500000;border-radius:10px;padding:15px;min-width:0}
+.topic38-trace .topic38-caller>.kicker{margin-bottom:4px}
+.topic38-trace .topic38-caller .helper{margin:2px 0 12px}
+.topic38-caller pre{margin:0;background:#fff;color:#24272f;border:1px solid #e3dfe1;border-radius:8px;padding:10px 6px;overflow-x:auto;white-space:pre;font:12px/1.75 Consolas,'Liberation Mono',monospace;font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0}
+.topic38-caller-line{display:block;border-left:3px solid transparent;padding:0 5px}
+.topic38-caller-line.selected{background:#f4e4e8;border-left-color:#500000}
+.topic38-caller-line code{color:inherit;background:transparent;font:inherit;white-space:pre}
+.topic38-caller .topic38-line-number{color:#697383}
+.topic38-predictions{padding:16px;background:#f7f8fa;border:1px solid #dadddf;border-radius:10px;display:grid;gap:8px;margin:14px 0}
+.topic38-predictions .kicker{margin:0}.topic38-predictions p{margin:0}
+.topic38-prediction-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.topic38-trace-heading{margin-top:20px}.topic38-trace-heading .kicker{margin:0 0 4px}.topic38-trace-heading h3{margin:0 0 6px}.topic38-trace-heading .helper{margin:0}
+@media(max-width:730px){.topic38-prediction-fields{grid-template-columns:1fr}}
+
+/* v1.23: Topic 3.8 is fully self-instructing, with readable worked examples. */
+.topic38-page .topic38-instruction{border-left:4px solid #500000;background:linear-gradient(135deg,#fff 75%,#faf4f5);margin-bottom:18px}
+.topic38-instruction h2{margin:4px 0 12px}
+.topic38-instruction p{line-height:1.55}
+.topic38-instruction .kicker{color:#7f3f4b}
+.topic38-instruction .reference36-code,.topic38-repair .reference36-code,.topic38-trace .reference36-code{border:1px solid #ded8da;background:#f8f8fa;border-radius:10px;padding:14px;min-width:0;margin:13px 0}
+.topic38-instruction .reference36-code .kicker,.topic38-repair .reference36-code .kicker,.topic38-trace .reference36-code .kicker{margin:0 0 8px}
+.topic38-instruction .reference36-code pre,.topic38-repair .reference36-code pre,.topic38-trace .reference36-code pre{overflow-x:auto;white-space:pre;font:12px/1.7 Consolas,'Liberation Mono',monospace;font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0;color:#292c34;margin:0;max-width:100%}
+.topic38-instruction .reference36-code code,.topic38-repair .reference36-code code,.topic38-trace .reference36-code code{background:none;color:inherit;padding:0;font:inherit}
+.topic38-concept-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:15px 0}
+.topic38-concept-grid>div{min-width:0;border:1px solid #e6dfe2;border-radius:9px;background:#fff;padding:12px}
+.topic38-concept-grid strong{font-size:13px;color:#500000}
+.topic38-concept-grid p{font-size:12px;margin:7px 0 0}
+.topic38-plan{background:#faf6f7;border:1px solid #e0cdd2;border-radius:9px;padding:13px 17px;margin:12px 0}
+.topic38-plan ol{padding-left:21px;margin:9px 0 0;line-height:1.6}
+.topic38-method-source{margin-top:0}
+.topic38-method-source>.reference36-code{background:#fff;margin-bottom:0}
+.topic38-method-source>.reference36-code pre{border:0}
+.topic38-case-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:15px 0 18px;align-items:stretch}
+.topic38-case-picker .topic38-case-button{display:flex;align-items:center;justify-content:flex-start;gap:10px;text-align:left;width:100%;min-height:58px;line-height:1.3;padding:11px 13px;white-space:normal}
+.topic38-case-index{display:grid;place-items:center;flex:0 0 25px;border-radius:7px;min-width:25px;height:25px;background:rgba(255,255,255,.2);font-size:12px;font-weight:800}
+.topic38-case-button.secondary .topic38-case-index{background:#e8e5e7;color:#500000}
+.topic38-case-name{min-width:0;flex:1;font-size:12px}
+.topic38-repair-code .reference36-code{margin:12px 0}
+.topic38-repair-code .reference36-code+.reference36-code{border-left:4px solid #500000;background:#fff9fa}
+@media(max-width:740px){.topic38-concept-grid{grid-template-columns:1fr}.topic38-case-picker{grid-template-columns:1fr}.topic38-case-picker .topic38-case-button{min-height:46px}}
+
+/* v1.24: standalone, read-only instruction before Topics 3.5–3.7 activities. */
+.topic-instruction{border-left:4px solid #500000;background:linear-gradient(135deg,#fff 72%,#faf4f5);margin-bottom:18px}
+.topic-instruction h2{margin:4px 0 10px;color:#242731}
+.topic-instruction .kicker{color:#7f3f4b}
+.topic-instruction-intro{line-height:1.65;max-width:84ch}
+.topic-instruction-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:15px;margin:15px 0;align-items:start}
+.topic-instruction-ideas,.topic-instruction-example{border:1px solid #e4dfe1;border-radius:10px;padding:14px;min-width:0;background:#fff}
+.topic-instruction-ideas h3{font-size:14px;color:#500000;margin:0 0 9px}
+.topic-instruction-ideas ul{padding-left:19px;margin:0;display:grid;gap:9px;font-size:13px;line-height:1.6}
+.topic-instruction-ideas li{overflow-wrap:anywhere}
+.topic-instruction-example{background:#f8f8fa}
+.topic-instruction-example .kicker{margin:0 0 10px}
+.topic-instruction-example pre{overflow-x:auto;white-space:pre;max-width:100%;font:12px/1.75 Consolas,'Liberation Mono',monospace;color:#222936;margin:0;font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0}
+.topic-instruction-example pre code{font:inherit;background:transparent;color:inherit;padding:0}
+.topic-instruction-takeaway{border-left:3px solid #af8290;padding:8px 12px;background:#f8f3f5;line-height:1.6}
+.topic-instruction-next{border:1px solid #dac8ce;border-radius:8px;padding:11px 13px;line-height:1.55;background:#fff}
+@media(max-width:900px){.topic-instruction-grid{grid-template-columns:1fr}}

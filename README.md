@@ -1,15 +1,42 @@
 # Class Creation Lab | AP Computer Science A Unit 3
 
-**Release 1.20: Topic 3.7 — Class Variables and Methods**
+**Release 1.24: Standalone instruction added to Topics 3.5–3.7 (existing student work preserved)**
 
 An interactive, self-paced learning website based on the user-supplied **2025 College Board AP Computer Science A Course and Exam Description, Unit 3: Class Creation**. The website runs entirely in the browser and can be hosted on **GitHub Pages** without a server, Java compiler, build step, or paid services.
 
-**Release scope:** Topics **3.1–3.7** are implemented (34 interactive lesson pages and seven graded checks). Topics 3.8–3.9 remain in development.
+**Release scope:** Topics **3.1–3.8** are implemented (38 interactive lesson pages and eight graded checks). Topic 3.9 remains in development.
+
+## v1.24 — Instructional completeness improvements for Topics 3.5–3.7
+
+Added visible, read-only instructional panels to **all 18 lesson pages** in Topics 3.5 (8 pages), 3.6 (5 pages), and 3.7 (5 pages). Each page now teaches the concept before the interactive activity through an explanation, key points, a worked Java example from a different scenario, an explanation of that example, and concrete guidance for the activity. These additions cover method syntax and return values, primitive argument copying, preconditions and whole-class planning, object aliases and mutations, reference returns, same-class private access, static versus instance state, static-method restrictions, and `final` constants. No lesson activities, question banks, assignment specifications, required completions, or grades were changed.
+
+**Progress compatibility:** Read-only panels do not introduce a single new input, `data-action`, saved-progress key, or prerequisite. Previously completed lessons remain completed, graded attempts/teacher overrides stay intact, and progress JSON backups retain schema 1. Code editors and the v1.19 live autosave fix are unchanged. The only lesson-rendering changes in `js/topic35.js`, `js/topic36.js`, and `js/topic37.js` are the import and prefix of a shared, read-only teaching panel.
+
+The 18 teaching panels are defined separately in `js/topics/instruction35-37.js`. The 2025 College Board CED remains the curriculum authority. No student-facing time estimates were added.
+
 
 
 **v1.11 fix:** In 3.4.4, clicking the `PrizeCard`, `ArcadeMachine`, or `Player` challenge buttons now switches the editor to the selected class. Separate drafts and test results persist when switching and after reloading saved progress. No changes to grading, lesson requirements, or previous-topic content.
 
 **v1.12 presentation update:** No estimated minutes or class-period counts appear on student-facing lesson headers or course-roadmap cards for any topic, including unreleased roadmap topics. Incomplete lessons display “In progress” instead of a time estimate. Teacher-only pacing guidance remains in `docs/TEACHER_GUIDE.md`. No assessment, saved-progress, or grading changes.
+
+## v1.23 — Standalone instruction throughout Topic 3.8
+
+Each of the four Topic 3.8 lesson pages now teaches the underlying concepts *before* asking students to solve activities, using explanatory prose and complete Java examples. 3.8.1 explains field, parameter and nested-block scope; 3.8.2 explains copied primitive arguments and returned values, and shows **both** the complete caller and `applyBonus` method before either prediction; 3.8.3 teaches shadowing explicitly and contrasts a hidden-field bug with a correctly named parameter; 3.8.4 shows how to use lasting fields and temporary locals while planning a whole class.
+
+The five 3.8.3 debugging situations now use consistent Java indentation and clearer objectives. Choosing a repair renders the **proposed complete Java code** alongside the original, before **Check selected repair**; the five case buttons are aligned in a responsive, equal-width grid. The third and fifth cases were rewritten to be clearer. All five *correct* repair implementations were compiled with `javac` during development.
+
+The original Topic 3.8 graded question bank and all other Topics 3.1–3.7 lesson code remain unchanged. Existing saved practice, grading records, progress and teacher overrides are compatible. These are instructional and presentation improvements, not changes to the scoring rules or assessment.
+
+## v1.22 — Clearer method-call trace in 3.8.2
+
+The student now sees a complete `Runner.main` caller **above** the method and is asked to predict both the caller's unchanged `score` and the returned `result`. The trace makes it clear when the method parameter and locals are created, when the returned value is assigned, and what the caller prints. The rest of Topic 3.8 and all other lessons retain their previous content and checks. Earlier completions continue to count, and all text-save and teacher tools are preserved.
+
+## v1.21 — Scope and Access
+
+Added 3.8.1–3.8.4, covering local and parameter scope, nested blocks, the lifetime of locals, name shadowing, and code repair. Students use an interactive line-by-line scope explorer, a step-by-step primitive-argument/local-variable trace, five scope-debugging cases, and an independent **DroneBattery** full-class Java project. The isolated bounded class evaluator models lexical block scopes and uses 20 behavior tests; it accepts different legal names and common field-access syntax. Topic 3.8 has an original 10-question/100-point graded check and a topic PDF with source code, practice and graded responses.
+
+The **left course navigation** now shows a distinct completed (green check), current (maroon highlight and expanded lesson list), available/in-progress, and locked/unpublished state, with a clear lesson count. It updates after live progress saves. Earlier approved topic modules and identifiers, the v1.19 text-autosave correction, teacher overrides, report writer, and the existing credential hash remain intact.
 
 ## v1.20 — Class Variables and Methods
 
@@ -53,7 +80,7 @@ Old 3.6.5 drafts are retained as `legacyV116` in imported progress, and previous
 
 ## Modular design (introduced in v1.4)
 
-The application shell, autosave normalization, teacher console, and offline PDF writer now use a **single topic registry** (`js/registry.js`). Topics 3.1–3.7 have separate controllers and topic-specific report writers. Future topics can be added by registering their files, **without editing the previously completed lessons**. Topic 3.4 was added through the registry without rewriting the already-approved Topics 3.1–3.3.
+The application shell, autosave normalization, teacher console, and offline PDF writer now use a **single topic registry** (`js/registry.js`). Topics 3.1–3.8 have separate controllers and topic-specific report writers. Future topics can be added by registering their files, **without editing the previously completed lessons**. Topic 3.4 was added through the registry without rewriting the already-approved Topics 3.1–3.3.
 
 See **`docs/ARCHITECTURE.md`** for the plugin contract and the steps for adding future topics.
 

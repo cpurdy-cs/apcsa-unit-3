@@ -9,7 +9,7 @@ import {SHADOW_CASES38} from '../js/content38.js';
 
 test('all four Topic 3.8 pages teach required concepts before interactive tasks',()=>{
   const expectations=[
-    ['Variable scope','Interactive scope explorer', 'Instance field','Block-local variable'],
+    ['Variable scope','Interactive scope explorer', 'Instance variable','Block-local variable'],
     ['Calling a method','Read the caller code first','Read the complete method before predicting','Predict after reading both classes'],
     ['Shadowing','Shadowing</strong> occurs','Read, choose, inspect, check','choose a proposed repair'],
     ['Plan your class','method-local','DroneBattery: write a complete class','Before running your code']

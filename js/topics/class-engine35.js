@@ -34,7 +34,7 @@ function parseClass35(src){
   fieldRE.lastIndex=pos;const f=fieldRE.exec(inner);
   if(f){if(fields.has(f[2]))throw Error(`Instance variable ${f[2]} is declared more than once.`);fields.set(f[2],f[1]);pos=fieldRE.lastIndex;continue;}
   methodRE.lastIndex=pos;const m=methodRE.exec(inner);
-  if(!m)throw Error(`Check the Java class structure near: ${inner.slice(pos,pos+55).trim()}. Use private fields and public constructors/methods.`);
+  if(!m)throw Error(`Check the Java class structure near: ${inner.slice(pos,pos+55).trim()}. Use private instance variables and public constructors/methods.`);
   const returnType=m[1]||null,name=m[2],params=parseParams(m[3]);
   let depth=1,k=methodRE.lastIndex;
   // Quoted strings in method bodies do not affect curly-brace counting.
@@ -49,8 +49,8 @@ function parseClass35(src){
   pos=k+1;
  }
  for(const [type,name] of CLASS_SPEC35.fields){if(fields.get(name)!==type)throw Error(`Declare private ${type} ${name}; exactly as specified.`);}
- if(fields.size!==CLASS_SPEC35.fields.length)throw Error('The class has unexpected instance variables. Check the three required fields.');
- if(!constructor)throw Error('Add public PrizeCard(String ..., int ..., boolean ...) to initialize the three fields.');
+ if(fields.size!==CLASS_SPEC35.fields.length)throw Error('The class has unexpected instance variables. Check the three required instance variables.');
+ if(!constructor)throw Error('Add public PrizeCard(String ..., int ..., boolean ...) to initialize the three instance variables.');
  function verifyParams(def,expected,display){if(def.params.length!==expected.length||def.params.some((x,i)=>x[0]!==expected[i][0]))throw Error(`${display} needs parameters (${expected.map(x=>x[0]).join(', ')}). Parameter names may differ.`);if(new Set(def.params.map(x=>x[1])).size!==def.params.length)throw Error(`${display} repeats a parameter name.`);}
  verifyParams(constructor,CLASS_SPEC35.constructor,'PrizeCard constructor');
  for(const required of CLASS_SPEC35.methods){const def=methods.get(required.name);if(!def)throw Error(`Missing required method: public ${required.returnType} ${required.name}(...).`);if(def.returnType!==required.returnType)throw Error(`Method ${required.name} must return ${required.returnType}.`);verifyParams(def,required.params,required.name);}
@@ -68,7 +68,7 @@ function invoke(compiled,fields,def,args,budget,depth=0){
   if(def.returnType==='void'&&result.returned&&result.result!==undefined)throw Error(`Void method ${def.name} cannot return a value.`);
   if(def.returnType!=='void'&&(!result.returned||!typeMatch(def.returnType,result.result)))throw Error(`${def.name} must return a ${def.returnType} value.`);
  }
- for(const [type,name] of CLASS_SPEC35.fields)if(!typeMatch(type,fields[name]))throw Error(`Field ${name} must contain a ${type} value.`);
+ for(const [type,name] of CLASS_SPEC35.fields)if(!typeMatch(type,fields[name]))throw Error(`Instance variable ${name} must contain a ${type} value.`);
  return result.result;
 }
 const CASES=[

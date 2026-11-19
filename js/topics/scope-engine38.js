@@ -19,7 +19,7 @@ export function compile38(source){const text=strip(source).trim();if(text.length
  const field=/\s*private\s+(int|boolean)\s+([A-Za-z_$][\w$]*)\s*;/y;
  const method=/\s*public\s+(?:(void|int|boolean)\s+)?([A-Za-z_$][\w$]*)\s*\(([^)]*)\)\s*\{/y;
  while(pos<body.length){if(!body.slice(pos).trim())break;field.lastIndex=pos;const f=field.exec(body);if(f){if(fields.has(f[2]))throw Error(`Duplicate instance variable ${f[2]}.`);fields.set(f[2],f[1]);pos=field.lastIndex;continue;}
-  method.lastIndex=pos;const m=method.exec(body);if(!m)throw Error(`Check the public constructor, methods, and private fields near: ${body.slice(pos,pos+65).trim()}.`);
+  method.lastIndex=pos;const m=method.exec(body);if(!m)throw Error(`Check the public constructor, methods, and private instance variables near: ${body.slice(pos,pos+65).trim()}.`);
   let depth=1,k=method.lastIndex;let quoted=false,escaped=false;
   for(;k<body.length;k++){const ch=body[k];if(quoted){if(escaped)escaped=false;else if(ch==='\\')escaped=true;else if(ch==='"')quoted=false;continue;}if(ch==='"'){quoted=true;continue;}if(ch==='{')depth++;if(ch==='}'&&--depth===0)break;}
   if(depth)throw Error(`Missing closing brace in ${m[2]}.`);
@@ -42,7 +42,7 @@ function execute(compiled,def,obj,args){let steps=0,returned=false,result;const 
  const locate=name=>{for(let i=scopes.length-1;i>=0;i--)if(Object.hasOwn(scopes[i],name))return scopes[i];return Object.hasOwn(obj,name)?obj:null;};
  const value=a=>{if(!a)throw Error('Missing expression.');switch(a.type){case'lit':return a.value;
  case'var':{const slot=locate(a.name);if(!slot)throw Error(`Variable ${a.name} is not in scope.`);return slot[a.name];}
- case'field':if(!Object.hasOwn(obj,a.name))throw Error(`No field ${a.name}.`);return obj[a.name];
+ case'field':if(!Object.hasOwn(obj,a.name))throw Error(`No instance variable ${a.name}.`);return obj[a.name];
  case'unary':{const x=value(a.a);return a.op==='!'?!x:a.op==='-'?-x:+x;}
  case'call':{const method=compiled.methods.get(a.name);if(!method)throw Error(`Unknown method ${a.name}().`);return execute(compiled,method,obj,a.args.map(value));}
  case'binary':{const x=value(a.a);if(a.op==='&&'&&!x)return false;if(a.op==='||'&&x)return true;const y=value(a.b);switch(a.op){case'+':return x+y;case'-':return x-y;case'*':return x*y;case'/':if(y===0)throw Error('Division by zero.');return Math.trunc(x/y);case'%':return x%y;case'<':return x<y;case'<=':return x<=y;case'>':return x>y;case'>=':return x>=y;case'==':return x===y;case'!=':return x!==y;case'&&':return !!(x&&y);case'||':return !!(x||y);}}}
@@ -70,7 +70,7 @@ function execute(compiled,def,obj,args){let steps=0,returned=false,result;const 
  block(def.ast);if(def.returnType==='boolean'&&typeof result!=='boolean')throw Error(`${def.name} must return a boolean on every path.`);
  if(def.returnType==='int'&&!Number.isInteger(result))throw Error(`${def.name} must return an int on every path.`);
  if(def.returnType==='void'&&returned&&result!==undefined)throw Error(`${def.name} must not return a value.`);
- if(!Number.isInteger(obj.charge)||!Number.isInteger(obj.flights))throw Error('Instance fields must stay integer values.');
+ if(!Number.isInteger(obj.charge)||!Number.isInteger(obj.flights))throw Error('Instance variables must stay integer values.');
  return result;
 }
 const tests=[

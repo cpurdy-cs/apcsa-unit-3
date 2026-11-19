@@ -1,10 +1,10 @@
-# Modular architecture | v1.24
+# Modular architecture | v1.26
 
-Version 1.4 established the architecture. Versions 1.5 and 1.7 prove the extension point by adding Topics 3.3 and 3.4 as independent modules. Topics 3.5–3.8 use the same extension point. Topic 3.9 remains unimplemented.
+Version 1.4 established the architecture. Versions 1.5 and 1.7 prove the extension point by adding Topics 3.3 and 3.4 as independent modules. Topics 3.5–3.8 use the same extension point. Topic 3.9 is implemented. A separate unit-review extension completes the course.
 
 ## Goal
 
-You can stop after Topic 3.8 and later add Topic 3.9 **without editing the approved Topic 3.1–3.8 implementation files**. The core systems discover registered topics instead of having special cases for specific topic IDs.
+You can extend to Topic 3.9 and the final review **without editing the approved Topic 3.1–3.8 implementation files**. The core systems discover registered topics instead of having special cases for specific topic IDs.
 
 ## Where things live
 
@@ -36,7 +36,7 @@ They were deliberately **not migrated**:
 - Question IDs, snapshots, attempt history and the localStorage key `flourbluff-apcsa-u3-v1` remain intact.
 - JSON backup `schema: 1` remains supported.
 
-Topics 3.2–3.8 use dotted IDs. Topic 3.8 uses `3.8.1`–`3.8.4`. Future topics should follow the same convention.
+Topics 3.2–3.8 use dotted IDs. Topic 3.8 uses `3.8.1`–`3.8.4`; Topic 3.9 uses `3.9.1`–`3.9.4`.
 
 ## Registry plugin contract
 
@@ -122,6 +122,14 @@ The standalone `WaterTank` replaces `WeatherStation` only in Topic 3.6.5. `js/to
 - Only new topic registration and shared shell/CSS/report metadata are changed; previously approved content and topic controllers remain untouched.
 
 
-## v1.24 instructional-only modules (Topics 3.5–3.7)
+## v1.26 instructional-only modules (Topics 3.5–3.7)
 
 `js/topics/instruction35-37.js` supplies purely presentational concept panels prefixed before the previously approved Topic 3.5, 3.6 and 3.7 activities. There are no `data-action` handlers, inputs, completion conditions, or new save keys in these panels. Existing topic modules call `renderLessonInstruction(topicId, pageNumber)` before rendering their original pages. Assessment, grading, controllers, localStorage normalization, teacher overrides and report writers are unchanged. The accompanying tests assert that every one of the 18 lessons now teaches the concept before the original activity and that no controls or completion logic are added.
+
+## v1.26 Topic 3.9 and complete-unit review
+
+`js/content39.js`, `js/topic39.js`, `js/topics/topic39-controller.js`, `js/topics/this-engine39.js`, `js/topics/report39.js` implement the final topic. The Contact evaluator models receiving-object `this`, parameter shadowing, reference passing, and object identity in a bounded expression parser; static-method restrictions are taught separately in guided examples.
+
+`js/content-summary.js` provides four evidence-based concise instruction sections and 28 unlimited-retry review questions, with IDs `r1-1` etc. `js/unit-summary.js` enforces completion gates and renders the summary, sidebar links, and final completion page. `js/topics/report-summary.js` appends review evidence to the cumulative PDF. A new optional `review3` field is normalized in the existing schema-1 local save and JSON backup; all previous keys remain stable.
+
+**Unlock policy:** `unitTopicsComplete` requires all registered lessons for all nine topics and at least one graded attempt of 80% or higher per topic. Teacher prerequisite bypasses do not generate passing grades and cannot unlock the summary by themselves. Review completion requires all 28 individual questions answered correctly, with no additional graded submission.

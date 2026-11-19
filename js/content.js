@@ -7,7 +7,7 @@ export const UNIT = [
  {id:'3.6', title:'Passing and Returning References',pages:5,periods:2},
  {id:'3.7', title:'Class Variables and Methods',pages:5,periods:2},
  {id:'3.8', title:'Scope and Access',pages:4,periods:2},
- {id:'3.9', title:'this Keyword',pages:3,periods:1}
+ {id:'3.9', title:'this Keyword',pages:4,periods:1}
 ];
 export const PAGE_META = [
  {title:'Objects Everywhere',subtitle:'Turn a real-world scene into a program design',minutes:15,ek:'3.1.A.1, 3.1.A.3, 3.1.A.7'},
@@ -106,7 +106,7 @@ export const TOPIC_31_MAX = QUESTIONS.length * 10;
 
 export const CHALLENGES = {
  1:[
-  {prompt:'A school software model includes Student, studentId, and markPresent(). Which one is a class?',options:['studentId','markPresent()','Student','The value 42'],answer:2,hint:'A class names a kind of thing. A field stores a value; a method names an action.'},
+  {prompt:'A school software model includes Student, studentId, and markPresent(). Which one is a class?',options:['studentId','markPresent()','Student','The value 42'],answer:2,hint:'A class names a kind of thing. An instance variable stores a value; a method names an action.'},
   {prompt:'You are designing a Robot class. Which item is best described as a behavior?',options:['batteryLevel','moveForward(int steps)','modelNumber','speed'],answer:1,hint:'Behaviors are actions a robot can perform, not information about its current state.'},
   {prompt:'A traffic simulator predicts travel time. Which detail is least relevant to its initial model?',options:['Speed limits','Travel distance','Intersection delays','The interior upholstery pattern'],answer:3,hint:'Keep information that helps answer the modeling question and hide unrelated details.'}
  ],

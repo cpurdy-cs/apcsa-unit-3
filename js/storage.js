@@ -2,7 +2,8 @@ import {IMPLEMENTED_TOPICS,topicCompleted,topicPassed,pageUnlocked} from './regi
 const KEY='flourbluff-apcsa-u3-v1';
 const SESSION_KEY='flourbluff-apcsa-teacher-v114';
 import {stableHash} from './order.js';
-export function blankState(){return {schema:1,topic34Revision:2,topic35Revision:2,topic36Revision:3,orderSeed:Math.floor(Math.random()*4294967296),identity:null,joinedAt:null,updatedAt:null,pages:{},currentPage:1,assessments:Object.fromEntries(IMPLEMENTED_TOPICS.map(t=>[t.id,{draft:{},attempts:[],locked:false}])),events:[],overrides:{lessons:{},topics:{}}};}
+import {SUMMARY_PARTS} from './content-summary.js';
+export function blankState(){return {schema:1,topic34Revision:2,topic35Revision:2,topic36Revision:3,orderSeed:Math.floor(Math.random()*4294967296),identity:null,joinedAt:null,updatedAt:null,pages:{},currentPage:1,assessments:Object.fromEntries(IMPLEMENTED_TOPICS.map(t=>[t.id,{draft:{},attempts:[],locked:false}])),events:[],overrides:{lessons:{},topics:{}},review3:{parts:{},completedAt:null}};}
 function dataObject(x){return x && typeof x==='object' && !Array.isArray(x);}
 export function normalizeState(raw){
  const st=blankState(); if(!dataObject(raw))return st;
@@ -84,6 +85,19 @@ export function normalizeState(raw){
    if(dataObject(x)&&typeof x.at==='string')st.overrides.lessons[key]={at:x.at,reason:String(x.reason||'').slice(0,350),priorCompleted:!!x.priorCompleted,priorAt:typeof x.priorAt==='string'?x.priorAt:null};
   }
  }
+ // Add a separate review record without migrating or resetting any existing page/grade keys.
+ const review=dataObject(raw.review3)?raw.review3:{};
+ for(let i=0;i<SUMMARY_PARTS.length;i++){
+  const part=dataObject(review.parts?.[i])?review.parts[i]:null;if(!part)continue;
+  const answers={},solved={},attempts={};
+  for(const q of SUMMARY_PARTS[i].questions){
+   const n=part.answers?.[q.id];if(Number.isInteger(n)&&n>=0&&n<q.options.length)answers[q.id]=n;
+   if(part.solved?.[q.id]===true)solved[q.id]=true;
+   const count=part.attempts?.[q.id];if(Number.isInteger(count)&&count>=0&&count<100000)attempts[q.id]=count;
+  }
+  st.review3.parts[i]={answers,solved,attempts};
+ }
+ st.review3.completedAt=typeof review.completedAt==='string'?review.completedAt:null;
  st.events=Array.isArray(raw.events)?raw.events.slice(-100):[];
  return st;
 }

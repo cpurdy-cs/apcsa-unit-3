@@ -10,5 +10,5 @@ test('Topic 3.8 and cumulative PDF capture student class, all original questions
  st.overrides.topics['3.8']={at:'2026-11-16',reason:'Review'};
  const result=createReport(st,{topic:'3.8'}),pdf=await blob().text();assert.match(result.filename,/Topic3-8/);assert.match(pdf,/DroneBattery/);assert.match(pdf,/completeFlight/);assert.match(pdf,/Q10/);assert.match(pdf,/Teacher-authorized progress exceptions/);
  const match=/startxref\n(\d+)\n%%EOF$/.exec(pdf);assert.ok(match);assert.equal(pdf.slice(Number(match[1]),Number(match[1])+4),'xref');
- createReport(st,{cumulative:true});const cumulative=await blob().text();assert.match(cumulative,/Topic 3.8/);assert.match(cumulative,/Topic 3.9 remains in development/);
+ createReport(st,{cumulative:true});const cumulative=await blob().text();assert.match(cumulative,/Topic 3.8/);assert.match(cumulative,/Unit 3 Summary \| Cumulative review/);
 });

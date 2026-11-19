@@ -10,5 +10,5 @@ test('Topic 3.6 PDF includes identity exercise, 18 tests, graded responses and t
  st.overrides.topics['3.6']={at:'2026-11-11',reason:'Transferred in'};
  const res=createReport(st,{topic:'3.6'}),blob=getBlob(),txt=await blob.text();assert.match(res.filename,/Topic3-6/);assert.ok(res.pages>=2);assert.match(txt,/Independent WaterTank class/);assert.match(txt,/transferTo/);assert.match(txt,/chooseLowerLevel/);assert.match(txt,/Q10/);assert.match(txt,/Teacher-authorized progress exceptions/);assert.match(txt,/no score awarded/);
  const m=/startxref\n(\d+)\n%%EOF$/.exec(txt);assert.ok(m);assert.equal(txt.slice(Number(m[1]),Number(m[1])+4),'xref');
- createReport(st,{cumulative:true});const cumulative=await getBlob().text();assert.match(cumulative,/Topic 3.6/);assert.match(cumulative,/Topic 3.9 remains in development/);
+ createReport(st,{cumulative:true});const cumulative=await getBlob().text();assert.match(cumulative,/Topic 3.6/);assert.match(cumulative,/Unit 3 Summary \| Cumulative review/);
 });

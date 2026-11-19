@@ -6,6 +6,7 @@ import {PAGE35} from './content35.js';
 import {PAGE36} from './content36.js';
 import {PAGE37} from './content37.js';
 import {PAGE38} from './content38.js';
+import {PAGE39} from './content39.js';
 import {createTopic31} from './topics/topic31.js';
 import {createTopic32} from './topics/topic32-controller.js';
 import {createTopic33} from './topics/topic33-controller.js';
@@ -14,6 +15,7 @@ import {createTopic35} from './topics/topic35-controller.js';
 import {createTopic36} from './topics/topic36-controller.js';
 import {createTopic37} from './topics/topic37-controller.js';
 import {createTopic38} from './topics/topic38-controller.js';
+import {createTopic39} from './topics/topic39-controller.js';
 import {write31} from './topics/report31.js';
 import {write32} from './topics/report32.js';
 import {write33} from './topics/report33.js';
@@ -22,6 +24,7 @@ import {write35} from './topics/report35.js';
 import {write36} from './topics/report36.js';
 import {write37} from './topics/report37.js';
 import {write38} from './topics/report38.js';
+import {write39} from './topics/report39.js';
 
 // Single extension point for future topics. Older topic modules never need editing.
 // Each plugin supplies its page metadata, page-key convention, controller and PDF writer.
@@ -33,7 +36,8 @@ const plugins={
  '3.5':{lessons:PAGE35,pageId:n=>`3.5.${n}`,create:createTopic35,writeReport:write35},
  '3.6':{lessons:PAGE36,pageId:n=>`3.6.${n}`,create:createTopic36,writeReport:write36},
  '3.7':{lessons:PAGE37,pageId:n=>`3.7.${n}`,create:createTopic37,writeReport:write37},
- '3.8':{lessons:PAGE38,pageId:n=>`3.8.${n}`,create:createTopic38,writeReport:write38}
+ '3.8':{lessons:PAGE38,pageId:n=>`3.8.${n}`,create:createTopic38,writeReport:write38},
+ '3.9':{lessons:PAGE39,pageId:n=>`3.9.${n}`,create:createTopic39,writeReport:write39}
 };
 export function createTopicRegistry(unit,definitions){return Object.freeze(unit.map((row,index)=>Object.freeze({
  ...row,implemented:!!definitions[row.id],prerequisite:index?unit[index-1].id:null,

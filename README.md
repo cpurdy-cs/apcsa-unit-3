@@ -1,10 +1,19 @@
-# Class Creation Lab | AP Computer Science A Unit 3
+# Class Creation Lab v1.36 | Complete Unit 3
 
-**Release 1.25: Complete caller code added to Topics 3.5.2 and 3.5.3 (existing student work preserved)**
+**All nine topics and the four-part cumulative review are implemented.** Version 1.36 preserves the v1.35 review-section sidebar highlight correction and adds substantive explanations after correct answers to all 28 cumulative practice questions. Incorrect responses still receive retry hints, and student question IDs, mastery status, scores, and stored answers are unchanged. Version 1.34 fixes the sidebar selection while viewing Unit 3 Summary and Unit Complete, preserving ordinary topic navigation. Version 1.33 expanded the standalone introduction to `this`, cleans up literal backticks in topic titles, and makes the one existing valid public instance variable in the 3.7 graded examples private. The questions, correct answers, previous scores, lesson completion, saved work, and teacher controls remain compatible.
 
-An interactive, self-paced learning website based on the user-supplied **2025 College Board AP Computer Science A Course and Exam Description, Unit 3: Class Creation**. The website runs entirely in the browser and can be hosted on **GitHub Pages** without a server, Java compiler, build step, or paid services.
+- **3.9.1 — What Does `this` Mean?** An expanded, fully worked Counter and Runner example first explains why methods need a current-object reference; three highlighted calls then let students identify which object `this` refers to.
+- **3.9.2 — When Do You Need `this.`?** Three complete constructor examples compare `count = count;`, `this.count = count;`, and `count = start;` with predictions and explanations.
+- **3.9.3 — Passing `this` and Static Methods.** Two focused questions using a Participant joining a Group demonstrate passing the current reference and why `this` cannot appear in a static method.
+- **3.9.4 — Contact Class Workshop.** Students write a small class with `name` and `lastSender` instance variables; `sendTo` passes `this` to the recipient, which stores the same sender object. A bounded interpreter checks 20 functional and identity scenarios with detailed feedback.
 
-**Release scope:** Topics **3.1–3.8** are implemented (38 interactive lesson pages and eight graded checks). Topic 3.9 remains in development.
+All 3.9 pages teach first and show caller and method definitions before predictions. The original 10-question graded-check policy (80%, one submitted attempt unless teacher reset) and topic/cumulative PDFs remain. The required four-part Unit 3 Summary (28 retryable questions) and final congratulations page are unchanged. The summary unlocks only after all nine topic checks pass.
+
+**Compatibility:** Topics 3.1–3.8 and previous student progress retain the existing schema-1 JSON format. The unassigned Topic 3.9 activities and its question bank have been replaced; no 3.9 students had started, as confirmed by the teacher. The local GitHub Pages application is not a secure server-based assessment system.
+
+**Deployment:** Publish the contents of `APCSA_Unit3_Class_Creation_GitHubPages_v1.34.zip` to GitHub Pages. The full-source ZIP includes local tests and example Java solution fixtures for maintenance and should not be deployed as the public student website.
+
+**Version 1.36 supersedes v1.34.**
 
 ## v1.25 — Complete method-call context in Topics 3.5.2 and 3.5.3
 
@@ -86,7 +95,7 @@ Old 3.6.5 drafts are retained as `legacyV116` in imported progress, and previous
 
 ## Modular design (introduced in v1.4)
 
-The application shell, autosave normalization, teacher console, and offline PDF writer now use a **single topic registry** (`js/registry.js`). Topics 3.1–3.8 have separate controllers and topic-specific report writers. Future topics can be added by registering their files, **without editing the previously completed lessons**. Topic 3.4 was added through the registry without rewriting the already-approved Topics 3.1–3.3.
+The application shell, autosave normalization, teacher console, and offline PDF writer now use a **single topic registry** (`js/registry.js`). Topics 3.1–3.9 have separate controllers and topic-specific report writers. The Unit 3 Summary has its own module and export writer. New topics can be registered **without editing previously completed lessons**. Topic 3.4 was added through the registry without rewriting the already-approved Topics 3.1–3.3.
 
 See **`docs/ARCHITECTURE.md`** for the plugin contract and the steps for adding future topics.
 

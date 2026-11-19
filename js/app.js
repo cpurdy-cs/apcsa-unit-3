@@ -1,5 +1,6 @@
 import {TOPICS,IMPLEMENTED_TOPICS,getImplementedTopic,topicProgress,topicCompleted,topicUnlocked,pageUnlocked,pageKey} from './registry.js';
 import {renderSidebarTopics} from './sidebar-status.js';
+import {createUnitSummary,renderUnitSummaryNav,unitTopicsComplete,allReviewComplete,reviewProgress,reviewPartOpen} from './unit-summary.js';
 import {blankState,load,save,exportJson,importJson,teacherOn,setTeacher,assessment,passed,recordEvent} from './storage.js';
 import {createReport} from './pdf.js';
 import {shuffledOptions as importOptionShuffle} from './order.js';
@@ -16,6 +17,7 @@ async function validTeacherCode(input){
 
 let state=load(),preview=null,flash=null,teacherClicks=0,lastRenderedHash=null,resetTopic='3.1',reviewFilter='missed',pendingOverride=null;
 const controllers=new Map();
+let unitSummary=null;
 // Query simple IDs with getElementById rather than a CSS selector. Some lesson
 // IDs begin with digits (e.g. 33-reflection-count); #33-reflection-count is
 // not a valid unescaped CSS selector and used to throw on every keystroke.
@@ -56,6 +58,11 @@ function syncLiveProgress(){
    const badge=document.querySelector('.topic37-page .topic37-workshop .method35-actions .pill');
    if(badge){badge.textContent='Not tested yet';badge.classList.remove('green');}
  }
+ if(editor?.id==='39-code-editor'){
+   document.querySelectorAll('.topic39-page .test-results,.topic39-page .topic39-workshop > .feedback').forEach(node=>node.remove());
+   const badge=document.querySelector('.topic39-page .topic39-workshop .method35-actions .pill');
+   if(badge){badge.textContent='Not tested yet';badge.classList.remove('green');}
+ }
  if(editor?.id==='38-code-editor'){
   document.querySelectorAll('.topic38-page .test-results,.topic38-page .topic38-workshop > .feedback').forEach(node=>node.remove());
   const badge=document.querySelector('.topic38-page .topic38-workshop .method35-actions .pill');
@@ -83,6 +90,8 @@ function route(){const path=location.hash.replace(/^#\/?/,'').split('/').filter(
   const topic=getImplementedTopic(path[1]);const n=Math.max(1,Math.min(topic.lessons.length,Number(path[3])||1));
   return {type:'topic',id:topic.id,view:path[2],number:n};
  }
+ if(path[0]==='summary')return {type:'summary',number:Math.min(4,Math.max(1,Number(path[1])||1))};
+ if(path[0]==='unit-complete')return {type:'finish'};
  if(path[0]==='reports')return {type:'reports'};
  if(path[0]==='teacher')return {type:'teacher'};
  return {type:'home'};
@@ -93,11 +102,11 @@ function header(){const st=view(),t=teacherOn();return `<div class="layout">
  <aside class="sidebar" aria-label="Unit navigation">
  <div class="brand"><div class="brand-mark" aria-label="FB">FB</div><div class="brand-text"><strong>Class Creation Lab</strong><small>AP CSA · Unit 3</small></div></div>
  <div class="nav-overline">THE COURSE</div><nav class="topic-nav" aria-label="Topics">
- ${renderSidebarTopics(st,t,route().type==='topic'?route().id:'')}</nav>
+ ${renderSidebarTopics(st,t,route().type==='topic'?route().id:'')}${renderUnitSummaryNav(st,t,route().type==='summary'?'summary':route().type==='finish'?'finish':'',route().type==='summary'?route().number:null)}</nav>
  <div class="sidebar-bottom"><div class="student-pill"><span class="student-dot"></span>${esc(studentName(st))}</div><div class="mini-muted">${t?'Preview changes are not saved to the student record':'Saved locally on this device'}</div>
  <button class="side-link" data-nav="#/reports">Reports &amp; backups</button><br><button class="side-link" data-action="switch-student">Switch student</button>
  ${t?'<br><button class="side-link" data-nav="#/teacher">Teacher tools</button>':''}
- <br><button class="teacher-footer" id="teacher-trigger" title="Build information" aria-label="Build information">Build 1.25 · 2025 CED</button></div>
+ <br><button class="teacher-footer" id="teacher-trigger" title="Build information" aria-label="Build information">Build 1.35 · 2025 CED</button></div>
  </aside><main class="app-main" id="main-content"><div class="topbar"><div class="crumbs">AP COMPUTER SCIENCE A <span aria-hidden="true">/</span> UNIT 3 ${t?'/ TEACHER PREVIEW':''}</div>
  <div class="top-actions">${t?'<span class="teacher-banner">TEACHER PREVIEW</span>':''}<button class="btn secondary small" data-action="backup-json">↓ Backup</button><button class="btn secondary small" data-nav="#/reports">Reports</button>${t?'<button class="btn small" data-action="teacher-exit">Exit preview</button>':''}</div></div><div class="content">`;
 }
@@ -107,29 +116,30 @@ function closeModal(){const d=$('#modal');if(d.open)d.close();}
 function renderEntry(){const topics=IMPLEMENTED_TOPICS.map(x=>x.id).join(', ').replace(/, ([^,]+)$/, ' and $1');const lessons=IMPLEMENTED_TOPICS.reduce((n,t)=>n+t.lessons.length,0);
  $('#app').innerHTML=`<div class="entry panel"><div class="brand-mark" aria-label="FB">FB</div><p class="eyebrow">2026 AP COMPUTER SCIENCE A · UNIT 3</p><h1>Class Creation Lab</h1>
  <p class="lead">Learn how programmers model real-world objects, organize information, and build reusable behaviors. Work through interactive lessons at your own pace.</p>
- <div class="callout maroon"><strong>Topics ${topics} are available.</strong> ${lessons} interactive lesson pages, ${IMPLEMENTED_TOPICS.length} separate graded checks, and local progress reports. Later topics remain locked until released.</div>
+ <div class="callout maroon"><strong>All nine topics are available.</strong> ${lessons} interactive lesson pages, ${IMPLEMENTED_TOPICS.length} graded checks, a cumulative four-part review, and local progress reports.</div>
  <form id="identity-form" autocomplete="off" style="margin-top:24px"><div class="entry-fields"><div class="field"><label for="first-name">First name</label><input id="first-name" class="input" maxlength="30" required placeholder="Alex" autocomplete="given-name"></div>
  <div class="field"><label for="last-initial">Last initial</label><input id="last-initial" class="input" maxlength="1" required pattern="[A-Za-z]" placeholder="R"></div></div>
  <p class="fineprint">Only your first name and last initial are saved. Progress stays in this browser unless you export it.</p><button class="btn block" type="submit">Start learning →</button></form>
  <div class="separator"></div><button class="btn secondary block" data-action="import-backup">Restore progress from JSON backup</button>
- <div style="text-align:center;margin-top:16px"><button class="teacher-footer" id="teacher-trigger" aria-label="Build information">Build 1.25 · 2025 CED</button></div></div>
+ <div style="text-align:center;margin-top:16px"><button class="teacher-footer" id="teacher-trigger" aria-label="Build information">Build 1.35 · 2025 CED</button></div></div>
  <input type="file" id="backup-file" accept=".json,application/json" hidden><dialog id="modal"><div class="dialog-body" id="modal-body"></div></dialog>`;
 }
-function home(){const st=view(),t=teacherOn();const first=IMPLEMENTED_TOPICS[0],firstDone=topicProgress(st,first.id),next=firstDone===first.lessons.length?IMPLEMENTED_TOPICS[1]:null;
- const latest=assessment(st,first.id).attempts.at(-1);return `<div class="page-title"><p class="eyebrow">YOUR LEARNING DASHBOARD</p><h1>Welcome back, ${esc(st.identity?.first||'teacher')}.</h1><p class="lead">Work in order. Complete each activity to unlock the next page, then score at least 80% on the section check.</p></div>
- <section class="hero"><div class="eyebrow">UNIT 3 · CLASS CREATION</div><h1>Build worlds with classes.</h1><p>Explore abstraction and program design through interactive Java learning labs.</p>
- <div class="hero-cta">${link(`#/topic/${first.id}/page/${Math.min(first.lessons.length,firstDone+1)}`,'Continue learning →','light')}${next?link(topicUnlocked(st,next.id,t)?`#/topic/${next.id}/page/1`:`#/topic/${first.id}/check`,topicUnlocked(st,next.id,t)?`Continue to Topic ${next.id} →`:'Section check →','secondary'):''}</div></section>
- <div class="panel" style="margin-top:18px"><div class="spaced"><div><span class="kicker">YOUR PROGRESS</span><h3 style="margin:2px 0">${firstDone} of ${first.lessons.length} pages completed</h3></div><span class="step-badge ${latest?.score>=80?'complete':''}">${latest?(latest.score>=80?'Mastered · '+latest.score+'%':'Section check · '+latest.score+'%'):'Check not submitted'}</span></div><div class="page-progress" role="progressbar" aria-valuemin="0" aria-valuemax="${first.lessons.length}" aria-valuenow="${firstDone}" aria-label="Topic ${first.id} lesson progress"><span style="width:${firstDone/first.lessons.length*100}%"></span></div></div>
- <div class="page-title" style="padding-bottom:10px"><h2>Course roadmap</h2><p class="helper">${IMPLEMENTED_TOPICS.map(x=>x.id).join(' and ')} are available. Pass each section check to unlock the next topic.</p></div>
- <section class="topic-list-dashboard" aria-label="Unit roadmap">${TOPICS.map(u=>{const ok=topicUnlocked(st,u.id,t),result=passed(st,u.id),label=!u.implemented?'Planned':result?'Mastered':ok?'Available':'Locked';
- return `<div class="topic-dashboard-card ${u.implemented?'active':''}"><div style="display:flex;gap:13px;align-items:center"><div class="num">${u.id}</div><div><h3>${esc(u.title)}</h3><p>${u.pages} instructional pages${u.implemented?' · implemented':''}</p></div></div><span class="pill ${ok?'maroon':''}">${label}</span>${ok?link(`#/topic/${u.id}/page/1`,'Open →','secondary small'):''}</div>`;}).join('')}</section>
- <div class="panel soft" style="margin-top:18px"><h3>How this works</h3><div class="two-cols"><p class="helper"><strong>1. Learn and practice.</strong> Explore each concept, make predictions, and retry activities until correct.</p><p class="helper"><strong>2. Demonstrate mastery.</strong> The section check has one graded submission. A teacher reset is required after an unsuccessful attempt.</p></div><p class="fineprint">Progress is automatically saved on this device. Download JSON backups if you change computers. Browser-side progress and graded checks are not tamper-proof.</p></div>`;
+function home(){const st=view(),t=teacherOn(),remaining=IMPLEMENTED_TOPICS.find(topic=>!topicCompleted(st,topic.id)||!passed(st,topic.id));
+ const nextTopic=remaining||IMPLEMENTED_TOPICS.at(-1),count=topicProgress(st,nextTopic.id),ready=topicCompleted(st,nextTopic.id);
+ const target=!remaining?(allReviewComplete(st)?'#/unit-complete':'#/summary/1'):(ready?`#/topic/${nextTopic.id}/check`:`#/topic/${nextTopic.id}/page/${Math.min(nextTopic.lessons.length,count+1)}`);
+ const label=!remaining?(allReviewComplete(st)?'View Unit Complete →':'Continue to Unit 3 Summary →'):(ready?`Open Topic ${nextTopic.id} graded check →`:`Continue Topic ${nextTopic.id}.${Math.min(nextTopic.lessons.length,count+1)} →`);
+ const totalPages=IMPLEMENTED_TOPICS.reduce((sum,x)=>sum+x.lessons.length,0),completed=IMPLEMENTED_TOPICS.reduce((sum,x)=>sum+topicProgress(st,x.id),0),mastered=IMPLEMENTED_TOPICS.filter(x=>passed(st,x.id)).length,rev=reviewProgress(st);
+ return `<div class="page-title"><p class="eyebrow">YOUR LEARNING DASHBOARD</p><h1>Welcome back, ${esc(st.identity?.first||'teacher')}.</h1><p class="lead">Complete each lesson in order, then pass its topic check. After all nine topics, finish the cumulative review to complete Unit 3.</p></div>
+ <section class="hero"><div class="eyebrow">UNIT 3 · CLASS CREATION</div><h1>Build worlds with classes.</h1><p>Independent Java instruction, interactive activities, meaningful coding, and cumulative review.</p><div class="hero-cta">${link(target,label,'light')}</div></section>
+ <div class="panel" style="margin-top:18px"><div class="spaced"><div><span class="kicker">YOUR UNIT PROGRESS</span><h3 style="margin:2px 0">${completed} of ${totalPages} lessons completed</h3></div><span class="step-badge ${mastered===9?'complete':''}">${mastered}/9 topics passed</span></div><div class="page-progress" role="progressbar" aria-valuemin="0" aria-valuemax="${totalPages}" aria-valuenow="${completed}" aria-label="Unit lesson progress"><span style="width:${Math.round(completed/totalPages*100)}%"></span></div><p class="helper">Cumulative review: ${rev.questions}/${rev.total} questions correct in ${rev.parts}/4 parts. ${unitTopicsComplete(st)?'Summary unlocked.':'Unlocks after all nine topics are complete and passed.'}</p></div>
+ <div class="page-title" style="padding-bottom:10px"><h2>Course roadmap</h2><p class="helper">Passed checks open the next topic. Completed lessons can always be revisited.</p></div><section class="topic-list-dashboard" aria-label="Unit roadmap">${TOPICS.map(u=>{const ok=topicUnlocked(st,u.id,t),result=passed(st,u.id),status=result?'Mastered':ok?'Available':'Locked';return `<div class="topic-dashboard-card active"><div style="display:flex;gap:13px;align-items:center"><div class="num">${u.id}</div><div><h3>${esc(u.title)}</h3><p>${u.lessons?.length||u.pages} instructional lessons</p></div></div><span class="pill ${result?'green':ok?'maroon':''}">${status}</span>${ok?link(`#/topic/${u.id}/page/1`,'Open →','secondary small'):''}</div>`;}).join('')}</section>
+ <div class="panel soft" style="margin-top:18px"><h3>Unit 3 Summary</h3><p>Four short study guides with 28 interactive, unlimited-retry review questions. Review is required to finish the unit but does not create another grade.</p>${unitTopicsComplete(st)||t?link(allReviewComplete(st)?'#/unit-complete':'#/summary/1',allReviewComplete(st)?'Open completion page →':'Open cumulative summary →'):'<span class="pill">🔒 Pass all nine topics to unlock</span>'}</div>`;
 }
 function renderReports(){const st=view();return `<div class="page-title"><p class="eyebrow">PROGRESS, BACKUPS & REPORTS</p><h1>Your learning record</h1><p class="lead">Save your work between sessions. Export JSON backups and detailed PDFs for available topics or the full unit.</p></div>${renderFlash()}
  <div class="two-cols"><div class="panel"><p class="kicker">Progress backup</p><h2>JSON · Save and restore</h2><p>Backups preserve lesson evidence, assessment drafts, scores, and attempts for all available topics.</p><div class="btn-row"><button class="btn" data-action="backup-json">↓ Export JSON</button><button class="btn secondary" data-action="import-backup">↑ Import JSON</button></div><p class="fineprint">Import replaces local progress after student identification is confirmed. Keep your backup private.</p></div>
  <div class="panel"><p class="kicker">Available topic reports</p><h2>Individual section PDFs</h2><p>Each report contains graded questions, submitted responses, scores, attempts, and practice evidence.</p><div class="btn-row">${IMPLEMENTED_TOPICS.map((u,i)=>`<button class="btn ${i?'secondary':''}" data-action="pdf-topic" data-topic="${u.id}">↓ Topic ${u.id} PDF</button>`).join('')}</div></div></div>
- <div class="panel" style="margin-top:18px"><p class="kicker">Unit record</p><h2>Cumulative Unit 3 PDF</h2><p>Includes all available topics and a unit status dashboard.</p><button class="btn" data-action="pdf-cumulative">↓ Download cumulative PDF</button></div>
- <div class="panel" style="margin-top:18px"><h2>Current progress</h2><div class="two-cols">${IMPLEMENTED_TOPICS.map(u=>{const a=assessment(st,u.id);return `<div class="info-cell"><strong>${topicProgress(st,u.id)} / ${u.lessons.length}</strong><p>Topic ${u.id} pages completed · ${a.attempts.at(-1)?.score??'–'}/100 latest check · ${a.attempts.length} attempt(s)</p></div>`;}).join('')}</div><p class="fineprint" style="margin-top:15px">Progress is stored in this browser's localStorage, not synchronized between devices. GitHub Pages cannot provide secure identities or tamper-proof scores.</p></div>`;
+ <div class="panel" style="margin-top:18px"><p class="kicker">Unit record</p><h2>Cumulative Unit 3 PDF</h2><p>Includes all nine topics, their full recorded evidence, and cumulative review completion.</p><button class="btn" data-action="pdf-cumulative">↓ Download cumulative PDF</button></div>
+ <div class="panel" style="margin-top:18px"><h2>Current progress</h2><p class="helper">Cumulative review: ${reviewProgress(st).questions}/28 correct, ${reviewProgress(st).parts}/4 parts complete.</p><div class="two-cols">${IMPLEMENTED_TOPICS.map(u=>{const a=assessment(st,u.id);return `<div class="info-cell"><strong>${topicProgress(st,u.id)} / ${u.lessons.length}</strong><p>Topic ${u.id} pages completed · ${a.attempts.at(-1)?.score??'–'}/100 latest check · ${a.attempts.length} attempt(s)</p></div>`;}).join('')}</div><p class="fineprint" style="margin-top:15px">Progress is stored in this browser's localStorage, not synchronized between devices. GitHub Pages cannot provide secure identities or tamper-proof scores.</p></div>`;
 }
 function renderTeacher(){if(!teacherOn())return `<div class="panel"><h2>Teacher preview is disabled</h2><p>Activate teacher mode using the configured shortcut and access code.</p></div>`;
  return `<div class="page-title"><p class="eyebrow">TEACHER CONSOLE · PREVIEW MODE</p><h1>Inspect lessons and support students.</h1><p class="lead">All ${IMPLEMENTED_TOPICS.reduce((n,t)=>n+t.lessons.length,0)} lessons and ${IMPLEMENTED_TOPICS.length} section checks can be previewed. Preview work does not alter student progress; check resets apply to the current saved record.</p></div>
@@ -165,7 +175,7 @@ function render(){const samePage=lastRenderedHash===location.hash,savedY=samePag
    if(override)body=`<div class="feedback good" role="status">Teacher-completed lesson ${esc(r.id)}.${r.number}. The exception is recorded in this student's progress; it does not represent a graded assessment score.</div>`+body;
   }
  }
- else body=r.type==='reports'?renderReports():r.type==='teacher'?renderTeacher():home();
+ else body=r.type==='summary'?unitSummary.page(r.number):r.type==='finish'?unitSummary.finish():r.type==='reports'?renderReports():r.type==='teacher'?renderTeacher():home();
  $('#app').innerHTML=header()+body+footer();document.title=(r.type==='topic'&&r.view==='page'?`${r.id}.${r.number} · `:'')+'Class Creation Lab | AP CSA';
  lastRenderedHash=location.hash;if(samePage&&typeof requestAnimationFrame==='function')requestAnimationFrame(()=>window.scrollTo({top:savedY,behavior:'instant'}));
 }
@@ -204,10 +214,12 @@ function handleClick(event){const trigger=event.target.closest('#teacher-trigger
  if(act==='reset-check'){if(teacherOn()&&state.identity&&getImplementedTopic(el.dataset.topic||'3.1'))confirmReset(el.dataset.topic||'3.1');return;}
  if(act==='confirm-reset'){if(!teacherOn())return;const a=assessment(state,resetTopic);a.locked=false;a.draft={};recordEvent(state,'teacher-reset',`${resetTopic} graded check`);save(state);preview=structuredClone(state);closeModal();render();toast('The graded check has been reset. Previous attempts were retained.',true);return;}
  if(act==='sample-pdf'){createReport(makeSample(),{sample:true,topic:el.dataset.topic||'3.1'});toast('Sample PDF downloaded.',true);return;}
+ if(unitSummary?.click(el))return;
  for(const topic of IMPLEMENTED_TOPICS){const c=controllers.get(topic.id);if(c.handlesClick(act)){c.click(el);return;}}
 }
 function handleChange(event){const el=event.target,act=el.dataset.action;
  if(el.id==='backup-file'){const file=el.files?.[0];if(!file)return;importJson(file,state.identity).then(next=>{if(!window.confirm(`Restore the progress backup for ${next.identity.first} ${next.identity.last}.? This replaces the saved record on this device.`))return;state=next;preview=null;setTeacher(false);save(state);go('#/home');render();toast('Progress restored from JSON.',true);}).catch(e=>toast('Import failed: '+e.message));el.value='';return;}
+ if(unitSummary?.change(el))return;
  for(const topic of IMPLEMENTED_TOPICS){const c=controllers.get(topic.id);if(c.handlesChange(act)){c.change(el);return;}}
 }
 function handleInput(event){const el=event.target;for(const topic of IMPLEMENTED_TOPICS){const c=controllers.get(topic.id);if(c.handlesInput(el)){c.input(el);return;}}}
@@ -235,6 +247,7 @@ const context={view,pData,commit,store,render,toast,link,esc,orderSeed,teacherOn
  shuffled:(options,salt)=>importOptionShuffle(options,orderSeed(),salt),onChangePage};
 // Construct all registered topic controllers once; the shell contains no topic-specific UI code.
 for(const topic of IMPLEMENTED_TOPICS)controllers.set(topic.id,topic.create(context));
+unitSummary=createUnitSummary(context);
 document.addEventListener('click',handleClick);
 document.addEventListener('change',handleChange);
 document.addEventListener('input',handleInput);

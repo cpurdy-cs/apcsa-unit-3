@@ -6,7 +6,7 @@ function evidenceLines(st){
   ['Objects Everywhere',`Explored: ${(p1.explored||[]).join(', ')||'None'}; classification complete: ${!!p1.classifyDone}`],
   ['Data Abstraction',`Simulation actions: ${p2.simActions||0}; variable classification complete: ${!!p2.classifyDone}`],
   ['Procedural Abstraction',`Method body: ${p3.code||'(not submitted)'}; test suite passed: ${!!p3.codePassed}`],
-  ['Class Design Studio',`Chosen fields: ${(p4.fields||[]).join(', ')||'None'}; methods: ${(p4.methods||[]).join(', ')||'None'}; design validated: ${!!p4.designDone}`],
+  ['Class Design Studio',`Chosen instance variables: ${(p4.fields||[]).join(', ')||'None'}; methods: ${(p4.methods||[]).join(', ')||'None'}; design validated: ${!!p4.designDone}`],
   ['Written reflection',p4.reflection||'(No reflection saved)'],
   ['Transfer challenges', [p1,p2,p3,p4].map((d,i)=>`Page ${i+1}: ${CHALLENGES[i+1].filter((q,j)=>d.challengeResponses?.[j]===q.answer).length}/3 solved`).join(' | ')]
  ];

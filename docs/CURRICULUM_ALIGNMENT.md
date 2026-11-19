@@ -123,3 +123,9 @@ CED printed p. 89 (user-attached PDF p. 17), LO 3.8.A, EK 3.8.A.1–2; suggested
 | 3.8.A.2 Local/parameter names shadow instance variables | 3.8.3 constructor shadowing repair; 3.8.4 separate local, parameter and instance-field state | Q3, Q7 |
 
 **Assessment:** ten original questions, 100 points, eight correct needed; student review retains original code panels and chosen responses without exposing the correct answer. The four lessons contain unlimited practice and the full independent DroneBattery editor (20 bounded tests). Student-facing pages contain no lesson-duration estimates.
+
+## Topic 3.9 (2025 CED p.90)
+- 3.9.A.1: Lessons 3.9.1–2 visually track the instance receiver and differentiate shadowed parameters from fields.
+- 3.9.A.2: Lesson 3.9.3 demonstrates passing the current object reference and 3.9.4 requires passing `this` to another method.
+- 3.9.A.3: Lesson 3.9.3 explicitly compares valid instance-method calls with an invalid static method that uses `this`.
+- Cumulative review (separate from official topic numbering): four summaries reinforce all Topics 3.1–3.9 with unlimited retry practice.

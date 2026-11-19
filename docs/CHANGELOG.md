@@ -1,3 +1,58 @@
+## v1.34 — Summary sidebar active-topic correction
+
+- Fixed the sidebar selecting Topic 3.1 while the Unit 3 Summary or Unit Complete screen was displayed. The sidebar now distinguishes an explicitly empty active topic from an omitted active-topic parameter used for auto-selection.
+- Preserved topic navigation, completed-status indicators, summary progress, graded checks, all student work and JSON backup formats.
+- Added regression tests covering summary navigation, completion navigation and automatic next-topic selection.
+
+## v1.33 — More complete teaching introduction for `this` and consistent Java formatting
+
+Topic 3.9.1 now begins with the concept students already know: two objects share class method definitions but have independent private instance variables. It connects `first.add(3)` to the receiving object, introduces `this` as Java's current-object reference, walks through the complete Counter and Runner code line by line, and explains when `this.count` is optional. All Topic 3.9 titles no longer show literal backtick characters. All new and existing correct Topic 3.9 examples have private instance variables. A graded Topic 3.7 code example was corrected from `public int rank` to `private int rank`, preserving identical output, question ID, key, and mastery score. The Contact workshop's outdated error message now names its actual required private instance variables. No activities, practice/graded answer keys, progression or storage changes. Oracle Java tutorial on `this`: https://docs.oracle.com/javase/tutorial/java/javaOO/thiskey.html. The `this(...)` constructor-chaining feature mentioned there is not part of the 2025 AP CSA Topic 3.9 essential knowledge.
+
+## v1.32 — Rebuilt Topic 3.9 around three simple rules
+- Replaced Topic 3.9's complicated experimental scenarios with direct current-object tracing, matching-parameter comparison, a short pass-this example, and one static-method check.
+- Replaced the GridMarker workshop with a concise independent Contact class using `this` both to address an instance variable and to pass the current object to `receiveFrom`.
+- Rebuilt the practice and graded questions to reflect the new lessons. Existing Topic 3.1–3.8 assessments and student work are untouched.
+- Preserved the four-part cumulative review, completion page, teacher tools, schema-1 JSON backups, and PDF exports. No old 3.9 activity migrations are required since no students used that topic.
+
+## v1.31 — Topic 3.9.3 taught through meaningful object registration
+- Replaced the Robot charging/new-object comparison with a standalone Sensor/SensorDisplay lesson showing why an object passes its own reference: a display watches the original Sensor and reads its updated instance variable later.
+- Four connected guided steps: connect Sensor a, read a new temperature through its stored reference, switch the display to Sensor b, and identify why a static connect method cannot use `this`. Complete Java caller and classes precede every prediction; results and reference-state diagrams appear after checking.
+- Removed artificial comparisons involving an unrelated new object and removed previous 3.9.3 saved-step compatibility requirements (no students have started Topic 3.9). All Topics 3.1–3.8 progress and graded records remain compatible, as do all other unit sections.
+- 3.9.3 code panels are vertical and wrap at narrow widths. Other Topic 3.9 lessons, graded checks, and the four-part Unit Summary are not changed.
+
+## v1.30 — Topic 3.9.3 conceptual redesign and readable code
+- Replaced five disjoint ScoreBoard experiments with a single Robot/ChargingStation scenario that shows the purpose of passing `this`: another object needs a reference to the original Robot to update its energy.
+- Three distinct checkpoints: charge the original object; compare passing a newly constructed object; identify why a static method cannot use `this`. Includes source, caller, predictions, revealed trace and corrected static code.
+- Full Java files are displayed vertically with wrapped preformatted lines; no sideways scrolling at Chromebook widths.
+- Preserve v1.29 solved IDs, original five-step completion, saved attempts, answers, topic grades, teacher overrides and schema-1 JSON backups. Previously completed 3.9.3 does not reset.
+
+## v1.29 — Rebuilt the Topic 3.9.3 reference activity
+
+- Replaced the confusing "Follow the reference passed as this" diagram and disconnected questions with a guided, five-step **Send a Member to the ScoreBoard** lab.
+- Each experiment includes complete Java caller and class definitions, one highlighted statement, a required prediction, then a before/after view and specific explanation. Students compare `a.submit(board)` and `b.submit(board)`, then observe `a.claimBonus(board, 5)` modify the **existing** Member through an object-reference parameter. Two final steps diagnose and repair a static method that incorrectly uses `this`.
+- Demonstration inputs, console outputs, private instance-variable state, and static-method repair were validated with Java 21. New responsive prediction cards and sequential navigation make the activity clearer at Chromebook widths.
+- Preserved the original five scenario IDs and completion requirements so previously completed Topic 3.9.3 records remain valid, as do all previous graded scores, topic/page IDs, JSON backups, PDFs, teacher overrides, and the complete Unit 3 Summary.
+- Existing Topics 3.1–3.8 and other Topic 3.9 lessons are not changed; tests cover the new flow, Java semantics, and backwards compatibility.
+
+## v1.28 — Consistent instance-variable and class-variable terminology
+
+- Introduced **field** once in 3.1.2 as the general term for a variable declared in a class, then use **instance variable** for per-object state and **class variable** for shared static state.
+- Revised student-facing explanations, knowledge checks, graded question phrasing and guidance, and cumulative-review text across Topics 3.1–3.9. Static-variable explanations explicitly retain the class/instance distinction.
+- Revised exposed interpreter diagnostics and PDF section wording, leaving code identifiers, HTML/CSS selectors, question IDs, answer indices, completion and autosave behavior untouched.
+- Previously submitted graded attempts retain their saved question snapshots, feedback history, and scores. No student progress migration is required.
+
+## v1.27 — Clear receiver calls in Topic 3.9.1
+
+- Keep Java method-call case unchanged instead of presenting `a.increase(5)` in uppercase.
+- Highlight the current statement in the complete `Runner.main` caller and repeat that exact call next to the question.
+- Replace ambiguous wording and use **instance variable** consistently in this lesson, including two practice-question wordings (stable IDs and correct-answer indices).
+- No new progress requirements, question changes, or changes to existing stored records.
+
+## v1.26 — Full Unit 3 completion
+- Added standalone Topic 3.9 (four lessons), GridMarker workshop, 22 behavior tests and 10-question graded check.
+- Added four-section cumulative Unit 3 Summary with 28 unlimited-retry questions, feedback, persisted review data, and a final congratulations page.
+- Added summary/lesson progress to navigation, dashboard and cumulative PDF. Previous topic content and saved student work preserved.
+
 ## v1.25 — Visible Java callers in Topic 3.5.2–3.5.3
 
 Added complete Java caller and supporting class to all three state-changing method experiments in 3.5.2 and all three return-versus-print experiments in 3.5.3. Each activity now identifies exactly which method call executes and how the caller uses the result. Verified all six examples with `javac`. Read-only contextual changes; no practice, completion, grading, progress, assessment or teacher-tool contracts changed.

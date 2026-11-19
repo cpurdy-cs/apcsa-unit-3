@@ -1,0 +1,29 @@
+public class Contact {
+    private String name;
+    private Contact lastSender;
+
+    public Contact(String name) {
+        this.name = name;
+        this.lastSender = null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void rename(String name) {
+        this.name = name;
+    }
+
+    public Contact getLastSender() {
+        return lastSender;
+    }
+
+    public void sendTo(Contact recipient) {
+        recipient.receiveFrom(this);
+    }
+
+    public void receiveFrom(Contact sender) {
+        this.lastSender = sender;
+    }
+}

@@ -24,13 +24,13 @@ const LESSONS = {
     },
     {
       title: 'A void method can change the object',
-      intro: 'An <strong>instance field</strong> belongs to an object and keeps its value between method calls. A <strong>mutator</strong> changes stored state. The word <code>void</code> means the method does not send a value back to the caller; it does not mean the method does nothing.',
+      intro: 'An <strong>instance variable</strong> belongs to an object and keeps its value between method calls. A <strong>mutator</strong> changes stored state. The word <code>void</code> means the method does not send a value back to the caller; it does not mean the method does nothing.',
       points: [
-        'An instance method can read and assign its object’s private fields.',
-        'A parameter, such as <code>amount</code>, supplies input for that particular call. The field retains the updated value after the method finishes.',
-        'When deciding the result, identify which variable is on the left of the assignment: a field or just a local parameter.'
+        'An instance method can read and assign its object’s private instance variables.',
+        'A parameter, such as <code>amount</code>, supplies input for that particular call. The instance variable retains the updated value after the method finishes.',
+        'When deciding the result, identify which variable is on the left of the assignment: an instance variable or just a local parameter.'
       ],
-      exampleTitle: 'Worked example: mutating a field',
+      exampleTitle: 'Worked example: mutating an instance variable',
       example: `public class Lamp {
     private boolean on;
 
@@ -42,15 +42,15 @@ const LESSONS = {
         return on;
     }
 }`,
-      takeaway: 'After <code>lamp.turnOn()</code>, the <code>on</code> field in that Lamp is <code>true</code>. The <code>turnOn</code> call itself returns no value; a later <code>lamp.isOn()</code> call returns <code>true</code>.',
-      action: 'Choose each state-changing method, observe the field before and after the call, and explain why a <code>void</code> method can still have an effect.'
+      takeaway: 'After <code>lamp.turnOn()</code>, the <code>on</code> instance variable in that Lamp is <code>true</code>. The <code>turnOn</code> call itself returns no value; a later <code>lamp.isOn()</code> call returns <code>true</code>.',
+      action: 'Choose each state-changing method, observe the instance variable before and after the call, and explain why a <code>void</code> method can still have an effect.'
     },
     {
       title: 'Returning a value is different from printing one',
       intro: '<code>return</code> ends a method call and provides a value to the caller. <code>System.out.println</code> displays text in program output instead. Both are useful, but a printed number cannot automatically be used in an expression as a returned number.',
       points: [
         'A non-<code>void</code> method declares the type it returns and uses <code>return</code> with a compatible expression.',
-        'An <strong>accessor</strong> typically returns a field value without modifying the field.',
+        'An <strong>accessor</strong> typically returns an instance variable value without modifying the instance variable.',
         'The caller can store a returned value: <code>int n = object.getValue();</code>. Calling a printing method does not assign a result.'
       ],
       exampleTitle: 'Worked example: two different behaviors',
@@ -73,7 +73,7 @@ const LESSONS = {
       intro: 'When a method is called with an <code>int</code>, <code>double</code>, or <code>boolean</code>, Java copies that primitive value into a new parameter variable. The caller’s variable and the parameter are not the same storage location.',
       points: [
         'Changing a primitive parameter changes only that method’s local variable.',
-        'If the method also updates an instance field, the object can change even while the caller’s primitive argument stays the same.',
+        'If the method also updates an instance variable, the object can change even while the caller’s primitive argument stays the same.',
         'Trace the caller’s variable and the parameter separately. They may begin equal but end with different values.'
       ],
       exampleTitle: 'Worked example: a copied int',
@@ -93,9 +93,9 @@ const LESSONS = {
     },
     {
       title: 'Accessors expose information; mutators change state',
-      intro: 'Keeping fields <code>private</code> allows the class to control how its state is used. A public <strong>accessor</strong> provides information to other code. A public <strong>mutator</strong> changes fields. A true/false accessor is often called a <strong>predicate</strong>.',
+      intro: 'Keeping instance variables <code>private</code> allows the class to control how its state is used. A public <strong>accessor</strong> provides information to other code. A public <strong>mutator</strong> changes instance variables. A true/false accessor is often called a <strong>predicate</strong>.',
       points: [
-        'An accessor normally has a non-<code>void</code> return type and does not change the field it reads.',
+        'An accessor normally has a non-<code>void</code> return type and does not change the instance variable it reads.',
         'A mutator often uses <code>void</code> because its purpose is to change state; it may accept parameters.',
         'A predicate returns <code>boolean</code> and answers a question about an object, such as whether a door is open.'
       ],
@@ -111,7 +111,7 @@ const LESSONS = {
         open = false;
     }
 }`,
-      takeaway: '<code>isOpen()</code> is a boolean accessor (predicate); <code>close()</code> is a mutator. Other classes use these public methods instead of directly editing the private field.',
+      takeaway: '<code>isOpen()</code> is a boolean accessor (predicate); <code>close()</code> is a mutator. Other classes use these public methods instead of directly editing the private instance variable.',
       action: 'Choose the correct getter, mutator, and predicate declarations. Watch the complete <code>PrizeCard</code> code change before running the checks.'
     },
     {
@@ -152,15 +152,15 @@ public boolean validGroup(int seats) {
     },
     {
       title: 'Plan the class before you write the methods',
-      intro: 'A class-design specification describes the state to store and the behaviors to expose. Before writing code, separate <strong>fields</strong> (values that persist between calls) from <strong>parameters and locals</strong> (values used during one call). Then work from construction through simple accessors toward more complicated operations.',
+      intro: 'A class-design specification describes the state to store and the behaviors to expose. Before writing code, separate <strong>instance variables</strong> (values that persist between calls) from <strong>parameters and locals</strong> (values used during one call). Then work from construction through simple accessors toward more complicated operations.',
       points: [
-        'Create the public class, declare its required private fields, and write a constructor that initializes each field.',
+        'Create the public class, declare its required private instance variables, and write a constructor that initializes each instance variable.',
         'Implement accessors first; they make it easier to inspect whether constructors and mutators work.',
         'For each mutator, write the behavior rules as conditions before changing the state. Test normal, boundary, and invalid inputs.'
       ],
       exampleTitle: 'Planning example: an unrelated inventory item',
       example: `// InventoryItem design plan (not solution code):
-// Fields: String label; int quantity;
+// Instance variables: String label; int quantity;
 // Constructor: store label and initial quantity
 // Accessor: getQuantity() returns quantity
 // Mutator: restock(int amount)
@@ -175,7 +175,7 @@ public boolean validGroup(int seats) {
       intro: 'For a class type such as <code>Player</code>, the variable holds a <strong>reference</strong> to an object, not an embedded copy of the object. Java allocates a new object when it evaluates <code>new</code>. Copying one reference into another variable does not construct a second object.',
       points: [
         '<code>Player b = a;</code> copies a reference. If <code>a</code> and <code>b</code> now refer to one mutable object, either variable can be used to call methods that change that same object.',
-        '<code>Player b = new Player(...);</code> allocates a different object, even if its initial field values match another Player.',
+        '<code>Player b = new Player(...);</code> allocates a different object, even if its initial instance variable values match another Player.',
         'Reassigning one reference variable changes where that variable points; it does not redirect every other alias.'
       ],
       exampleTitle: 'Read these two alternatives',
@@ -209,7 +209,7 @@ Player separate = new Player(20); // new object`,
     }
 }`,
       takeaway: 'If the caller has <code>Box original = new Box(2);</code>, then calling <code>original.mutate(original)</code> changes its value to 9. Calling <code>original.redirect(original)</code> afterward does not redirect the caller’s variable.',
-      action: 'In every experiment, ask separately: “Did the method change an object’s field, or did it only change which object the parameter references?”'
+      action: 'In every experiment, ask separately: “Did the method change an object’s instance variable, or did it only change which object the parameter references?”'
     },
     {
       title: 'Returning a reference does not automatically copy an object',
@@ -217,7 +217,7 @@ Player separate = new Player(20); // new object`,
       points: [
         '<code>return selected;</code> sends back the reference already stored in <code>selected</code>.',
         '<code>return new Card(...);</code> first creates a different object and returns a reference to it.',
-        'To determine whether references are identical, trace the object identity, not just equal field values.'
+        'To determine whether references are identical, trace the object identity, not just equal instance variable values.'
       ],
       exampleTitle: 'Worked example: choose an existing object',
       example: `public class Medal {
@@ -229,14 +229,14 @@ Player separate = new Player(20); // new object`,
     }
 }`,
       takeaway: 'If <code>b = a.echo(a)</code>, both <code>a</code> and <code>b</code> reference the same Medal. If the method instead returned <code>new Medal(...)</code>, its returned reference would point to a new object.',
-      action: 'Trace both “existing reference” and “new object” experiments. After the returned variable changes a field, inspect which original variable observes that change.'
+      action: 'Trace both “existing reference” and “new object” experiments. After the returned variable changes an instance variable, inspect which original variable observes that change.'
     },
     {
       title: 'Private access is based on the enclosing class',
-      intro: '<code>private</code> means code outside the declaring class cannot directly access that member. It does <strong>not</strong> mean one object of a class is forbidden to inspect the private fields of another object of the same class. The key question is where the method’s code is written.',
+      intro: '<code>private</code> means code outside the declaring class cannot directly access that member. It does <strong>not</strong> mean one object of a class is forbidden to inspect the private instance variables of another object of the same class. The key question is where the method’s code is written.',
       points: [
-        'A method declared inside <code>Badge</code> can read a private field on a parameter of type <code>Badge</code>. Both objects are instances of the same declaring class.',
-        'A method in an unrelated class cannot access that private field directly, even if it holds a reference to a Badge.',
+        'A method declared inside <code>Badge</code> can read a private instance variable on a parameter of type <code>Badge</code>. Both objects are instances of the same declaring class.',
+        'A method in an unrelated class cannot access that private instance variable directly, even if it holds a reference to a Badge.',
         'Code in another class should use an appropriate public accessor or method.'
       ],
       exampleTitle: 'Worked example: same-class private access',
@@ -273,12 +273,12 @@ Player separate = new Player(20); // new object`,
   ],
   '3.7': [
     {
-      title: 'Instance fields are separate; static fields are shared',
+      title: 'Instance variables are separate; class variables are shared',
       intro: 'An <strong>instance variable</strong> belongs to one object, so different objects can hold different values. A <strong>class variable</strong> uses the keyword <code>static</code>; Java stores one shared copy for the class rather than a separate copy for each object.',
       points: [
-        'Each constructed object gets its own instance fields.',
-        'A <code>static</code> field is shared across all instances, including when constructors and instance methods update it.',
-        'Creating a new object does not duplicate the class’s static field. A class-wide counter can therefore record how many objects were constructed.'
+        'Each constructed object gets its own instance variables.',
+        'A <code>static</code> class variable is shared across all instances, including when constructors and instance methods update it.',
+        'Creating a new object does not duplicate the class variable. A class-wide counter can therefore record how many objects were constructed.'
       ],
       exampleTitle: 'Worked example: a shared badge count',
       example: `public class VisitorBadge {
@@ -298,11 +298,11 @@ Player separate = new Player(20); // new object`,
     },
     {
       title: 'Use the class name when accessing public static data',
-      intro: 'A public static field can be read or assigned with <code>ClassName.fieldName</code> from another class. The expression names the class because the data belongs to the class. This differs from an instance field, which requires a particular object.',
+      intro: 'A public class variable can be read or assigned with <code>ClassName.fieldName</code> from another class. The expression names the class because the data belongs to the class. This differs from an instance variable, which requires a particular object.',
       points: [
-        'Declaration: <code>public static int eventsHeld;</code> declares a class-wide integer field.',
+        'Declaration: <code>public static int eventsHeld;</code> declares a shared integer class variable.',
         'Read: <code>Festival.eventsHeld</code> reads the shared value. Assignment: <code>Festival.eventsHeld = 3;</code> updates it.',
-        'Access rules still apply: another class cannot directly access a <code>private static</code> field merely because it is static.'
+        'Access rules still apply: another class cannot directly access a <code>private static</code> class variable merely because it is static.'
       ],
       exampleTitle: 'Worked example: class-qualified access',
       example: `public class Festival {
@@ -313,16 +313,16 @@ Player separate = new Player(20); // new object`,
         int count = Festival.eventsHeld;
     }
 }`,
-      takeaway: 'The same <code>Festival.eventsHeld</code> value is used for the whole class. Writing <code>someObject.eventsHeld</code> can compile for a static field, but the class-qualified form is clearer and is the form to practice.',
+      takeaway: 'The same <code>Festival.eventsHeld</code> value is used for the whole class. Writing <code>someObject.eventsHeld</code> can compile for a class variable, but the class-qualified form is clearer and is the form to practice.',
       action: 'For each code-building case, distinguish a static declaration, a class-qualified read, and a class-qualified assignment. Inspect the inserted Java statement before checking it.'
     },
     {
       title: 'A static method has no current object',
-      intro: 'An instance method is called for a particular object, so it can use that object’s fields directly. A <strong>static method</strong> belongs to the class and is not called for a particular instance. It can access static fields and other static methods directly, but it needs a reference to access an object’s instance state.',
+      intro: 'An instance method is called for a particular object, so it can use that object’s instance variables directly. A <strong>static method</strong> belongs to the class and is not called for a particular instance. It can access class variables and other static methods directly, but it needs a reference to access an object’s instance state.',
       points: [
-        'Inside a static method, using an instance field like <code>value</code> with no object reference is a compile-time error.',
-        'A static method can use its class’s static field directly and call another static method directly.',
-        'If it receives an object parameter, it can use <code>someObject.value</code> when Java access rules permit that field.'
+        'Inside a static method, using an instance variable like <code>value</code> with no object reference is a compile-time error.',
+        'A static method can use its class variable directly and call another static method directly.',
+        'If it receives an object parameter, it can use <code>someObject.value</code> when Java access rules permit that instance variable.'
       ],
       exampleTitle: 'Worked example: direct versus reference-based access',
       example: `public class Register {
@@ -330,7 +330,7 @@ Player separate = new Player(20); // new object`,
     private static int allItems;
 
     public static int total() {
-        return allItems; // class field: legal
+        return allItems; // class variable: legal
     }
     public static int inspect(Register r) {
         return r.items;  // object reference: legal
@@ -338,14 +338,14 @@ Player separate = new Player(20); // new object`,
     // return items; in a static method would fail.
 }`,
       takeaway: 'The object parameter <code>r</code> tells Java which Register’s <code>items</code> to read. Without that reference, a static method has no specific Register instance to inspect.',
-      action: 'Inspect each complete class in the static-method lab. Before selecting “compiles,” ask whether every instance-field access has an actual object reference.'
+      action: 'Inspect each complete class in the static-method lab. Before selecting “compiles,” ask whether every instance variable access has an actual object reference.'
     },
     {
       title: 'Static and final describe different things',
-      intro: '<code>static</code> controls <em>ownership</em>: the field belongs to the class. <code>final</code> controls <em>reassignment</em>: after a final variable receives its value, it cannot be assigned a different value. Combining them creates a class-wide constant.',
+      intro: '<code>static</code> controls <em>ownership</em>: a class variable belongs to the class. <code>final</code> controls <em>reassignment</em>: after a final variable receives its value, it cannot be assigned a different value. Combining them creates a class-wide constant.',
       points: [
         '<code>static</code> alone does not stop a value from changing.',
-        '<code>final</code> alone does not make a field shared by all objects; an instance can have its own final field.',
+        '<code>final</code> alone does not make a variable shared by all objects; an instance can have its own final instance variable.',
         '<code>public static final int LIMIT = 10;</code> defines one publicly accessible, non-reassignable integer constant. Uppercase names are a convention for constants.'
       ],
       exampleTitle: 'Worked example: shared count, final ID, shared limit',
@@ -367,8 +367,8 @@ Player separate = new Player(20); // new object`,
       title: 'Plan a class with independent and shared state',
       intro: 'A class can track state for one object and a total shared across every object. The design challenge is deciding which value belongs where and which methods should operate on an instance versus the class. Plan each update before writing code.',
       points: [
-        'Declare per-object fields without <code>static</code>; declare the common total with <code>static</code>. Use <code>static final</code> for a fixed shared limit.',
-        'A successful operation can update both the object’s field and the shared total. An invalid operation must leave both unchanged.',
+        'Declare per-object instance variables without <code>static</code>; declare the common total with <code>static</code>. Use <code>static final</code> for a fixed shared limit.',
+        'A successful operation can update both the object’s instance variable and the shared total. An invalid operation must leave both unchanged.',
         'Static utility methods that need one object’s data should receive an object parameter. Check inputs and boundaries before updating anything.'
       ],
       exampleTitle: 'Planning example: concert booths',

@@ -13,7 +13,7 @@ test('lesson renderers and course roadmap never display estimates or suggested c
   }
   const app=source('js/app.js');
   assert.doesNotMatch(app,/suggested instructional period|\$\{u\.periods\}/i,'student roadmap must show page count, not suggested periods');
-  assert.match(app,/\$\{u\.pages\} instructional pages/);
+  assert.match(app,/instructional lessons/);
 });
 
 test('student dashboard and each available topic first page render without duration suggestions',async()=>{

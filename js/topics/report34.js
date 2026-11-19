@@ -9,7 +9,7 @@ export function write34(report,st){
  const p1=st.pages['3.4.1']?.data||{},p2=st.pages['3.4.2']?.data||{},p3=st.pages['3.4.3']?.data||{},p4=st.pages['3.4.4']?.data||{},p5=st.pages['3.4.5']?.data||{};
  report.blank(10);report.heading('Selected practice evidence | Topic 3.4',14);
  report.item('Object factory',`Constructed: ${(p1.objects||[]).map(x=>`${x.variable} -> Player #${x.oid}, name=${x.name}, score=${x.score}`).join('; ')||'None'}. Transfer: ${correct(FACTORY_PRACTICE,p1)}/${FACTORY_PRACTICE.length}.`);
- report.item('Default field values',DEFAULT_FIELDS.map(f=>`${f.type} ${f.name}: ${p2.defaults?.[f.id]||'(no prediction)'}`).join(' | '));
+ report.item('Default instance variable values',DEFAULT_FIELDS.map(f=>`${f.type} ${f.name}: ${p2.defaults?.[f.id]||'(no prediction)'}`).join(' | '));
  report.item('Constructor availability',DEFAULT_SCENARIOS.map(x=>`${x.label}: ${p2.verified?.[x.id]?'correct':'not verified'}`).join(' | '));
  report.item('Default-constructor transfer',`${correct(DEFAULT_PRACTICE,p2)}/${DEFAULT_PRACTICE.length} correct.`);
  report.item('Guided object-state constructor',`Selections: score=${p3.multi?.score||'none'}, lives=${p3.multi?.lives||'none'}. Valid run: ${!!p3.multiPassed}. Results: ${(p3.multiObjects||[]).map(x=>`${x.variable}: score ${x.resultScore}, lives ${x.resultLives}`).join('; ')||'None'}. Transfer: ${correct(MULTI_PRACTICE,p3)}/${MULTI_PRACTICE.length}.`);

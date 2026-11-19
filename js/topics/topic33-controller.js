@@ -81,7 +81,7 @@ export function createTopic33(ctx){
   st.pages['3.3.1'].data={inspected:ANATOMY.map(x=>x.id),parts:Object.fromEntries(CLASS_PARTS.map(x=>[x.id,x.answer])),partsChecked:true,concept:1};
   st.pages['3.3.2'].data={probed:['inside-score','outside-score','inside-get','outside-get'],answers:Object.fromEntries(ACCESS_TRANSFER.map(q=>[q.id,q.answer]))};
   st.pages['3.3.3'].data={created:true,scores:{a:15,b:30},calls:[{kind:'add',id:'a',amount:5,score:15},{kind:'add',id:'b',amount:10,score:30},{kind:'get',id:'a',score:15}],answers:Object.fromEntries(OBJECT_TRANSFER.map(q=>[q.id,q.answer]))};
-  st.pages['3.3.4'].data={build:Object.fromEntries(BUILD_SLOTS.map(x=>[x.id,'correct'])),validated:true,clientChecked:true,answers:Object.fromEntries(BUILD_TRANSFER.map(q=>[q.id,q.answer])),reflection:'The private ticket field prevents external direct modifications while the public getter exposes the value safely.'};
+  st.pages['3.3.4'].data={build:Object.fromEntries(BUILD_SLOTS.map(x=>[x.id,'correct'])),validated:true,clientChecked:true,answers:Object.fromEntries(BUILD_TRANSFER.map(q=>[q.id,q.answer])),reflection:'The private ticket instance variable prevents external direct modifications while the public getter exposes the value safely.'};
   st.assessments['3.3'].attempts=[sampleResult(QUESTIONS33,90)];st.assessments['3.3'].locked=true;
  }
  return {page,check,results,complete:complete33,click,change,input,questionBank:QUESTIONS33,sample,

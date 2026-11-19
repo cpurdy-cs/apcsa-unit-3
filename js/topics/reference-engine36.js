@@ -128,10 +128,10 @@ function runtime(compiled){
    }
    if(node.k==='member'){
     const obj=value(node.obj);
-    if(!obj||obj.__class!=='WaterTank'||!fieldNames.includes(node.name))throw Error('Invalid field assignment.');
+    if(!obj||obj.__class!=='WaterTank'||!fieldNames.includes(node.name))throw Error('Invalid instance variable assignment.');
     return {get:()=>obj[node.name],set:v=>obj[node.name]=v};
    }
-   throw Error('Left side of assignment must be an accessible variable or field.');
+   throw Error('Left side of assignment must be an accessible variable or instance variable.');
   };
   function execute(node){
    budget();
@@ -178,7 +178,7 @@ export const STARTER36='// Write the complete WaterTank class from the specifica
 const check=(name,input,expected,run)=>({name,input,expected,run});
 const describeRef=(obj,first,second)=>obj===first?'first tank':obj===second?'second tank':obj?.__class==='WaterTank'?`new/different tank #${obj.__id}`:String(obj);
 const cases=[
- check('Constructor initializes both fields','WaterTank a = new WaterTank(20, 7);\na.getCapacity();\na.getLiters();','capacity = 20; liters = 7',r=>{const a=r.allocate(20,7),c=r.call(a,'getCapacity'),l=r.call(a,'getLiters');return {actual:`capacity = ${c}; liters = ${l}`,pass:c===20&&l===7};}),
+ check('Constructor initializes both instance variables','WaterTank a = new WaterTank(20, 7);\na.getCapacity();\na.getLiters();','capacity = 20; liters = 7',r=>{const a=r.allocate(20,7),c=r.call(a,'getCapacity'),l=r.call(a,'getLiters');return {actual:`capacity = ${c}; liters = ${l}`,pass:c===20&&l===7};}),
  check('Empty tank retains capacity','WaterTank a = new WaterTank(15, 0);\na.getCapacity();\na.getLiters();','capacity = 15; liters = 0',r=>{const a=r.allocate(15,0),c=r.call(a,'getCapacity'),l=r.call(a,'getLiters');return {actual:`capacity = ${c}; liters = ${l}`,pass:c===15&&l===0};}),
  check('Accept valid addition','WaterTank a = new WaterTank(20, 4);\nboolean ok = a.addWater(6);','returned true; liters = 10; capacity = 20',r=>{const a=r.allocate(20,4),v=r.call(a,'addWater',6);return {actual:`returned ${v}; liters = ${a.liters}; capacity = ${a.capacity}`,pass:v===true&&a.liters===10&&a.capacity===20};}),
  check('Allow addition exactly to capacity','WaterTank a = new WaterTank(10, 8);\nboolean ok = a.addWater(2);','returned true; liters = 10',r=>{const a=r.allocate(10,8),v=r.call(a,'addWater',2);return {actual:`returned ${v}; liters = ${a.liters}`,pass:v===true&&a.liters===10};}),

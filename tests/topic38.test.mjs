@@ -5,7 +5,7 @@ import {PAGE38,SCOPE_SCENES38,SHADOW_CASES38,PRACTICE38,QUESTIONS38} from '../js
 import {complete38,render38Page,render38Check,grade38} from '../js/topic38.js';
 import {topicSidebarStates,renderSidebarTopics} from '../js/sidebar-status.js';
 test('Topic 3.8 is a new modular four-lesson plugin without old topic changes',()=>{
- assert.deepEqual(IMPLEMENTED_TOPICS.map(t=>t.id).slice(-2),['3.7','3.8']);assert.equal(PAGE38.length,4);assert.equal(TOPICS.find(t=>t.id==='3.9').implemented,false);
+ assert.deepEqual(IMPLEMENTED_TOPICS.map(t=>t.id).slice(-3),['3.7','3.8','3.9']);assert.equal(PAGE38.length,4);assert.equal(TOPICS.find(t=>t.id==='3.9').implemented,true);
  const st=blankState();assert.equal(topicUnlocked(st,'3.8'),false);st.assessments['3.7'].attempts.push({score:80});assert.equal(topicUnlocked(st,'3.8'),true);assert.equal(pageUnlocked(st,'3.8',2),false);
  st.pages['3.8.1']={completed:true,data:{}};assert.equal(pageUnlocked(st,'3.8',2),true);
 });
@@ -30,8 +30,8 @@ test('legacy backup survives a new topic registration',()=>{
 });
 test('sidebar clearly distinguishes completed/current/locked and individual lessons',()=>{
  const st=blankState();st.assessments['3.7'].attempts.push({score:80});for(let i=1;i<=3;i++)st.pages[`3.8.${i}`]={completed:true,data:{}};
- const states=topicSidebarStates(st,false,'3.8');assert.equal(states.find(t=>t.id==='3.7').status,'completed');assert.equal(states.find(t=>t.id==='3.8').status,'current');assert.equal(states.find(t=>t.id==='3.9').status,'coming-soon');
- const html=renderSidebarTopics(st,false,'3.8');assert.match(html,/status-completed/);assert.match(html,/status-current/);assert.match(html,/Completed/);assert.match(html,/Current/);assert.match(html,/Coming soon/);assert.match(html,/sidebar-lesson.*done/);assert.match(html,/3.8.4/);
+ const states=topicSidebarStates(st,false,'3.8');assert.equal(states.find(t=>t.id==='3.7').status,'completed');assert.equal(states.find(t=>t.id==='3.8').status,'current');assert.equal(states.find(t=>t.id==='3.9').status,'locked');
+ const html=renderSidebarTopics(st,false,'3.8');assert.match(html,/status-completed/);assert.match(html,/status-current/);assert.match(html,/Completed/);assert.match(html,/Current/);assert.match(html,/Locked/);assert.match(html,/sidebar-lesson.*done/);assert.match(html,/3.8.4/);
 });
 
 test('3.8.2 displays the full caller before the method and asks for both caller outcomes',()=>{

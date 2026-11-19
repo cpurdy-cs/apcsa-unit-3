@@ -352,3 +352,122 @@ dialog{border:1px solid #d8dce1;border-radius:15px;padding:0;width:min(520px,cal
 .topic35-page .method35-change-code .code-stage{min-width:0}
 .topic35-page .method35-change-code .code-main{white-space:pre;overflow-x:auto;overflow-wrap:normal;tab-size:4;font-size:12.5px;line-height:1.65}
 .topic35-page .callout .helper{margin-top:6px;margin-bottom:0;color:inherit}
+
+/* v1.26: Topic 3.9 self-contained lessons, reference visualizers and unit review. */
+.topic39-page,.topic39-lab,.topic39-instruction,.topic39-practice{min-width:0;}
+.topic39-instruction{border-left:4px solid #500000;}
+.topic39-instruction h2{margin-top:12px;}
+.topic39-instruction p{line-height:1.65;}
+.topic39-code{min-width:0;max-width:100%;border:1px solid #d8d9dd;border-radius:12px;background:#f7f8fa;padding:12px 14px;margin:14px 0;}
+.topic39-code .kicker{margin-bottom:8px;}
+.topic39-code pre{font-family:"Courier New",monospace;max-width:100%;min-width:0;overflow-x:auto;white-space:pre;line-height:1.55;font-size:12.7px;margin:0;tab-size:4;font-variant-ligatures:none;}
+.topic39-code code{font-family:inherit;font-size:inherit;}
+.topic39-two-code{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:start;}
+.topic39-two-code .topic39-code{height:100%;margin:8px 0;}
+.topic39-scene{border:1px solid #dedee3;border-radius:12px;padding:14px;margin-top:18px;background:#fff;}
+/* Topic 3.9.1: calls are Java code, never forced to uppercase. */
+.topic39-active-code-line{background:#f5e5e7;box-shadow:3px 0 0 #500000;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+.topic39-call-highlight{font-weight:800;color:#500000;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;}
+.topic39-current-call{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:4px 0 12px;padding:10px 13px;background:#f9f2f3;border:1px solid #dbc0c4;border-radius:9px;}
+.topic39-current-call>span{font-size:12px;font-weight:700;color:#60363b;}
+.topic39-current-call code{font-family:"Courier New",monospace;font-size:15px;font-weight:700;color:#500000;text-transform:none;letter-spacing:normal;font-variant-ligatures:none;}
+.topic39-object>small{font-size:11px;color:#5a6470;}
+
+.topic39-object-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0;}
+.topic39-object{border:2px solid #d3d4d9;border-radius:10px;padding:16px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;background:#fff;}
+.topic39-object.selected{border-color:#500000;background:#f8f0f1;}
+.topic39-object>span:not(.pill){font-family:"Courier New",monospace;}
+.topic39-question,.topic39-review-question{padding:16px 0;border-bottom:1px solid #e2e3e6;}
+.topic39-question:last-child,.topic39-review-question:last-child{border-bottom:0;}
+.topic39-question .field,.topic39-review-question .field{margin:12px 0;}
+.topic39-case-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0;}
+.topic39-case-grid .btn{white-space:normal;text-align:left;min-width:0;min-height:52px;justify-content:flex-start;line-height:1.35;}
+.topic39-reference-map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:15px 0;}
+.topic39-reference-map>div{border:1px solid #dadce1;border-radius:10px;padding:15px;display:flex;flex-direction:column;gap:9px;}
+.topic39-reference-map>.topic39-current-reference{border:2px solid #500000;background:#faf2f2;}
+.topic39-reference-map span{font-size:12px;font-weight:700;color:#500000;}
+.topic39-static-note{border:1px solid #dadce1;border-radius:9px;padding:10px 14px;margin-top:15px;}
+.topic39-static-note summary{cursor:pointer;font-weight:700;}
+.topic39-review-question{padding:16px 0;}
+.topic39-review-question .feedback{margin-top:12px;}
+.unit-finish-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:6px 0 24px;}
+.unit-finish-stats>div{background:#f5f5f7;border-radius:10px;padding:20px 10px;display:flex;align-items:center;gap:8px;flex-direction:column;text-align:center;}
+.unit-finish-stats strong{font-size:27px;color:#500000;}
+.unit-finish-stats span{font-size:12px;color:#444;}
+.unit-finish-topics>div{display:grid;grid-template-columns:minmax(0,1fr) 70px 100px;gap:12px;align-items:center;border-bottom:1px solid #e2e3e6;padding:10px 0;}
+.unit-finish-topics>div span{text-align:right;font-variant-numeric:tabular-nums;}
+@media(max-width:960px){.topic39-two-code{grid-template-columns:minmax(0,1fr);} .topic39-reference-map{grid-template-columns:1fr;} }
+@media(max-width:600px){.topic39-object-grid,.topic39-case-grid,.unit-finish-stats{grid-template-columns:minmax(0,1fr);} .unit-finish-topics>div{grid-template-columns:minmax(0,1fr) 65px;} .unit-finish-topics .btn{grid-column:1 / -1;width:100%;} .topic39-code pre{font-size:12px;} }
+
+/* v1.29: 3.9.3 guided Member-to-ScoreBoard experiment. */
+.topic39-pass-code-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start;margin:14px 0}
+.topic39-pass-code-grid>.topic39-code{margin:0;min-width:0}.topic39-pass-code-grid>.topic39-code:first-child{grid-column:1/-1}
+.topic39-pass-code-grid pre{overflow-x:auto}
+.topic39-pass-progress{display:flex;gap:10px;flex-wrap:wrap;margin:17px 0 14px}
+.topic39-pass-step{border:2px solid #c9cbd2;border-radius:10px;background:#fff;color:#4b5360;display:grid;place-items:center;font-weight:800;min-width:39px;min-height:39px;cursor:pointer}
+.topic39-pass-step.current{border-color:#500000;background:#f9eff1;color:#500000}
+.topic39-pass-step.done{border-color:#207457;background:#e7f5ee;color:#195d44}
+.topic39-pass-step:disabled{opacity:.45;cursor:not-allowed}
+.topic39-pass-task{border:1px solid #e1dce0;background:#fff;border-radius:12px;padding:16px;min-width:0}
+.topic39-pass-task>h3{margin:6px 0 8px}
+.topic39-pass-task .topic39-code .kicker{text-transform:none;letter-spacing:normal;font-weight:750;font-size:12px}
+.topic39-pass-task .topic39-current-call{margin:16px 0}
+.topic39-pass-objects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:14px 0 17px}
+.topic39-pass-object,.topic39-pass-board{min-width:0;padding:15px;border:1px solid #d8dce2;border-radius:10px;display:flex;flex-direction:column;gap:8px;background:#f8f9fb}
+.topic39-pass-object.selected{border:2px solid #500000;background:#fff5f6}
+.topic39-pass-object code{font-family:'Courier New',monospace;font-size:15px;font-variant-ligatures:none;overflow-wrap:anywhere}
+.topic39-pass-object span,.topic39-pass-board span{font-size:12px;color:#515968;line-height:1.4}
+.topic39-pass-question{margin:18px 0 11px;font-weight:800;font-size:15px}
+.topic39-pass-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 16px}
+.topic39-pass-choice{border:2px solid #cfd1d7;border-radius:10px;padding:14px;background:white;color:#242833;min-height:75px;font-weight:600;font-size:13px;line-height:1.45;font-family:inherit;text-align:left;cursor:pointer;white-space:normal;overflow-wrap:anywhere}
+.topic39-pass-choice.chosen{border-color:#500000;background:#f9edf0;color:#500000}
+.topic39-pass-choice:not(:disabled):hover{border-color:#8c5760}
+.topic39-pass-choice:disabled{cursor:default;opacity:.85}
+@media(max-width:950px){.topic39-pass-code-grid{grid-template-columns:minmax(0,1fr)}.topic39-pass-code-grid>.topic39-code:first-child{grid-column:auto}.topic39-pass-choices{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:650px){.topic39-pass-objects{grid-template-columns:minmax(0,1fr)}.topic39-pass-task{padding:12px}}
+
+.topic39-pass-choice .topic39-pass-option-code{display:block;margin:0;padding:0;background:transparent;color:inherit;font-family:"Courier New",monospace;font-size:12px;line-height:1.65;white-space:pre;overflow-x:auto;font-variant-ligatures:none}
+
+/* v1.30: one vertically readable Robot/charging-station activity in 3.9.3. */
+.topic39-charge-lab .topic39-charge-code{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:12px 0}
+.topic39-charge-lab .topic39-charge-code .topic39-code{min-width:0;width:100%;margin:0}
+.topic39-charge-lab .topic39-charge-code pre,.topic39-charge-lab .topic39-charge-trace pre{white-space:pre-wrap;overflow-x:visible;overflow-wrap:anywhere;word-break:normal;tab-size:4;font-size:13px;line-height:1.55}
+.topic39-charge-section-label{font-size:12px;font-weight:750;color:#500000;letter-spacing:.03em;text-transform:uppercase;margin:0 0 5px}
+.topic39-charge-state{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+.topic39-charge-object{display:flex;flex-direction:column;gap:7px;background:#f7f8fa;border:1px solid #d6d9de;border-radius:10px;padding:13px;min-width:0}
+.topic39-charge-object strong{font-size:14px}.topic39-charge-object span,.topic39-charge-object small{font-size:12px;overflow-wrap:anywhere}
+.topic39-charge-object code{font-family:'Courier New',monospace;font-size:14px;font-variant-ligatures:none}
+.topic39-charge-station{background:#faf4f5;border-color:#d5bbc0}
+.topic39-charge-trace{background:#f6f8fb;border:1px solid #d8dfe6;border-radius:10px;padding:14px;margin-top:12px}
+.topic39-charge-trace ol{margin:9px 0 0;padding-left:22px}.topic39-charge-trace li{padding-bottom:6px;font-size:13px;line-height:1.6}
+.topic39-charge-lab .topic39-pass-choices{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:950px){.topic39-charge-lab .topic39-pass-choices{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:650px){.topic39-charge-state{grid-template-columns:minmax(0,1fr)}}
+
+.topic39-instruction .topic39-code pre{white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:visible;word-break:normal}
+
+/* v1.31: a coherent Sensor self-registration activity for 3.9.3. */
+.topic39-charge-lab .topic39-charge-code{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.topic39-charge-lab .topic39-code pre,.topic39-instruction .topic39-code pre{white-space:pre-wrap;overflow-x:visible;overflow-wrap:anywhere;word-break:normal;tab-size:4}
+.topic39-charge-lab .topic39-charge-object.topic39-watched{border:2px solid #500000;background:#fbf3f4}
+.topic39-charge-lab .topic39-charge-trace .topic39-code{margin-top:13px}
+.topic39-charge-lab .topic39-pass-choices{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:950px){.topic39-charge-lab .topic39-pass-choices{grid-template-columns:1fr}}
+
+/* v1.32 Topic 3.9: concise lessons, full-width readable Java, no sideways code panels. */
+.topic39-plain .topic39-code{width:100%;max-width:100%;min-width:0;margin:12px 0;}
+.topic39-plain .topic39-code-label{font-size:12px;font-weight:700;color:#535c68;margin:0 0 8px;text-transform:none;letter-spacing:normal;}
+.topic39-plain .topic39-code pre{white-space:pre-wrap;overflow-x:visible;overflow-wrap:anywhere;word-break:normal;line-height:1.55;font-family:"Courier New",monospace;font-variant-ligatures:none;}
+.topic39-plain .topic39-pass-choices{grid-template-columns:repeat(2,minmax(0,1fr));}
+.topic39-plain .topic39-pass-choice{min-height:56px;}
+@media(max-width:850px){.topic39-plain .topic39-pass-choices{grid-template-columns:minmax(0,1fr);}}
+
+/* v1.33: teach the current-object reference with a readable worked trace. */
+.topic39-first-instruction .topic39-code{margin-top:12px;margin-bottom:12px}
+.topic39-first-instruction h3{margin:20px 0 8px;font-size:15px}
+.topic39-intro-trace{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0}
+.topic39-intro-trace>div{min-width:0;border:1px solid #dedee3;border-radius:10px;padding:12px;background:#fbfafb;display:flex;flex-direction:column;gap:8px;font-size:12.5px;line-height:1.55}
+.topic39-intro-trace strong{color:#500000}
+.topic39-intro-trace code{display:inline-block;max-width:100%;overflow-wrap:anywhere}
+.topic39-intro-trace span{color:#434a55}
+@media(max-width:940px){.topic39-intro-trace{grid-template-columns:minmax(0,1fr)}}

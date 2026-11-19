@@ -14,7 +14,7 @@ test('static evaluator distinguishes class state from instance state and require
  }
 });
 test('static evaluator rejects static methods reading instance state directly and final reassignment',()=>{
- const badStatic=source.replace('gate.admitted + groupSize <= gate.capacity','admitted + groupSize <= capacity');const x=evaluateClass37(badStatic);assert.equal(x.ok,false);assert.match(x.tests.find(t=>!t.pass)?.actual||'',/Instance field .* needs a TrailGate object reference/);
+ const badStatic=source.replace('gate.admitted + groupSize <= gate.capacity','admitted + groupSize <= capacity');const x=evaluateClass37(badStatic);assert.equal(x.ok,false);assert.match(x.tests.find(t=>!t.pass)?.actual||'',/Instance variable .* needs a TrailGate object reference/);
  const badFinal=source.replace('admitted += groupSize;', 'MAX_GROUP_SIZE = 13;\n        admitted += groupSize;');const y=evaluateClass37(badFinal);assert.equal(y.ok,false);assert.match(y.tests.find(t=>!t.pass)?.actual||'',/final variable/);
 });
 test('static evaluator produces diagnostic test input/expected/actual output for errors',()=>{const broken=evaluateClass37(source.replace('return admitted;','return admitted + 1;'));assert.equal(broken.ok,false);assert.ok(broken.tests.some(t=>!t.pass));for(const t of broken.tests){assert.ok(t.input);assert.ok(t.expected);assert.equal(typeof t.actual,'string');}});

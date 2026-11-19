@@ -32,7 +32,7 @@ test('teacher exceptions cannot target unknown lessons or create first-topic pre
  let s=blankState();s.identity={first:'Alex',last:'R'};
  assert.throws(()=>applyProgressOverride(s,{kind:'lesson',key:'not-a-lesson'}),/Unknown lesson/);
  assert.throws(()=>applyProgressOverride(s,{kind:'topic',key:'3.1'}),/prerequisite/);
- assert.throws(()=>applyProgressOverride(s,{kind:'topic',key:'3.9'}),/prerequisite/);
+ assert.throws(()=>applyProgressOverride(s,{kind:'topic',key:'3.10'}),/prerequisite/);
  assert.equal(s.events.length,0);
 });
 test('student-facing updates are focus-preserving and use current completion data',()=>{

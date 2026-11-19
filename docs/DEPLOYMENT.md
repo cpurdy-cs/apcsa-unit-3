@@ -1,46 +1,48 @@
-# GitHub Pages deployment checklist | v1.5
+# GitHub Pages deployment | Class Creation Lab v2.0.0
 
-1. Extract the ZIP into a folder and confirm `index.html`, `css/` and `js/` are together at its root.
-2. Create or open your GitHub repository and upload the **files**, not the ZIP itself.
-3. Under **Settings → Pages → Build and deployment**, select **Deploy from a branch**, `main`, `/(root)`. Save.
-4. After publishing, open the HTTPS GitHub Pages URL in a normal student browser profile.
-5. Confirm a brand-new student is asked for **first name and last initial**.
-6. Check that Topic 3.2 cannot be opened before 3.1 is passed and 3.3 cannot be opened before 3.2 is passed, including by typing a direct `#/topic/3.2/page/1` URL.
-7. Confirm Topic 3.1 activities and the check; then pass Topic 3.1 and verify Topic 3.2 unlocks.
-8. On Topic 3.2, test all three leaderboard policies, run a flawed redemption case and a repaired test, complete a code permission decision, and verify graded check submission.
-9. Download **all three topic PDFs**, the cumulative PDF, and a JSON backup. Test JSON restoration in a separate test browser profile.
-10. Test teacher preview using **Ctrl+Alt+Shift+T** or the five-click build label. Check **separate** 3.1, 3.2 and 3.3 reset controls; exit preview afterward.
-11. Return to the site and refresh a lesson to check autosaving.
+## Publish the website
 
-No npm build, CDN, external API, or backend is required. For local previews, run `python -m http.server 8000` and visit `http://localhost:8000`.
+1. Extract `APCSA_Unit3_Class_Creation_GitHubPages_v2.0.0.zip`.
+2. Copy **its contents** (`index.html`, `css/`, `js/`) to the root of the GitHub Pages repository. Do not upload the ZIP in place of its contents.
+3. Under repository **Settings → Pages → Build and deployment**, select **Deploy from a branch**, the intended branch (usually `main`), and `/(root)`.
+4. Open the published **HTTPS** URL from a student Chromebook/browser profile. The site requires no npm build step, backend, CDN, or third-party API.
+5. If scripts look unchanged after updating the repository, refresh the page without using a cached copy. Do not clear site data to troubleshoot a stale version unless the student's progress is backed up.
 
-## Updating an existing v1.4 deployment
+For local testing: `python -m http.server 8000`, then visit `http://localhost:8000`.
 
-- Download a JSON progress backup before upgrading, and keep the same GitHub Pages URL and student browser profile.
-- Replace the existing files with the v1.5 ZIP contents; include new `js/content33.js`, `js/topic33.js`, `js/topics/topic33-controller.js` and `js/topics/report33.js`.
-- Previously recorded topic 3.1 and 3.2 progress remains intact. Passing Topic 3.2 now unlocks Topic 3.3.
-- Check new Topic 3.3 activities, graded check, teacher reset and PDF export on an actual Chromebook.
+## Updating an existing v1.x classroom deployment
 
-## Updating an existing v1.3 deployment
+- Download a JSON progress backup **before updating**, and confirm the file is available. Keep the same site address, browser and profile to retain the existing local record.
+- Replace the entire deployed website's `index.html`, `css/` and `js/` with the files from v2.0.0. Do not mix old and new JS modules.
+- Do **not** rename the `flourbluff-apcsa-u3-v1` localStorage key or alter JSON `schema: 1`: v2.0.0 intentionally retains them so previous records and v1.36 backups load normally.
+- This release does not reset lessons, graded checks, cumulative review progress, or submitted attempt history.
 
-- **Back up any student JSON progress files before replacing the site.**
-- Replace the contents of the GitHub Pages repository with all v1.4 files, including the new `js/registry.js`, `js/report-helpers.js`, and `js/topics/` directory. The new shared shell depends on those files.
-- Keep the same site URL and browser profile; v1.3 progress and submitted attempts use the same schema and storage key.
-- Check one Topic 3.1 lesson, one Topic 3.2 lesson, the graded check routes, teacher reset, and both individual and cumulative PDFs.
-- A hard refresh can be needed after publication to pick up the new module graph.
+## Student-device acceptance checklist
 
-## Updating an existing v1.1 deployment
+Use a **test student**, not a live student's account, to check:
 
-- Download JSON backups of any important student progress first.
-- Upload and replace the v1.1 site files, including newly added `js/content32.js` and `js/topic32.js`.
-- Existing Topic 3.1 progress remains compatible **on the same browser, origin and profile**; do not clear site data.
-- If new scripts seem missing, do a hard refresh and check that both new JS modules are published.
+1. New student identity entry (first name and last initial); returning student's progress survives page refresh.
+2. Lessons remain ordered and the next topic is locked until the prior topic's check is passed.
+3. Completing each topic's required activities unlocks its graded check; reaching 80% unlocks the following topic.
+4. Topic navigation correctly highlights the active lesson; Summary highlights the current review part without incorrectly highlighting Topic 3.1.
+5. The cumulative Summary unlocks only after all nine topics are completed and passed. Its 28 retryable questions do not add a graded score.
+6. Topic PDFs, the cumulative PDF and a normal JSON backup download and open.
+7. **Switch student:** click Switch student, verify that the final switch button is disabled, download a backup, select an *old or wrong* backup and confirm switching remains disabled, then select the current matching backup, switch and verify the new identity form appears. Restore the backup to confirm previous work survived.
+8. **Cancel:** open Switch student and cancel before verifying; the student record must be retained.
+9. Teacher preview works via the configured shortcut and phrase; reset a *test* check and verify prior submission history remains; exit preview.
+10. Inspect the actual student Chromebook width, browser policies and download permissions. Browser visual behavior cannot be guaranteed from Node.js tests alone.
 
-## Common problems
+## Shared-device backup rule
 
-- **Blank screen**: Check console errors and verify that the JS files were uploaded under the expected relative paths.
-- **No saving**: Confirm browser storage is enabled and the user is not in a profile that clears storage automatically. Use JSON backup/restore.
-- **No exports**: Check the Chromebook download policy and browser permissions.
-- **Teacher code failure**: Use an HTTPS (or localhost) origin; code hashing relies on Web Crypto.
-- **Unexpectedly locked check**: Required practice is not yet completed, a prior graded submission is locked, or the previous topic has not been passed.
-- **Security expectations**: Static site scoring, attempt locks, and teacher mode are not server-enforced.
+A download request does not prove the browser saved a file. **Switch student requires verification of the actual downloaded JSON file** against the currently stored student progress. If the downloaded file cannot be located or does not match, **do not clear the record**. Keep backups somewhere students can retrieve them again and avoid leaving confidential student progress files exposed on shared devices.
+
+## Troubleshooting
+
+- **Blank screen:** Verify that all relative `js/` and `css/` paths exist and that the console does not report missing modules.
+- **Autosaving fails:** Check browser storage policy and free space. Export work regularly.
+- **Download or switch cannot complete:** Check download permission/policy. The student must choose an existing, current JSON file to enable switching.
+- **Backup verification fails:** Export a fresh JSON file. Older backups, other students' files and malformed JSON are intentionally rejected during a switch.
+- **Restore fails:** Use the JSON import option for the correct student; restoring a different student's record requires switching out of the active student first.
+- **Teacher code fails:** Use HTTPS or localhost; hashing relies on the Web Crypto API.
+- **A check is locked:** The previous submission may have used the only graded attempt. A teacher can reset that topic check without deleting previous attempts.
+- **Security:** This is a static website. It cannot offer server-verified student identities or tamper-proof grades.

@@ -471,3 +471,12 @@ dialog{border:1px solid #d8dce1;border-radius:15px;padding:0;width:min(520px,cal
 .topic39-intro-trace code{display:inline-block;max-width:100%;overflow-wrap:anywhere}
 .topic39-intro-trace span{color:#434a55}
 @media(max-width:940px){.topic39-intro-trace{grid-template-columns:minmax(0,1fr)}}
+
+/* v2.0.0: explicit download, file verification, and final consent on shared devices. */
+.switch-steps{display:grid;gap:12px;margin:16px 0 10px}
+.switch-step{padding:13px 15px;border:1px solid #ddd5d8;border-radius:10px;background:#f9f8f8}
+.switch-step>strong{display:block;color:#500000;font-size:13px;margin-bottom:5px}
+.switch-step .helper{margin:5px 0 11px;line-height:1.45}
+.switch-step .btn{max-width:100%;white-space:normal;text-align:center}
+#switch-file-status{margin:10px 0 0;line-height:1.4}
+dialog:has(.switch-steps){max-height:calc(100vh - 36px);overflow-y:auto}

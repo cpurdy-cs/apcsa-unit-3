@@ -70,7 +70,7 @@ export function createReport(st,{cumulative=false,sample=false,topic='3.1'}={}){
  report.heading(cumulative?'UNIT 3 | Cumulative progress report':`TOPIC ${topic} | Student report`,17);
  report.line(`Student: ${display(st)}`);report.line(`Generated: ${new Date().toLocaleString('en-US')}`);
  report.line('Curriculum: 2025 AP Computer Science A, Unit 3 Class Creation');
- report.line('Report format: Class Creation Lab v1.32');report.blank(8);
+ report.line('Report format: Class Creation Lab v2.0.0');report.blank(8);
  if(sample)report.line('TEACHER SAMPLE - NOT A STUDENT SUBMISSION',{bold:true,color:'0.6 0.1 0.1'});
  // Show recorded teacher exceptions on individual and cumulative reports without inventing scores.
  const lessonOverrides=Object.entries(st.overrides?.lessons||{}).filter(([k])=>cumulative||k.startsWith(topic+'.')||(topic==='3.1'&&/^\d+$/.test(k)));

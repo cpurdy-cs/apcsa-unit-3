@@ -1,3 +1,24 @@
+# Release history — Class Creation Lab
+
+## v2.0.0 | Final Unit 3 classroom release
+
+- Final-release major version for the now-complete nine-topic course: 42 lessons, nine graded checks, four-part/28-question cumulative review. The existing content, review questions, grading and navigation remain unchanged from v1.36.
+- Replaced the one-click “Back up and switch” action with a **three-step, verified-file student switch**. Students first request a JSON download, then select the actual downloaded file for exact comparison with the current record, then explicitly confirm clearing local progress. A stale, invalid or different-student backup cannot authorize the switch; cancellation and failed storage writes leave the active student intact.
+- Updated UI build labels, `package.json`, PDF report-format label, README, current teacher guide, deployment checklist, architecture overview and curriculum alignment to v2.0.0. Older release notes remain below as history, not as current deployment instructions.
+- Retained localStorage key `flourbluff-apcsa-u3-v1`, JSON `schema: 1`, lesson IDs, assessment IDs, previous scores, teacher overrides and prior cumulative-review answers. **The major release does not invalidate prior progress.**
+
+## v1.36 | Meaningful cumulative-review explanations
+
+- Expanded correct-answer explanations for all 28 four-part cumulative review questions to explain the underlying Java concept rather than echo the selected choice.
+- Retained shorter feedback hints when a student answers incorrectly, with unlimited retries.
+- Kept the existing review questions, correctness keys, completion progress and prior scores compatible.
+- Incorporated v1.35's per-review-section sidebar highlight correction.
+
+## v1.35 | Cumulative-review sidebar highlighting
+
+- Each of the four review section links now marks its own active sidebar button. Unit Complete does not highlight a review part.
+- Preserved v1.34's fix preventing Topic 3.1 from being selected while viewing the review.
+
 ## v1.34 — Summary sidebar active-topic correction
 
 - Fixed the sidebar selecting Topic 3.1 while the Unit 3 Summary or Unit Complete screen was displayed. The sidebar now distinguishes an explicitly empty active topic from an omitted active-topic parameter used for auto-selection.

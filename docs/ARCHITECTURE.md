@@ -1,10 +1,10 @@
-# Modular architecture | v1.26
+# Modular architecture | v2.0.0
 
-Version 1.4 established the architecture. Versions 1.5 and 1.7 prove the extension point by adding Topics 3.3 and 3.4 as independent modules. Topics 3.5–3.8 use the same extension point. Topic 3.9 is implemented. A separate unit-review extension completes the course.
+The modular architecture supports all nine implemented topics (3.1–3.9), a separate four-part unit review, and shared navigation, storage, reports and teacher tools. The original v1.x development history is retained below for maintenance reference.
 
 ## Goal
 
-You can extend to Topic 3.9 and the final review **without editing the approved Topic 3.1–3.8 implementation files**. The core systems discover registered topics instead of having special cases for specific topic IDs.
+The core systems discover the registered topics rather than hard-coding per-topic logic. The course and its four-part cumulative review are complete. The final v2.0.0 release adds a separate `switch-student.js` validator without changing student-data schema.
 
 ## Where things live
 
@@ -13,6 +13,7 @@ You can extend to Topic 3.9 and the final review **without editing the approved 
 | `js/registry.js` | **The extension point.** Identifies implemented topics, page IDs, prerequisites, lesson metadata, controllers, and per-topic report writers. The rest of the app reads this manifest. |
 | `js/app.js` | Shared identity, navigation, dashboard, teacher console, click/change/input dispatch, progression completion events, and backup/report buttons. It does **not** import topic content. |
 | `js/storage.js` | Existing schema-1 localStorage data and JSON backup compatibility; normalizes registered lesson keys and registered topic assessments automatically. |
+| `js/switch-student.js` | Verifies a selected, downloaded JSON file against the current record before allowing a destructive student switch; blocks switching when blank-state persistence fails. |
 | `js/pdf.js` | Shared PDF document creation, cumulative index and exports. Iterates over registered per-topic writers. |
 | `js/topics/topic33-controller.js` | Topic 3.3 independent lesson UI, simulations, practice, and graded check. |
 | `js/content34.js`, `js/topic34.js`, `js/topics/topic34-controller.js` | Topic 3.4 separate original curriculum, constrained constructor simulations, interactive pages and check. |
@@ -32,7 +33,7 @@ They were deliberately **not migrated**:
 
 - Topic 3.1 lesson state keys remain `1`, `2`, `3`, `4`.
 - Topic 3.2 lesson state keys remain `3.2.1`, `3.2.2`, `3.2.3`.
-- Assessment keys remain `3.1` and `3.2`.
+- Assessment keys remain the original topic IDs `3.1` through `3.9`.
 - Question IDs, snapshots, attempt history and the localStorage key `flourbluff-apcsa-u3-v1` remain intact.
 - JSON backup `schema: 1` remains supported.
 
@@ -70,14 +71,14 @@ All controller methods share the same context, including `view()`, `pData(key)`,
 
 Use each topic's own `data-action` prefix (e.g. `33-`) to prevent event collisions. Topic 3.1 predates this convention and is intentionally retained under its original action names.
 
-## Add a future topic (such as Topic 3.8)
+## Extension contract (future maintenance only)
 
-1. Add new topic-specific content, rendering, controller, and report files (following the `js/content37.js`, `js/topic37.js`, `js/topics/topic37-controller.js`, and `js/topics/report37.js` pattern). Keep the supported Java execution subset explicit.
+1. New topics are **not planned for this completed unit**. For future maintenance, topic-specific content, rendering, controller, and report files follow the `js/content39.js`, `js/topic39.js`, `js/topics/topic39-controller.js`, and `js/topics/report39.js` pattern. Keep the supported Java execution subset explicit.
 2. Register the topic's lesson metadata, page IDs, controller, and report writer in `js/registry.js`.
 3. Existing generic shell, normalization, and PDF code recognizes the registered topic. Preserve all existing page IDs, question IDs, graded snapshots, and schema-1 storage key.
 4. Include targeted tests for Java semantics, the student workflow, teacher reset, progress backup, and PDF evidence. Run the complete regression suite and inspect the student pages before release.
 
-## Shared v1.15 progress and teacher tools
+## Shared progress and teacher tools (introduced during v1.x)
 
 - `js/app.js` owns the `commit()` callback. It now saves immediately and schedules a focus-preserving refresh of the lesson footer, progress navigation, and completion badges. It never replaces the active textarea while typing. Code-test results are invalidated when source changes.
 - `js/teacher-overrides.js` provides pure and tested grant/revoke logic. The teacher console operates on the student's **actual saved record**, not on a cloned preview. `overrides.lessons` records teacher-completed pages; `overrides.topics` permits a registered topic to be opened without a passing previous topic. Both retain reasons and time stamps, and support reversal.

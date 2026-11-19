@@ -6,6 +6,7 @@ import {createReport} from './pdf.js';
 import {shuffledOptions as importOptionShuffle} from './order.js';
 import {renderSubmissionReview} from './review.js';
 import {applyProgressOverride} from './teacher-overrides.js';
+import {verifyStudentSwitchBackup,saveBlankStudentBeforeSwitch} from './switch-student.js';
 
 // SHA-256 of the teacher preview phrase. Not secure authentication; client-side code can be bypassed.
 const TEACHER_CODE_SHA256='1748cf4a9216d2bbfd99694bb9c93c51629c9fea0e0c381141adec82947d4759';
@@ -18,6 +19,7 @@ async function validTeacherCode(input){
 let state=load(),preview=null,flash=null,teacherClicks=0,lastRenderedHash=null,resetTopic='3.1',reviewFilter='missed',pendingOverride=null;
 const controllers=new Map();
 let unitSummary=null;
+let verifiedSwitchSnapshot=null, switchDialogToken=0;
 // Query simple IDs with getElementById rather than a CSS selector. Some lesson
 // IDs begin with digits (e.g. 33-reflection-count); #33-reflection-count is
 // not a valid unescaped CSS selector and used to throw on every keystroke.
@@ -106,13 +108,13 @@ function header(){const st=view(),t=teacherOn();return `<div class="layout">
  <div class="sidebar-bottom"><div class="student-pill"><span class="student-dot"></span>${esc(studentName(st))}</div><div class="mini-muted">${t?'Preview changes are not saved to the student record':'Saved locally on this device'}</div>
  <button class="side-link" data-nav="#/reports">Reports &amp; backups</button><br><button class="side-link" data-action="switch-student">Switch student</button>
  ${t?'<br><button class="side-link" data-nav="#/teacher">Teacher tools</button>':''}
- <br><button class="teacher-footer" id="teacher-trigger" title="Build information" aria-label="Build information">Build 1.35 · 2025 CED</button></div>
+ <br><button class="teacher-footer" id="teacher-trigger" title="Build information" aria-label="Build information">Version 2.0.0 · 2025 CED</button></div>
  </aside><main class="app-main" id="main-content"><div class="topbar"><div class="crumbs">AP COMPUTER SCIENCE A <span aria-hidden="true">/</span> UNIT 3 ${t?'/ TEACHER PREVIEW':''}</div>
  <div class="top-actions">${t?'<span class="teacher-banner">TEACHER PREVIEW</span>':''}<button class="btn secondary small" data-action="backup-json">↓ Backup</button><button class="btn secondary small" data-nav="#/reports">Reports</button>${t?'<button class="btn small" data-action="teacher-exit">Exit preview</button>':''}</div></div><div class="content">`;
 }
 function footer(){return `</div></main></div><input type="file" id="backup-file" accept=".json,application/json" hidden><dialog id="modal"><div class="dialog-body" id="modal-body"></div></dialog>`;}
 function modal(html){const d=$('#modal');$('#modal-body').innerHTML=html;d.showModal();}
-function closeModal(){const d=$('#modal');if(d.open)d.close();}
+function closeModal(){switchDialogToken++;verifiedSwitchSnapshot=null;const d=$('#modal');if(d.open)d.close();}
 function renderEntry(){const topics=IMPLEMENTED_TOPICS.map(x=>x.id).join(', ').replace(/, ([^,]+)$/, ' and $1');const lessons=IMPLEMENTED_TOPICS.reduce((n,t)=>n+t.lessons.length,0);
  $('#app').innerHTML=`<div class="entry panel"><div class="brand-mark" aria-label="FB">FB</div><p class="eyebrow">2026 AP COMPUTER SCIENCE A · UNIT 3</p><h1>Class Creation Lab</h1>
  <p class="lead">Learn how programmers model real-world objects, organize information, and build reusable behaviors. Work through interactive lessons at your own pace.</p>
@@ -121,7 +123,7 @@ function renderEntry(){const topics=IMPLEMENTED_TOPICS.map(x=>x.id).join(', ').r
  <div class="field"><label for="last-initial">Last initial</label><input id="last-initial" class="input" maxlength="1" required pattern="[A-Za-z]" placeholder="R"></div></div>
  <p class="fineprint">Only your first name and last initial are saved. Progress stays in this browser unless you export it.</p><button class="btn block" type="submit">Start learning →</button></form>
  <div class="separator"></div><button class="btn secondary block" data-action="import-backup">Restore progress from JSON backup</button>
- <div style="text-align:center;margin-top:16px"><button class="teacher-footer" id="teacher-trigger" aria-label="Build information">Build 1.35 · 2025 CED</button></div></div>
+ <div style="text-align:center;margin-top:16px"><button class="teacher-footer" id="teacher-trigger" aria-label="Build information">Version 2.0.0 · 2025 CED</button></div></div>
  <input type="file" id="backup-file" accept=".json,application/json" hidden><dialog id="modal"><div class="dialog-body" id="modal-body"></div></dialog>`;
 }
 function home(){const st=view(),t=teacherOn(),remaining=IMPLEMENTED_TOPICS.find(topic=>!topicCompleted(st,topic.id)||!passed(st,topic.id));
@@ -196,17 +198,53 @@ function applyOverride(){if(!teacherOn()||!state.identity||!pendingOverride)retu
  catch(error){toast(error.message||'Override could not be applied.');}
 }
 
-function confirmSwitch(){modal(`<button class="dialog-close" data-action="modal-close" aria-label="Close">×</button><h2>Switch to another student?</h2><p>The current student's progress will be downloaded as a JSON backup before this browser's saved record is cleared.</p><p class="helper">Make sure the backup download succeeds. Students using shared computers should not rely on browser storage alone.</p><div class="dialog-actions"><button class="btn secondary" data-action="modal-close">Cancel</button><button class="btn" data-action="confirm-switch">Back up and switch</button></div>`);}
+function confirmSwitch(){
+ switchDialogToken++;verifiedSwitchSnapshot=null;
+ if(!state.identity){go('#/home');return;}
+ modal(`<button class="dialog-close" data-action="modal-close" aria-label="Close">×</button>
+ <h2>Switch student: protect your work</h2>
+ <p>Before starting a new student on this device, save and verify <strong>${esc(studentName(state))}'s</strong> progress. This will replace the locally saved student record, including completed lessons and check results.</p>
+ <div class="switch-steps">
+  <div class="switch-step"><strong>1. Download your progress backup</strong><p class="helper">Save the JSON file somewhere you can find it again (usually Downloads).</p><button class="btn secondary" data-action="switch-download">↓ Download progress backup</button></div>
+  <div class="switch-step"><strong>2. Verify the downloaded file</strong><p class="helper">Select the file you just saved. The website checks that it contains all of your <em>current</em> progress before enabling the switch.</p><button class="btn secondary" data-action="switch-verify" id="switch-verify-button" disabled>Choose backup file to verify</button><input type="file" id="switch-backup-file" accept=".json,application/json" hidden><div id="switch-file-status" class="helper" role="status" aria-live="polite">Download a backup to begin.</div></div>
+ </div>
+ <div class="dialog-actions"><button class="btn secondary" data-action="modal-close">Cancel (keep progress)</button><button class="btn" id="switch-final-button" data-action="confirm-switch" disabled>Clear local progress and switch student</button></div>`);
+}
+
 function handleClick(event){const trigger=event.target.closest('#teacher-trigger');if(trigger){teacherClicks++;if(teacherClicks>=5){teacherClicks=0;activateTeacher();}return;}
  const nav=event.target.closest('[data-nav]');if(nav){if(!nav.disabled)go(nav.dataset.nav);return;}
  const el=event.target.closest('[data-action]');if(!el||el.disabled)return;const act=el.dataset.action;
  if(act==='modal-close'){closeModal();return;}
  if(act==='review-filter'){if(['missed','all'].includes(el.dataset.value)){reviewFilter=el.dataset.value;render();}return;}
- if(act==='backup-json'){exportJson(state.identity?state:view());toast('Progress backup downloaded.',true);return;}
+ if(act==='backup-json'){exportJson(state.identity?state:view());toast('Backup download requested. Confirm the JSON file is saved in Downloads.',true);return;}
  if(act==='import-backup'){$('#backup-file')?.click();return;}
  if(act==='pdf-topic'||act==='pdf-cumulative'){const x=createReport(state.identity?state:view(),{cumulative:act==='pdf-cumulative',topic:el.dataset.topic||'3.1'});toast(`${x.filename} downloaded (${x.pages} pages).`,true);return;}
  if(act==='switch-student'){confirmSwitch();return;}
- if(act==='confirm-switch'){if(state.identity)exportJson(state);state=blankState();preview=null;setTeacher(false);save(state);closeModal();go('#/home');render();return;}
+ if(act==='switch-download'){
+  switchDialogToken++;verifiedSwitchSnapshot=null;
+  $('#switch-final-button').disabled=true;
+  try{
+   exportJson(state);
+   $('#switch-verify-button').disabled=false;
+   $('#switch-file-status').textContent='Download requested. Find the saved JSON file, then verify it in step 2.';
+  }catch(error){toast('Could not start backup download: '+error.message);$('#switch-file-status').textContent='Download did not start. Your progress has not been cleared.';}
+  return;
+ }
+ if(act==='switch-verify'){$('#switch-backup-file')?.click();return;}
+ if(act==='confirm-switch'){
+  if(verifiedSwitchSnapshot===null || verifiedSwitchSnapshot!==JSON.stringify(state)){
+   verifiedSwitchSnapshot=null;
+   $('#switch-final-button').disabled=true;
+   toast('Verify a current backup file before switching students.');
+   return;
+  }
+  try{
+   const next=saveBlankStudentBeforeSwitch(blankState,save);
+   state=next;preview=null;setTeacher(false);closeModal();go('#/home');render();
+   toast('Local student record cleared. The verified backup can be restored later.',true);
+  }catch(error){toast(error.message);}
+  return;
+ }
  if(act==='teacher-exit'){setTeacher(false);preview=null;go('#/home');render();toast('Teacher preview closed.',true);return;}
  if(act==='override-lesson'||act==='override-topic'){const kind=act==='override-lesson'?'lesson':'topic',key=$('#teacher-override-'+kind)?.value;if(!key)return toast('Select a '+kind+' first.');requestOverride(kind,key);return;}
  if(act==='revoke-lesson'||act==='revoke-topic'){requestOverride(act==='revoke-lesson'?'lesson':'topic',el.dataset.key,true);return;}
@@ -218,6 +256,25 @@ function handleClick(event){const trigger=event.target.closest('#teacher-trigger
  for(const topic of IMPLEMENTED_TOPICS){const c=controllers.get(topic.id);if(c.handlesClick(act)){c.click(el);return;}}
 }
 function handleChange(event){const el=event.target,act=el.dataset.action;
+ if(el.id==='switch-backup-file'){
+  const file=el.files?.[0];el.value='';
+  if(!file)return;
+  const snapshot=JSON.stringify(state),token=++switchDialogToken;
+  verifiedSwitchSnapshot=null;
+  $('#switch-final-button').disabled=true;
+  const status=$('#switch-file-status');
+  if(status)status.textContent='Checking backup file…';
+  verifyStudentSwitchBackup(file,state).then(name=>{
+   if(!$('#modal')?.open || token!==switchDialogToken || snapshot!==JSON.stringify(state))return;
+   verifiedSwitchSnapshot=snapshot;
+   $('#switch-final-button').disabled=false;
+   status.textContent=`Verified: ${name} contains the current student record. You may now switch students.`;
+  }).catch(error=>{
+   if(!$('#modal')?.open)return;
+   status.textContent='Not verified: '+error.message+' The current progress is still saved.';
+  });
+  return;
+ }
  if(el.id==='backup-file'){const file=el.files?.[0];if(!file)return;importJson(file,state.identity).then(next=>{if(!window.confirm(`Restore the progress backup for ${next.identity.first} ${next.identity.last}.? This replaces the saved record on this device.`))return;state=next;preview=null;setTeacher(false);save(state);go('#/home');render();toast('Progress restored from JSON.',true);}).catch(e=>toast('Import failed: '+e.message));el.value='';return;}
  if(unitSummary?.change(el))return;
  for(const topic of IMPLEMENTED_TOPICS){const c=controllers.get(topic.id);if(c.handlesChange(act)){c.change(el);return;}}

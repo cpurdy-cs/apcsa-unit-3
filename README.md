@@ -1,237 +1,44 @@
-# Class Creation Lab v1.36 | Complete Unit 3
+# Class Creation Lab | Version 2.0.0
 
-**All nine topics and the four-part cumulative review are implemented.** Version 1.36 preserves the v1.35 review-section sidebar highlight correction and adds substantive explanations after correct answers to all 28 cumulative practice questions. Incorrect responses still receive retry hints, and student question IDs, mastery status, scores, and stored answers are unchanged. Version 1.34 fixes the sidebar selection while viewing Unit 3 Summary and Unit Complete, preserving ordinary topic navigation. Version 1.33 expanded the standalone introduction to `this`, cleans up literal backticks in topic titles, and makes the one existing valid public instance variable in the 3.7 graded examples private. The questions, correct answers, previous scores, lesson completion, saved work, and teacher controls remain compatible.
+**Final classroom release — 2026 AP Computer Science A, Unit 3 (2025 College Board CED)**
 
-- **3.9.1 — What Does `this` Mean?** An expanded, fully worked Counter and Runner example first explains why methods need a current-object reference; three highlighted calls then let students identify which object `this` refers to.
-- **3.9.2 — When Do You Need `this.`?** Three complete constructor examples compare `count = count;`, `this.count = count;`, and `count = start;` with predictions and explanations.
-- **3.9.3 — Passing `this` and Static Methods.** Two focused questions using a Participant joining a Group demonstrate passing the current reference and why `this` cannot appear in a static method.
-- **3.9.4 — Contact Class Workshop.** Students write a small class with `name` and `lastSender` instance variables; `sendTo` passes `this` to the recipient, which stores the same sender object. A bounded interpreter checks 20 functional and identity scenarios with detailed feedback.
+Class Creation Lab is a self-contained, browser-based learning experience for AP CSA Unit 3. Students work independently through **all nine topics (3.1–3.9), 42 lesson pages, nine graded topic checks, and a four-section cumulative Unit 3 Summary with 28 retryable review questions**. It uses no server, remote API, account system, or build step. It is designed for hosting on GitHub Pages.
 
-All 3.9 pages teach first and show caller and method definitions before predictions. The original 10-question graded-check policy (80%, one submitted attempt unless teacher reset) and topic/cumulative PDFs remain. The required four-part Unit 3 Summary (28 retryable questions) and final congratulations page are unchanged. The summary unlocks only after all nine topic checks pass.
+## Student experience
 
-**Compatibility:** Topics 3.1–3.8 and previous student progress retain the existing schema-1 JSON format. The unassigned Topic 3.9 activities and its question bank have been replaced; no 3.9 students had started, as confirmed by the teacher. The local GitHub Pages application is not a secure server-based assessment system.
+- Lessons unlock in order within each topic; a topic check unlocks after required lesson activities are completed.
+- A score of at least **80%** passes each graded topic check and unlocks the next topic. Each check permits one submitted attempt unless the teacher resets it. Practice within lessons is retryable.
+- Topics use interactive Java traces, experiments, prediction and explanation questions, and independent full-class Java workshops. Java tests run in a restricted browser-side evaluator, not a full Java compiler.
+- Once all nine topic checks are passed and lessons are completed, the four-part Unit 3 Summary unlocks. The 28 review questions are unlimited-retry practice, **not another graded check**.
+- Students can create individual topic PDFs and a cumulative PDF with their evidence and recorded results.
+- Progress is saved locally in the browser. Students can export/import a JSON progress backup to transfer between devices.
 
-**Deployment:** Publish the contents of `APCSA_Unit3_Class_Creation_GitHubPages_v1.34.zip` to GitHub Pages. The full-source ZIP includes local tests and example Java solution fixtures for maintenance and should not be deployed as the public student website.
+## Switching students safely (new in v2.0.0)
 
-**Version 1.36 supersedes v1.34.**
+Select **Switch student** in the sidebar. The site now requires three distinct actions:
 
-## v1.25 — Complete method-call context in Topics 3.5.2 and 3.5.3
+1. **Download progress backup** to request a JSON export of the *actual saved student record*.
+2. **Choose backup file to verify**, and select the file that was just saved. The app compares its contents with the current student record, so a stale or different student's backup cannot be used to authorize the switch.
+3. Only after verification can **Clear local progress and switch student** be selected. The app saves a blank record before changing the active student in memory; storage failures prevent the switch.
 
-The state-changing method experiments in **3.5.2** now show the entire `Runner.main` caller and corresponding `Player` or `TicketWallet` class for every selection. The actual method call is prominent; the before-and-after readout names the specific object's field. All three examples compile as real Java.
+Cancelling or failing verification keeps the current record. This is designed for a shared device where switching students replaces the record stored in that browser. **Keep the backup file**: clearing the local record does not erase the downloaded backup. If the browser prohibits downloads, the student cannot complete the protected switching flow. A download button alone is not proof that a file was saved; the file verification step is required.
 
-The return-versus-print experiments in **3.5.3** also show complete `Runner.main` caller code and the complete corresponding class. Students can see exactly where `getScore()` or `hasEnough(12)` returns a value into a caller variable versus `showScore()` printing to the console without returning a value. The three calls are valid Java and compile. The original activities, button actions, practice and graded questions, page IDs, completion rules, saved progress schema, teacher controls, and PDF reports are unchanged. Existing student completions and scores remain valid. Three focused regression checks protect the calls and old progress.
+## Teacher tools and deployment
 
-## v1.24 — Instructional completeness improvements for Topics 3.5–3.7
+The teacher access phrase is **supplied separately** to the instructor and is not included in the published package. The local teacher preview, topic check resets and progress overrides remain available. Preview lesson work is separate from the saved student record. Graded attempt history remains in the record when a check is reset.
 
-Added visible, read-only instructional panels to **all 18 lesson pages** in Topics 3.5 (8 pages), 3.6 (5 pages), and 3.7 (5 pages). Each page now teaches the concept before the interactive activity through an explanation, key points, a worked Java example from a different scenario, an explanation of that example, and concrete guidance for the activity. These additions cover method syntax and return values, primitive argument copying, preconditions and whole-class planning, object aliases and mutations, reference returns, same-class private access, static versus instance state, static-method restrictions, and `final` constants. No lesson activities, question banks, assignment specifications, required completions, or grades were changed.
+Deploy the **GitHubPages_v2.0.0.zip** contents at the repository root; upload the extracted files, not the ZIP itself. Keep the existing GitHub Pages URL and browser profile to retain local progress. See:
 
-**Progress compatibility:** Read-only panels do not introduce a single new input, `data-action`, saved-progress key, or prerequisite. Previously completed lessons remain completed, graded attempts/teacher overrides stay intact, and progress JSON backups retain schema 1. Code editors and the v1.19 live autosave fix are unchanged. The only lesson-rendering changes in `js/topic35.js`, `js/topic36.js`, and `js/topic37.js` are the import and prefix of a shared, read-only teaching panel.
+- `docs/DEPLOYMENT.md` for deployment, upgrades and student-device validation.
+- `docs/TEACHER_GUIDE.md` for grading, backups, teacher tools and classroom guidance.
+- `docs/CURRICULUM_ALIGNMENT.md` for topic-by-topic CED coverage.
+- `docs/ARCHITECTURE.md` for file structure and compatibility expectations.
+- `docs/CHANGELOG.md` for release history.
 
-The 18 teaching panels are defined separately in `js/topics/instruction35-37.js`. The 2025 College Board CED remains the curriculum authority. No student-facing time estimates were added.
+To test locally, run `python -m http.server 8000`, then open `http://localhost:8000`. To run the automated suite: `npm test` (Node.js required for testing only).
 
+## Version and compatibility
 
+**2.0.0** signifies that the complete Unit 3 course has reached its final-release baseline. It **does not mean a breaking change to student data**. The existing localStorage key `flourbluff-apcsa-u3-v1`, JSON `schema: 1`, lesson IDs, graded question IDs, scores, teacher overrides and previous attempts are deliberately preserved. Existing v1.36 records and backups continue to work.
 
-**v1.11 fix:** In 3.4.4, clicking the `PrizeCard`, `ArcadeMachine`, or `Player` challenge buttons now switches the editor to the selected class. Separate drafts and test results persist when switching and after reloading saved progress. No changes to grading, lesson requirements, or previous-topic content.
-
-**v1.12 presentation update:** No estimated minutes or class-period counts appear on student-facing lesson headers or course-roadmap cards for any topic, including unreleased roadmap topics. Incomplete lessons display “In progress” instead of a time estimate. Teacher-only pacing guidance remains in `docs/TEACHER_GUIDE.md`. No assessment, saved-progress, or grading changes.
-
-## v1.23 — Standalone instruction throughout Topic 3.8
-
-Each of the four Topic 3.8 lesson pages now teaches the underlying concepts *before* asking students to solve activities, using explanatory prose and complete Java examples. 3.8.1 explains field, parameter and nested-block scope; 3.8.2 explains copied primitive arguments and returned values, and shows **both** the complete caller and `applyBonus` method before either prediction; 3.8.3 teaches shadowing explicitly and contrasts a hidden-field bug with a correctly named parameter; 3.8.4 shows how to use lasting fields and temporary locals while planning a whole class.
-
-The five 3.8.3 debugging situations now use consistent Java indentation and clearer objectives. Choosing a repair renders the **proposed complete Java code** alongside the original, before **Check selected repair**; the five case buttons are aligned in a responsive, equal-width grid. The third and fifth cases were rewritten to be clearer. All five *correct* repair implementations were compiled with `javac` during development.
-
-The original Topic 3.8 graded question bank and all other Topics 3.1–3.7 lesson code remain unchanged. Existing saved practice, grading records, progress and teacher overrides are compatible. These are instructional and presentation improvements, not changes to the scoring rules or assessment.
-
-## v1.22 — Clearer method-call trace in 3.8.2
-
-The student now sees a complete `Runner.main` caller **above** the method and is asked to predict both the caller's unchanged `score` and the returned `result`. The trace makes it clear when the method parameter and locals are created, when the returned value is assigned, and what the caller prints. The rest of Topic 3.8 and all other lessons retain their previous content and checks. Earlier completions continue to count, and all text-save and teacher tools are preserved.
-
-## v1.21 — Scope and Access
-
-Added 3.8.1–3.8.4, covering local and parameter scope, nested blocks, the lifetime of locals, name shadowing, and code repair. Students use an interactive line-by-line scope explorer, a step-by-step primitive-argument/local-variable trace, five scope-debugging cases, and an independent **DroneBattery** full-class Java project. The isolated bounded class evaluator models lexical block scopes and uses 20 behavior tests; it accepts different legal names and common field-access syntax. Topic 3.8 has an original 10-question/100-point graded check and a topic PDF with source code, practice and graded responses.
-
-The **left course navigation** now shows a distinct completed (green check), current (maroon highlight and expanded lesson list), available/in-progress, and locked/unpublished state, with a clear lesson count. It updates after live progress saves. Earlier approved topic modules and identifiers, the v1.19 text-autosave correction, teacher overrides, report writer, and the existing credential hash remain intact.
-
-## v1.20 — Class Variables and Methods
-
-Added five independent, strictly sequenced Topic 3.7 lessons: (1) shared versus per-object state with a responsive multi-object Player visualizer, (2) declaring and accessing public static variables through the class name, (3) static-method access restrictions and static-to-static calls, (4) `final` constants and assignment legality, and (5) a full **TrailGate** Java class-writing project. The new workshop requires `private int capacity`, `private int admitted`, `private static int totalAdmitted`, and `public static final int MAX_GROUP_SIZE = 8`, plus a constructor, an instance mutator, an instance getter, and two class methods. Its isolated, bounded evaluator runs **21 deterministic tests** of class-level shared totals, individual counts, static dispatch, validation, and boundary cases with exact expected/observed results. It is a Java subset, not a general compiler.
-
-A new 10-question, 100-point graded check requires 80% mastery. Students retain unlimited practice, stable balanced choices, one submitted graded attempt, post-submission missed-question review with correct answers teacher-only, teacher resets/overrides, JSON backups, and topic/cumulative PDFs. The v1.19 numeric-leading-ID autosave fix and already-approved Topic 3.1–3.6 source modules are preserved. Topic 3.7 modules are registered in the existing topic registry without changing prior lesson content or question banks. All student-facing pacing estimates remain hidden.
-
-## v1.19 live-input fix
-
-Corrected the shared DOM lookup for controls whose IDs begin with numbers, including `33-reflection-count`, `34-copy-count`, `34-workshop-save`, `35-editor-save`, `36-editor-save`, and graded-check counters. Previously `querySelector('#33-reflection-count')` was invalid CSS and threw during typing, which prevented the current keystroke from updating the counter and being saved. The shared helper now retrieves simple IDs with `getElementById`, retaining `querySelector` for other CSS selectors.
-
-**Result:** characters update as they are entered, reflection responses save immediately, and code editor/graded-check status displays update without a reload or blur. This is a shared shell fix only: all Topic 3.1–3.6 lesson content, questions, scoring, tests, PDF logic, teacher overrides, and JSON progress schema are unchanged. Added a regression test that deliberately rejects invalid numeric-leading CSS selectors and verified 3.3.4, 3.4.5, 3.5.8 and 3.6.5 in isolated Chromium browser checks.
-
-## v1.18 independent coding task: WaterTank
-
-Topic 3.6.5 now asks students to design an entirely new **`WaterTank`** class with two private integer fields: `capacity` and `liters`. Its methods must check whether a supplied water amount is valid *before changing state*: zero/negative additions or transfers, source shortages, and destination overflow all return `false` without changing either object. The class also compares remaining room through another object's private fields and selects one of two existing tank references by identity. All **18 deterministic execution tests** provide exact inputs, expected behavior, and observed state/return values; invalid cases and boundary values are included. The constructor's documented precondition guarantees valid initial levels and capacities. The sample caller code does not give a solution.
-
-The other Topic 3.6 pages and graded check are unchanged, as are Topics 3.1–3.5. Importing v1.17 progress keeps the prior WeatherStation draft as `legacyV117` and resets only 3.6.5 completion and its three knowledge-check answers. Existing graded submissions, teacher overrides, progress IDs and JSON schema remain intact.
-
-## v1.17 independent coding task
-
-The **3.6.5 workshop** now asks students to build a completely new `WeatherStation` class instead of rewriting `TicketWallet`, which had already appeared in the private-access lesson. A self-contained weather-network scenario explains the specifications: temperature adjustments (including negative readings), calibrating another existing station, returning the identity of the colder station, and comparing private readings across instances. The new class has **13 behavior and reference-identity tests**, with exact inputs and actual results for debugging. Students receive no prewritten solution; the optional supporting panel contains example *caller* code only. **3.6.1–3.6.4 and the graded question bank are unchanged.**
-
-Old 3.6.5 drafts are retained as `legacyV116` in imported progress, and previously submitted assessment attempts remain intact. Because this is a new independent assignment, the former page-5 completion and three practice responses are reset on migration. The student's earlier work is not discarded.
-
-## v1.16 Topic 3.6 refinements
-
-- Every reference lesson now includes a supporting-class panel. Panels are collapsed on pages 3.6.1–3.6.3 and 3.6.5 and expanded automatically on 3.6.4. Private fields are highlighted in the supporting source.
-- Revised the returned-reference lesson subtitle and displayed `>=` with standard separate characters by disabling ligatures.
-- Replaced the unnatural `sameWallet` exercise with `hasMoreTicketsThan(TicketWallet other)`, requiring a real comparison between two wallets. Earlier graded submissions and progress records remain preserved.
-- Corrected the workshop practice prompts and changed the test runner to show actual arguments, executed calls, expected results, observed results, and errors. Failing tests expand by default.
-- Revised graded-question wording, added distinct Java code panels, and retained the original graded question IDs and balanced answer ordering. Already-submitted question snapshots remain unchanged.
-- The post-submission question review and Topic 3.6 PDF display multiline Java code separately from the question text.
-
-## v1.15 additions
-
-- **Topic 3.6 — Passing and Returning Object References:** five lessons on reference aliases, mutation versus parameter reassignment, returning existing references, same-class private access, and a full-class `TicketWallet` workshop. A bounded reference-aware interpreter runs thirteen behavior/identity tests; the graded check has ten questions. The method workshop uses two `TicketWallet` object parameters when comparing identity and selecting an existing object, leaving the formal `this` keyword lesson to Topic 3.9.
-- **Live progress updates:** text editors and reflections autosave with each input event. The app refreshes completion badges, lesson navigation, and lesson requirement indicators without replacing the focused editor, and clears outdated code-test results after edits. Explicit testing remains required for coding mastery.
-- **Teacher Progress Override:** the teacher console can mark an individual lesson complete or grant an exception to a topic prerequisite. Both actions are confirmation-gated, reversible, and logged with optional reasons. They change the saved student record on that device, **never invent a graded assessment score**, and are included in PDF reports. Teacher preview remains separate from the real record.
-- All v1.14 lesson modules and assessment banks for Topics 3.1–3.5 remain unchanged. JSON backups, graded attempt history, and the established localStorage key remain compatible.
-
-## Modular design (introduced in v1.4)
-
-The application shell, autosave normalization, teacher console, and offline PDF writer now use a **single topic registry** (`js/registry.js`). Topics 3.1–3.9 have separate controllers and topic-specific report writers. The Unit 3 Summary has its own module and export writer. New topics can be registered **without editing previously completed lessons**. Topic 3.4 was added through the registry without rewriting the already-approved Topics 3.1–3.3.
-
-See **`docs/ARCHITECTURE.md`** for the plugin contract and the steps for adding future topics.
-
-## Topic 3.1: Abstraction and Program Design (four lessons)
-
-1. **Objects Everywhere**: inspect an arcade scene; identify classes, attributes, and behaviors.
-2. **Data Abstraction**: alter independent player scores and a shared `arcadeBonus` that actually multiplies subsequent awards; classify attributes.
-3. **Procedural Abstraction**: write a method body from an initially blank Java editor; run three deterministic tests; only see example solutions after passing.
-4. **Class Design Studio**: select class members from shuffled choices; examine the class diagram; write an explanation.
-
-Includes twelve independent transfer challenges, randomized choices, and a **10-question / 100-point section check**. The Java editor is a *restricted, accurately described method-body evaluator*, not a full Java compiler.
-
-## Topic 3.2: Impact of Program Design (three lessons)
-
-Aligned with **LO 3.2.A; EK 3.2.A.1–3** in the attached 2025 CED:
-
-1. **The Leaderboard Decision**: interactively compare public-name, opt-in nickname, and private leaderboard designs. Identify benefits, unintended harms, mitigations; answer transfer scenarios; save a reflection.
-2. **Reliability Test Bench**: load six reproducible test inputs directly into displayed Java code and run each against a *deliberately flawed* redemption algorithm. Select a proposed repair to change the code, test all six again (incorrect repairs remain testable), and classify normal/boundary/invalid inputs with immediate feedback.
-3. **Who Owns This Code?**: examine four different software assets, distinguish open-source reuse with license conditions from proprietary/unlicensed code and original work, solve transfer scenarios, and explain a permission decision.
-
-Ends with an **8-question / 100-point graded section check** (12.5 points each). Because the mastery threshold is 80%, students need **at least seven correct answers (87.5%)**; six correct is 75% and does not pass.
-
-## Topic 3.3: Anatomy of a Class (four lessons)
-
-Aligned with **LO 3.3.A; EK 3.3.A.1–6** in the supplied 2025 CED:
-
-1. **Inside a Java Class**: select and inspect the properly indented class header, private field, public constructor and public getter; classify six new Java declarations; solve a private-access checkpoint.
-2. **The Access Control Lab**: select a caller class and member, observe a Java call site, and check whether its access is permitted. Students must test public/private members from both inside and outside the class, then solve four independent situations.
-3. **One Class, Two Objects**: instantiate two separate Player objects with different scores; call a public method on each and observe that one object's private instance value does not change the other; solve three transfer questions.
-4. **Build a Class**: assemble a complete `PrizeCard` class from seven shuffled declaration choices. Preview the generated Java source beside the selection controls, validate the design against its requirements, and run an access-rule check of the public interface. Solve two practice questions and write a 40+ character explanation for the report.
-
-Topic 3.3 ends with a **10-question / 100-point section check** (eight multiple-choice and two full-credit classification questions). Eight correct are required. All choices and practice order are stable-shuffled per student; the multiple-choice answer positions are balanced. The code builder and access checker perform **specified structural and visibility checks**, *not full Java compilation/execution*.
-
-
-## Topic 3.4: Constructors (five lessons)
-
-Aligned with **LO 3.4.A; EK 3.4.A.1–5** in the supplied 2025 CED (p. 84):
-
-1. **The Object Factory**: step through memory allocation, default field values, constructor assignments and storing a new object reference; build two different objects and solve transfer problems.
-2. **The Default Constructor Mystery**: identify `int`, `double`, `boolean`, and reference-field defaults; compare implicit default constructors, parameterized constructors and explicit no-argument constructors; predict which calls compile.
-3. **Multiple Objects, Different States**: first choose constructor assignments using dropdowns beside the live Player code, then construct three objects and compare their independent states.
-4. **Constructor Workshop**: work in **one complete Java file editor** per challenge, with the `public class` declaration and `private` instance variables already provided. Students write the **entire constructor** inside the class, including `public`, the matching name, parameters, braces and field assignments. Three challenges (`PrizeCard`, `ArcadeMachine`, `Player`) each require four passing test cases. There is **no separate code preview**. The restricted validator checks class/field structure as well as constructor behavior; it is **not a full Java compiler**. The editor spans the available width, supports Tab/Shift+Tab, automatic Enter indentation and Escape then Tab for keyboard navigation, and automatically saves code. Earlier v1.9 constructor-only drafts are displayed inside the complete starter class.
-5. **The Defensive Copy Experiment**: select **all three** implementations (direct reference, renamed alias, and new object), mutate the outside original and inside card for every version, and compare the results in a compact side-by-side object diagram. An explicit warning shows when an outside change leaks into private card state. All six comparisons and a reflection are required.
-
-**Review fixes in v1.8:** Constructor parameters stay on one declaration line; practice answers have balanced A–D positions across the topic; inline code is monospaced rather than printed with backticks; graded question #4 includes `ArcadeMachine` as a second reference type. The 3.3 question display also renders pre-existing backticked code correctly, without changing its content or grading. Older v1.7 Topic 3.4 progress is migrated into the new lesson order while retaining previous assessment submissions; the expanded constructor and defensive-copy requirements must still be finished.
-The 3.4 section check has **10 questions worth 10 points each**, including two classification/tracing questions. Eight correct are required to pass. All practice is retryable, choices are student-stable randomized, the teacher can reset the check, and 3.4 has separate and cumulative PDF exports with full graded responses and constructor code evidence.
-
-## v1.14 review refinements
-
-- Topic 3.5.5 deliberately rotates correct dropdown answers across first, second and third positions, rather than relying on independent shuffles that could place all correct answers first.
-- Topic 3.5.8 replaces four separate method-writing exercises with a full-class `PrizeCard` assignment, evaluated through 12 independent object-state and method-interaction tests. Its single editor starts with only directions; it does **not** supply the class declaration or private fields.
-- Method validation accepts ordinary Java `this.field` references and reports more specific structural and behavioral errors.
-- Topic 3.5 controls, dropdown labels, action rows, and code/test panels use consistent spacing at desktop and Chromebook widths. Other topics' approved lessons and scoring rules are unchanged.
-- Teacher access has been rotated. The phrase is never included in website files or documentation and is supplied separately. All browser-only security limitations still apply.
-
-## Student progression and data
-
-- Students identify with **first name and last initial**.
-- Completing required work unlocks the next lesson; getting 80% or more on a topic check unlocks the next implemented topic.
-- Practice permits unlimited attempts. Checks permit **one final submission**, followed by a **teacher-authorized on-device reset** if needed. Each reset retains earlier attempt history.
-- Browser `localStorage` autosaves progress across refreshes. JSON backups can be exported and imported for transfers or recovery; backups from **v1.0 / v1.1** remain compatible.
-- Download **individual Topic 3.1–3.6 PDF reports** and a **cumulative Unit 3 PDF**. Reports contain the student's submitted answers, graded scores, all attempts, and selected practice evidence, including written reflections.
-- Display order is deterministically randomized per student. Stored responses and scoring are keyed to original question identities, not their shuffled positions.
-
-**Important security note:** GitHub Pages cannot provide server-verified identity, tamper-resistant progress, genuine single-attempt security, or true teacher password secrecy. Treat the checks as classroom learning evidence, not secure high-stakes exams.
-
-## Teacher preview and reset
-
-Use **Ctrl + Alt + Shift + T** (or five clicks on the small build label), then enter the teacher access phrase supplied separately to the instructor. No teacher credentials are included in this repository or its documentation.
-
-Teacher preview unlocks all 29 available lesson pages, shows answers, allows sample report exports, and automatically offers separate reset buttons for every implemented topic. Preview practice doesn't overwrite a student's record. A reset *does* modify the real student's local record. Exit preview when finished.
-
-## GitHub Pages deployment
-
-1. Extract this ZIP.
-2. Upload its **contents** (including `index.html`, `css/`, `js/`, `docs/`) to the root of your GitHub repository.
-3. Choose **Settings → Pages → Deploy from a branch**, select `main` and `/(root)`.
-4. Open the HTTPS site URL GitHub gives you.
-5. Test with a student profile, verify sequential progression through 3.6, check all six topic PDFs, and test JSON backup/import.
-
-The site uses hash-based routes (such as `#/topic/3.2/page/2`) so it works under a GitHub project subdirectory. No installation or network resources are required once loaded. For a local preview, run `python -m http.server 8000` from the extracted directory and visit `http://localhost:8000`. Do not rely on direct `file://` loading for JavaScript modules.
-
-## Project files
-
-| File | Purpose |
-|---|---|
-| `index.html`, `css/styles.css` | Entry point and Flour Bluff maroon/silver styling, including equal-size FB wordmark |
-| `js/registry.js` | Topic/plugin registration, lesson metadata, prerequisites, and shared progression |
-| `js/app.js` | Shared student/teacher shell, navigation and automatic topic event dispatch |
-| `js/topics/topic31.js`, `js/topics/topic32-controller.js`, `js/topics/topic33-controller.js`, `js/topics/topic34-controller.js` | Existing lesson UIs and topic-specific interactions |
-| `js/topics/report31.js`, `js/topics/report32.js`, `js/topics/report33.js`, `js/topics/report34.js` | Per-topic PDF report sections, included automatically in unit reports |
-| `js/content.js`, `js/content32.js`, `js/content33.js`, `js/content34.js` | Per-topic lesson metadata, activities and original question banks |
-| `js/topic32.js` | Topic 3.2 interactive lesson simulation, assessment UI, scoring helpers |
-| `js/topics/editor34.js` | Native-textarea keyboard indentation behavior for Topic 3.4.4 (Tab/Shift+Tab/Enter), with normal input events for autosave |
-| `js/topic34.js` | Topic 3.4 constructor-state simulator, limited assignment evaluator, question grader, and interactive page rendering |
-| `js/topic33.js` | Topic 3.3 simulations, lesson completion rules, class assembler, structural feedback, assessment scorer and UI |
-| `js/storage.js` | Browser autosave, JSON import/export, backward-compatible normalization |
-| `js/order.js`, `js/java-mini.js`, `js/pdf.js` | Stable shuffling, restricted Java evaluator, offline PDFs |
-| `docs/` | Curriculum alignment, teacher guide, architecture/extension guide, deployment checklist, change log |
-| `tests/` | Node test suite (no runtime dependencies) |
-
-## Developer tests
-
-With Node 20+:
-
-```sh
-npm test
-```
-
-The automated regression suite covers all six topics, modular registration, legacy progress migration, graded checks, simulated student workflows, teacher resets, and PDF exports. Topic 3.4 lesson layouts and their check were reviewed in Chromium using isolated page previews. This environment blocks ordinary local website navigation in Chromium; verify in a real school browser before deployment. **Test on school Chromebooks before classroom release.**
-
-## Copyright
-
-All student lessons, original diagrams and activities, and graded questions are newly authored to match the attached course guide. *AP* and *College Board* are College Board trademarks; this independent resource is not endorsed by College Board.
-
-
-## Version 1.14 additions
-
-- Topic 3.5, Methods: How to Write Them, includes eight self-paced interactive lessons, a complete-class design challenge and a 12-question graded check.
-- Post-submission reviews now show the full original question, choices, the submitted answer, and review guidance. The correct answer is shown only in teacher preview.
-- Teacher access phrase has changed. It is supplied separately, not distributed in website source or documentation. Because GitHub Pages is a static site, this is a convenience and **not secure server-side authentication**.
-- Progress remains compatible with v1.12 backups; earlier lesson content and graded questions are unchanged.
-
-## Topic 3.5: Methods: How to Write Them (eight lessons)
-
-Aligned with 2025 CED 3.5.A.1–8 and skills 2.C, 3.C, 3.D, 4.B:
-
-1. Inside a Method — inspect five method parts and classify headers.
-2. Methods That Change State — run three void mutators on object fields.
-3. Returning Values — compare returned values, boolean accessors, and printing.
-4. Parameters and Primitive Values — visualize copied primitive arguments.
-5. Accessors and Mutators — construct three working public methods around a private field.
-6. Following the Flow of Control — step through early returns, loops, and branches.
-7. Preconditions and Debugging — run five original boundary/invalid tests, repair, then retest all five.
-8. Independent Class Design Workshop — write a complete `PrizeCard` class from specifications, including three private fields, a parameterized constructor, three getters, two setters, and three additional methods (`addTickets`, `canRedeem`, and `redeemTickets`). Twelve behavioral scenarios test both methods and interactions, with clear feedback.
-
-A separate 12-question graded check uses 100-point scoring. Ten of twelve correct (83.33%) meets the 80% passing requirement. Student results support filterable full-question review with student responses and concept guidance, while answers and explanations remain teacher-only.
-
-The restricted Java evaluator supports the specified class structure, instance fields, constructors, selected method calls, `this.field` access, primitive/String values, conditionals, loops, and return statements. It does not claim to compile arbitrary Java. In v1.14, old individual-method drafts remain in saved progress, but the new full-class assignment must be completed to earn lesson mastery; previously submitted graded checks remain intact.
+The project is static and entirely client-side. Student-identification fields, one-attempt locks and teacher access are conveniences, not secure server-enforced controls. Browser storage can be cleared by a device policy or browser settings. Students should download regular JSON backups, even when not switching devices.

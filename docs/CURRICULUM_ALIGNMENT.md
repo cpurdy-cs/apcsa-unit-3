@@ -1,4 +1,4 @@
-# 2025 College Board AP CSA Unit 3 | Release 1.20 alignment
+# 2025 College Board AP CSA Unit 3 | Final v2.0.0 alignment
 
 **Source used:** user-supplied *AP Computer Science A Course and Exam Description*, Course Framework V.1, © 2025 College Board, Unit 3 *Class Creation*. The attached PDF is the sole curricular source. All lesson scenarios and scored questions are original to this project.
 
@@ -45,13 +45,9 @@ CED p. 83 (attached PDF p. 11), LO **3.3.A**: designate access and visibility co
 
 **Assessment:** 10 graded questions, 10 points each. Requires eight correct. Independent practice requires successful completion but permits unlimited retries. The builder and visibility checker only evaluate the specified rules; they are not presented as a full Java compiler.
 
-## Remaining roadmap (3.1–3.8 are now implemented)
+## Completed-unit scope
 
-| Topic | Planned pages | Suggested periods |
-|---|---:|---:|
-| 3.9 this Keyword | 3 | 1 |
-
-The College Board topic allocations total 18 periods. The broader 21-period plan includes three integrated application/review periods after the planned units. **These additional activities are not yet part of the release.**
+All nine CED topics, 3.1–3.9, are implemented. The four-part cumulative Unit 3 Summary contains 28 retryable review questions and a final completion page. It is supplementary practice and not an additional graded CED topic. Suggested pacing periods in the CED are planning guidance, not student-facing time limits.
 
 ## Topic 3.4: Constructors
 
@@ -95,9 +91,7 @@ CED printed p. 87; LO 3.6.A, EK 3.6.A.1–3; skills 2.C and 4.A.
 **Assessment:** ten original questions worth ten points each, eight correct required; answers are student-stable shuffled, the graded submission permits a teacher reset, and the post-check review hides the correct answer outside teacher preview. Practice requires completion of experiments, not merely opening pages. The class evaluator executes a documented Java subset and checks 18 independent state/identity cases; it does not compile arbitrary Java.
 
 
-**v1.17 Topic 3.6.5 transfer task:** Students apply all three essential knowledge statements to a fresh WeatherStation class that was not provided earlier. The `calibrateOther` method mutates an object through a copied reference; `chooseColder` must return one of two existing references without allocating; `isWarmerThan` accesses another WeatherStation's private `temperature` field from inside the same class. Signed temperature inputs and a same-object calibration case prevent direct reuse of the older TicketWallet solution.
-
-**Current v1.18 Topic 3.6.5:** Students write a completely new `WaterTank` class with private fields `capacity` and `liters`, plus a constructor, accessors, and methods for valid/invalid additions and transfers. `transferTo(other, amount)` modifies a supplied object through a copied reference and preserves both objects' state on invalid inputs (3.6.A.1). `chooseLowerLevel(first, second)` returns the existing object reference rather than a copy (3.6.A.2). `hasMoreRoomThan(other)` and transfer validation read the private fields of another `WaterTank` from inside the same class (3.6.A.3). The 18 tests also exercise boundary values, alias behavior, and observed return values. Previous WeatherStation text above is historical, not the current workshop.
+**Current Topic 3.6.5 workshop (v2.0.0):** Students write a completely new `WaterTank` class with private fields `capacity` and `liters`, plus a constructor, accessors, and methods for valid/invalid additions and transfers. `transferTo(other, amount)` modifies a supplied object through a copied reference and preserves both objects' state on invalid inputs (3.6.A.1). `chooseLowerLevel(first, second)` returns an existing object reference rather than a copy (3.6.A.2). `hasMoreRoomThan(other)` and transfer validation read another `WaterTank` object's private fields from within the same class (3.6.A.3). The 18 tests exercise boundary values, alias behavior and return values. Historical changes to the workshop are recorded in the changelog.
 
 ## Topic 3.7: Class Variables and Methods
 
